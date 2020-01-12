@@ -1,0 +1,117 @@
+.yy-footer {
+    margin-top: 50px;
+    height: 400px;
+    width: 1920px;
+    background-color: #333333;
+    .footer-content {
+        width: 1650px;
+        height: 280px;
+        position: relative;
+        top: 70px;
+        left: 198px;
+        color: #9a9a9a;
+
+        .left-content {
+            padding-left: 120px;
+            ul {
+                width: 400px;
+                margin-top: 30px;
+                list-style: none;
+
+                li {
+                    float: left;
+                    text-align: left;
+                    padding-top: 5px;
+                    margin-bottom: 8px;
+                    width: 100px;
+                }
+            }
+
+            .line {
+                margin-top: 45px;
+                margin-bottom: 45px;
+                background-color: #9a9a9a;
+                width: 900px;
+            }
+
+            .title1 {
+                padding-right: 420px;
+                font-size: 18px;
+                color: white;
+            }
+
+            .title2 {
+                padding-right: 375px;
+                font-size: 18px;
+                color: white;
+            }
+
+            .callUs {
+                width: 200px;
+
+                li {
+                    text-align: left;
+                    width: 200px;
+                }
+            }
+
+            .bUl {
+                width: 600px;
+                .c2{
+                    text-align: left;
+                    width: 900px;
+                    span{
+                        display: inline;
+                        margin-right: 14px;;
+                    }
+                    margin-bottom: 5px;
+                }
+                .c3{
+                    text-align: left;
+                    span{
+                        display: inline;
+                        margin-right: 14px;
+                    }
+                }
+                .c1 {
+                    position: relative;
+                    left: -76px;
+                    margin-bottom: 5px;
+                    color: #9a9a9a;
+                }
+
+
+                .el-divider {
+                    margin: 3px;
+                }
+
+            }
+        }
+        .appD{
+            padding-left: 15px;
+        }
+        .right-content {
+            position: relative;
+            left: -120px;
+            p {
+                color: #ffffff;
+                margin-bottom: 15px;
+            }
+
+            .other {
+                text-align: left;
+                margin-top: 35px;
+
+                div {
+                    margin-left: 80px;
+                    float: left;
+
+                    img {
+                        position: relative;
+                        top: 10px;
+                    }
+                }
+            }
+        }
+    }
+}

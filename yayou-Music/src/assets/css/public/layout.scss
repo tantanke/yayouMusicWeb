@@ -1,0 +1,31 @@
+.el-header,.el-main,.el-footer{
+    margin: 0 auto;
+    padding: 0;
+    overflow: unset;
+    ::-webkit-scrollbar {display:none}
+}
+body{
+    overflow-x:hidden;
+}
+    .mainList{
+        position: relative;
+        top: -23px;
+        margin-left: 250px;
+        padding-bottom: 25px;
+        list-style: none;
+        li{
+            padding-right:120px ;
+            float: left;
+            span{
+                cursor: pointer;
+            }
+        }
+        
+        .router-link-active,.active{
+           span{
+            border-bottom: 3px solid red;
+            font-weight: 800;
+        }
+    }
+        
+    }
