@@ -6,7 +6,10 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/css/main.css'
+import Video from 'video.js'
+import 'video.js/dist/video-js.css'
 Vue.use(ElementUI)
+Vue.prototype.$video = Video
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

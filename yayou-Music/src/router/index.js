@@ -29,7 +29,19 @@ export default new Router({
       children: [{
         path: '/movie/movieList',
         name: 'movieList',
-        component: () => import('@/components/movie/movieList.vue')
+        component: () => import('@/components/movie/movieList.vue'),
+        /* beforeEnter (to, from, next) {
+          // 在渲染该组件的对应路由被 confirm 前调用
+          // 不！能！获取组件实例 `this`
+          // 因为当守卫执行前，组件实例还没被创建
+          console.log(111)
+          next()
+        } */
+        children: [{
+          path: '/movie/movieList/:movieid',
+          name: 'movieListItem',
+          component: () => import('@/components/movie/movieitem/index.vue')
+        }]
       }]
     }, {
       path: '/shop',
@@ -106,10 +118,6 @@ export default new Router({
         path: '/singer/musiccate',
         name: 'musiccate',
         component: () => import('@/components/singer/musiccate.vue')
-      }, {
-        path: '/movie/movieList/:movieid',
-        name: 'movieListItem',
-        component: () => import('@/components/movie/movieitem/index.vue')
       }]
     }]
   }]

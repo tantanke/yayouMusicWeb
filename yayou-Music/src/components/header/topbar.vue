@@ -48,7 +48,7 @@ export default {
         navList: ['我的发现', '我的音乐', '视频', '商城', '音乐人', '彝汉切换'],
         inputValue: ''
       },
-      isnotLogin: false// 这里后期可以使用路由元信息进行判断是否登陆
+      isnotLogin: false// 这里后期可以使用导航守卫进行判断是否登陆
     }
   }
 }

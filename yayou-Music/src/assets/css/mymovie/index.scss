@@ -8,11 +8,12 @@
             list-style: none;
             margin-left: 45px;
         }
-        .router-link-exact-active{
+        .router-link-active{
             border-bottom: 3px solid red;
             font-weight: 800;
         }
     }
+    
     .movieTitle{
         margin-top: 25px;
         padding-left: 40px;
@@ -24,6 +25,72 @@
         
     }
     .allmovie{
+        .moviedetails{
+            .aboutvideo{
+                margin-bottom: 80px;
+                .videoinfo1{
+                    background-color: #333333;
+                    height: 75px;
+                    width: 1280px;
+                    color: #ffffff;
+                    margin-bottom: 50px;
+                    .info{
+                        position: relative;
+                        top:25px;
+                    }
+                }
+                .video-js .vjs-big-play-button{ /* 中间大的播放按钮 */
+                    font-size: 2.5em;
+                    line-height: 2.3em;
+                    height: 2.5em;
+                    width: 2.5em;
+                    -webkit-border-radius: 2.5em;
+                    -moz-border-radius: 2.5em;
+                    border-radius: 2.5em;
+                    background-color: rgba(115,133,159,.5);
+                    border-width: 0.12em;
+                    margin-top: 7.25em;
+                    margin-left: 23.8em;
+                  }
+                  .video-js.vjs-paused .vjs-big-play-button{ /* 视频暂停时显示播放按钮 */
+                    display: block;
+                  }
+                 .movievideo{          
+                    width: 1290px;
+                    height: 800px;
+                    position: relative;
+                    /* left: -35px; */
+                    margin-top: 30px;
+                    height: 500px;
+                    
+                } 
+            }
+            .mostlike{
+                height: 200px;
+                border: 1px solid black;
+                margin-bottom: 40px;
+            }
+            .videoinfo2{
+                margin-bottom: 40px;
+                border: 1px solid black;
+            }
+            .expressvideoremark{
+                height: 200px;
+                border: 1px solid black;
+                margin-bottom: 40px;
+            }
+            .lookvideoremark{
+                height: 600px;
+                border: 1px solid black;
+                margin-bottom: 40px;
+            }
+            .remarkothers{
+                height: 200px;
+                border: 1px solid black;
+                margin-bottom: 40px;
+            }
+           
+        }
         padding-left: 40px;
         .el-pagination{
             margin-left: 440px;
