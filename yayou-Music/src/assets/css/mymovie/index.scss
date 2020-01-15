@@ -1,4 +1,8 @@
 .movie-info{
+    .mainList{
+        position: relative;
+        left: 280px;
+    }
     .movieCate{ 
         padding-top: 7px;
         margin-left: 35px;      
@@ -16,8 +20,9 @@
     
     .movieTitle{
         margin-top: 25px;
-        padding-left: 40px;
-        width: 1265px;
+        position: relative;
+        left: 325px;
+        width: 1980px;
         span{
             font-size: 25px;
         }
@@ -26,8 +31,14 @@
     }
     .allmovie{
         .moviedetails{
+            margin-top: 20px;
             .aboutvideo{
                 margin-bottom: 80px;
+                width: 1980px;
+                height: 600px;
+                position: relative;
+                left: -40px;
+                background-color: #333333;
                 .videoinfo1{
                     background-color: #333333;
                     height: 75px;
@@ -36,7 +47,21 @@
                     margin-bottom: 50px;
                     .info{
                         position: relative;
-                        top:25px;
+                        top:35px;
+                        .videobuttons{
+                            font-size: 26px;
+                            span{
+                                display: inline;
+                                margin-right: 38px;
+                            }
+                        }
+                        .videoname{
+                           font-size: 20px;
+                        }
+                    .numbers{
+                        font-size: 12px;
+                        color: #AFAFAF;
+                    }
                     }
                 }
                 .video-js .vjs-big-play-button{ /* 中间大的播放按钮 */
@@ -56,44 +81,166 @@
                     display: block;
                   }
                  .movievideo{          
-                    width: 1290px;
+                    width: 1240px;
                     height: 800px;
                     position: relative;
-                    /* left: -35px; */
-                    margin-top: 30px;
+                    left: 325px;
                     height: 500px;
-                    
+    
                 } 
             }
-            .mostlike{
-                height: 200px;
-                border: 1px solid black;
+            .mostlike{             
                 margin-bottom: 40px;
+                position: relative;
+                left: 285px;
+                width: 1280px;
+                p{
+                    display: block;
+                    font-size: 22px;
+                    font-weight: 400;
+                    margin-bottom: 15px;
+                }
+                .likecards{                 
+                    height: 200px;
+                    .likecard{
+                        float: left;
+                        height: 160px;
+                        width: 225px;
+                        margin-right:27px;
+                        img{
+                            display: block;
+                            width: 225px;
+                            height: 130px;
+                        }
+                        p{
+                            font-size: 16px;
+                            display: block;
+                            margin-top: 4px;
+                            margin-bottom: 2px;
+                        }
+                        span{
+                            display: block;
+                            color: #AFAFAF;
+                        }
+                    }
+                }
             }
             .videoinfo2{
+                width: 1280px;
                 margin-bottom: 40px;
-                border: 1px solid black;
+                position: relative;
+                left: 285px;
+                width: 1240px;
+                p{
+                    font-size: 22px;
+                    margin-bottom: 20px;
+                }
             }
-            .expressvideoremark{
+            .remarkothers,.expressvideoremark{
+                width: 1280px;
                 height: 200px;
-                border: 1px solid black;
-                margin-bottom: 40px;
+                margin-bottom: 100px;
+                position: relative;
+                left: 285px;
+                width: 1240px;
+                .title{
+                    font-size: 22px;
+                    display: inline;
+                    margin-right: 20px;
+                }
+               .remarkarea{
+                    margin-top: 20px;
+                    
+                    .el-textarea__inner{
+                        background-color: #F3F3F3;
+                    }
+                }
+                .remarkbutton{
+                    margin-top: 20px;
+                    div{
+                        float: right;
+                        height:40px;
+                        line-height: 40px;
+                        i{
+                            font-size: 35px;
+                        }
+                    }
+                    .btn{
+                        width: 120px;
+                        text-align: center;
+                        background-color: #FF4751;
+                        color: #F3F3F3;
+                        margin-left: 25px;
+                    }
+                }
             }
             .lookvideoremark{
-                height: 600px;
-                border: 1px solid black;
+                width: 1280px;
                 margin-bottom: 40px;
+                position: relative;
+                left: 285px;
+                width: 1240px;
+                .allremarks{
+                    .remarknums{
+                        margin-bottom: 20px;
+                        span{
+                            font-size: 22px;
+                            display: inline;
+                            margin-right: 10px;
+                        }
+                    }
+                    .remarkcard{    
+                        margin-bottom: 55px;
+                        .el-divider{
+                            position: relative;
+                            top: 85px;
+                            left: 48px;
+                            width: 1200px;
+                        }
+                        p{
+                            margin-bottom: 5px;
+                        } 
+                        .dateandbtn{
+                                color: #AFAFAF;
+                                line-height: 25px;
+                                height: 25px;
+                            .btn{
+                                
+                                i{
+                                    display: inline;
+                                    margin-left: 45px;
+                                    font-size: 25px;
+                                }
+                                .begood{
+                                    margin: 0px;
+                                }
+                            }
+                           
+                        }
+                        
+                        .userImg{
+                            img{
+                            width: 40px;
+                            height: 40px;
+                            }
+                           
+                        }            
+                    }
+                }
             }
             .remarkothers{
+                width: 1280px;
                 height: 200px;
-                border: 1px solid black;
                 margin-bottom: 40px;
+                position: relative;
+                left: 285px;
+                width: 1240px;
             }
            
         }
         padding-left: 40px;
         .el-pagination{
-            margin-left: 440px;
+            margin-left: 730px;
             li.active{
                    background-color: red;
                    border-radius: 50%;
@@ -102,6 +249,8 @@
             }
         .moviepic{
             margin-top: 30px;
+            position: relative;
+            left: 275px;
             width: 1300px; 
             div.moviecard{
                 float: left;
