@@ -10,6 +10,7 @@ import Video from 'video.js'
 import 'video.js/dist/video-js.css'
 import axios from 'axios'
 import Vuex from 'vuex'
+process.env.Mock && require('./mock/mock.js')
 
 Vue.use(Vuex)
 Vue.prototype.$axios = axios
