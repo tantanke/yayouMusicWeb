@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import defaultPage from '@/layout/default.vue'
+import createCentre from '@/layout/createcentre.vue'
 import Index from '@/page/index.vue'
 import Movie from '@/page/movie.vue'
 import Shop from '@/page/shop.vue'
@@ -120,5 +121,19 @@ export default new Router({
         component: () => import('@/components/singer/musiccate.vue')
       }]
     }]
-  }]
+  }, {
+    path: '/createcentre',
+    name: 'createCentre',
+    redirect: '/createcentre/firstpage',
+    component: createCentre,
+    children: [{
+      path: '/createcentre/firstpage',
+      name: 'createpage',
+      component: () => import('@/components/createcentre/main/firstpage.vue')
+    }, {
+      path: '/createcentre/songnum',
+      name: 'createsongnum',
+      component: () => import('@/components/createcentre/main/songnum.vue')
+    }]
+  } ]
 })
