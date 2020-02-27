@@ -1,0 +1,75 @@
+.create-header{
+    width: 1800px;
+    height: 60px;
+    line-height: 60px;
+    box-shadow: 3px 3px 3px#F5F5F5;
+    .leftp{
+        .pic{
+            position: relative;
+            top: 12px;
+        }
+        .title1{
+            font-size: 20px;
+            font-weight: 600;
+        }
+    }
+    .mainp{
+        ul{
+            li{
+                list-style: none;
+                float: left;
+                width:96px;
+                text-align: center;
+                margin-right: 128px;
+            }
+            .personalC{
+                border-bottom: 2px solid #FF4751;
+                color: #FF4751;
+            }
+        }
+    }
+    .rightp{
+        .singerpic{
+            img{
+                display: inline;
+                margin-top: 10px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+        .message{
+            text-align: center;
+            font-size: 22px;
+            color: #999F97;
+            .number{
+                float:right;
+                position: relative;
+                top:16px;
+                left: -28px;
+                font-size: 10px;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background-color: #FF4751;
+                span{
+                    position: relative;
+                    top:-25px;
+                    color: #ffffff;
+                }
+            }
+        }
+        .singername{
+            text-align: center;
+        }
+        .joinus{
+            background-color: #FF4751;
+            color: #ffffff;
+            text-align: center;
+            line-height: 35px;
+            height: 35px;
+            margin-top: 12px;
+            border-radius:  30px;
+        }
+    }
+    
+}
