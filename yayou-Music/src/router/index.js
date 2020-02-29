@@ -8,6 +8,7 @@ import Shop from '@/page/shop.vue'
 import ChangeLanguage from '@/page/changeLanguage.vue'
 import Singer from '@/page/singer.vue'
 import MyMusic from '@/page/mymusic.vue'
+import Register from '@/page/register'
 // 一级路由直接加载 之后的子路由全部使用懒加载
 Vue.use(Router)
 export default new Router({
@@ -127,13 +128,35 @@ export default new Router({
     redirect: '/createcentre/firstpage',
     component: createCentre,
     children: [{
+      path: '/createcentre/dutycentre',
+      name: 'dutycentre',
+      component: () => import('@/components/createcentre/main/dutycentre.vue')
+    }, {
+      path: '/createcentre/fanscentre',
+      name: 'fanscentre',
+      component: () => import('@/components/createcentre/main/fanscentre.vue')
+    }, {
       path: '/createcentre/firstpage',
-      name: 'createpage',
+      name: 'createfirstpage',
       component: () => import('@/components/createcentre/main/firstpage.vue')
+    }, {
+      path: '/createcentre/mymoney',
+      name: 'mymoney',
+      component: () => import('@/components/createcentre/main/mymoney.vue')
+    }, {
+      path: '/createcentre/remark',
+      name: 'remark',
+      component: () => import('@/components/createcentre/main/remark.vue')
     }, {
       path: '/createcentre/songnum',
       name: 'createsongnum',
       component: () => import('@/components/createcentre/main/songnum.vue')
     }]
-  } ]
+  },
+  {
+    path: '/doRegister',
+    name: 'Register',
+    component: Register
+  }
+  ]
 })

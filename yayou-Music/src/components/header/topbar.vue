@@ -33,7 +33,7 @@
           </ul>
         </div>
         <el-divider direction="vertical"></el-divider>
-        <span>注册</span>
+        <router-link tag='span' to="/register">注册</router-link>
       </el-col>
     </el-row>
   </div>
@@ -49,6 +49,10 @@ export default {
         inputValue: ''
       },
       isnotLogin: false// 这里后期可以使用导航守卫进行判断是否登陆
+    }
+  },
+  methods: {
+    Register () {
     }
   }
 }

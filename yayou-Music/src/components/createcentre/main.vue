@@ -10,12 +10,12 @@
             <span class="title">综合</span>
         </div>
         <ul>
-          <router-link tag='li' :to="{name:'createpage'}"  ><span>首页</span></router-link>
-          <li><span>任务中心</span></li>
+          <router-link tag='li' :to="{name:'createfirstpage'}"  ><span>首页</span></router-link>
+          <router-link tag='li' :to="{name:'dutycentre'}"  ><span>任务中心</span></router-link>
           <router-link tag='li' :to="{name:'createsongnum'}"  ><span>作品数量</span></router-link>
-          <li><span>粉丝中心</span></li>
-          <li><span>我的钱包</span></li>
-          <li><span>评论管理</span></li>
+          <router-link tag='li' :to="{name:'fanscentre'}"  ><span>粉丝中心</span></router-link>
+          <router-link tag='li' :to="{name:'mymoney'}"  ><span>我的钱包</span></router-link>
+          <router-link tag='li' :to="{name:'remark'}"  ><span>评论管理</span></router-link>
         </ul>
       </div>
       <div class="music">
@@ -39,6 +39,6 @@
 export default {}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/assets/css/createcentre/main.scss";
 </style>
