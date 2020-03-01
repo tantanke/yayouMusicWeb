@@ -24,7 +24,7 @@
           <ul>
             <router-link tag='li' class="active" :to="{name:'myMusic'}"><i class="el-icon-user"></i><span>个人中心</span></router-link>
             <li><i class="el-icon-chat-dot-round"></i><span>我的消息</span></li>
-            <li><i class="el-icon-s-custom"></i><span>我的设置</span></li>
+            <router-link tag="li" :to="{name:'setting'}"><i class="el-icon-s-custom"></i><span>我的设置</span></router-link>
             <li><i class="el-icon-service"></i><span>VIP会员</span></li>
             <li><i class="el-icon-s-order"></i><span>我的收藏</span></li>
             <li><i class="el-icon-lollipop"></i><span>我的歌单</span></li>
@@ -33,7 +33,7 @@
           </ul>
         </div>
         <el-divider direction="vertical"></el-divider>
-        <router-link tag='span' to="/register">注册</router-link>
+        <router-link tag='span' :to="{name:'Register'}">注册</router-link>
       </el-col>
     </el-row>
   </div>

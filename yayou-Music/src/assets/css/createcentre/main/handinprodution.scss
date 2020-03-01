@@ -1,0 +1,106 @@
+$choicedColor:#fe4857 !global;
+@mixin ellipsis() {
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.compose-class{
+  display:block;
+  position:relative;
+  width:100%;
+  padding-left:10px;
+  background:#fafafa;
+  overflow: hidden;
+  .compose-class-header{
+    box-sizing:border-box;
+    width: 100%;
+    height:130px;
+    padding:70px 0 0px 35px;
+    background:#fff;
+    div{
+      height:59px;
+      padding-left:30px;
+      font-size:18px;
+      line-height:35px;
+      font-weight:600;
+    }
+  }
+  .compose-class-main{
+    box-sizing:border-box;
+    width:100%;
+    height:100%;
+    border-top:1px solid #999;
+    background:#fff;
+    div{
+      display:block;
+      width:100%;
+      height:420px;
+      margin-top:35px;
+      text-align:center;
+      .common-style-one{
+        box-sizing:border-box;
+        float:left;
+        display:block;
+        max-width:710px;
+        max-height:420px;
+        padding-top:100px;
+        margin-left:55px;
+        text-align:center;
+        border:1px solid #999;
+        .iconfont{
+          max-width:100px;
+          max-height:100px;
+          margin:0 auto;
+          font-size:100px;
+          line-height:100px;
+          color:$choicedColor;
+        }
+        h5{
+          max-height:30px;
+          font-size:18px;
+          margin-top:35px;
+          line-height:30px;
+          font-size:600;
+          color:#333;
+        }
+        p{
+          max-height:20px;
+          margin-top:15px;
+          font-size:14px;
+          color:#999;
+        }
+      }
+    }
+    div{
+      display: -webkit-flex;
+      display:flex;
+      max-width:1600px;
+      height:420px;
+      margin-top:30px;
+      text-align:center;
+      .common-style-two{
+        box-sizing:border-box;
+        float:left;
+        display:block;
+        height:100px;
+        margin-left:55px;
+        text-align:center;
+        border:1px solid #999;
+        .iconfont{
+          height:100px;
+          font-size:20px;
+          line-height:100px;
+          color:#666;
+        }
+      }
+    }
+  }
+  .compose-class-footer{
+    width:100%;
+    height:20px;
+    font-size:14px;
+    line-height:20px;
+    text-align: center;
+    color:#999;
+  }
+}

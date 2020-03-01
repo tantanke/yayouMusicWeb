@@ -114,5 +114,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+@import "@/assets/css/createcentre/main/firstpage.scss";
 </style>

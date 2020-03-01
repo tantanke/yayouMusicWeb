@@ -1,9 +1,9 @@
 <template>
   <div class="create-main">
     <div class="leftpart">
-      <div>
+      <router-link tag="div" :to="{name:'handinprodution'}">
         <el-button type="danger" round>发布作品</el-button>
-      </div>
+      </router-link>
       <div class="allfactor">
         <div>
           <img src="../.././assets/img/homePage/c1.png" alt="">

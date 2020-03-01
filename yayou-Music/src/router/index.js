@@ -50,6 +50,10 @@ export default new Router({
       name: 'shop',
       component: Shop
     }, {
+      path: '/setting',
+      name: 'setting',
+      component: () => import('@/components/selectionarea/mysetting.vue')
+    }, {
       path: '/changelanguage',
       name: 'changeLanguage',
       component: ChangeLanguage
@@ -140,6 +144,10 @@ export default new Router({
       name: 'createfirstpage',
       component: () => import('@/components/createcentre/main/firstpage.vue')
     }, {
+      path: '/createcentre/handinprodution',
+      name: 'handinprodution',
+      component: () => import('@/components/createcentre/main/handinprodution.vue')
+    }, {
       path: '/createcentre/mymoney',
       name: 'mymoney',
       component: () => import('@/components/createcentre/main/mymoney.vue')
@@ -151,6 +159,10 @@ export default new Router({
       path: '/createcentre/songnum',
       name: 'createsongnum',
       component: () => import('@/components/createcentre/main/songnum.vue')
+    }, {
+      path: '/createcentre/personalinfor',
+      name: 'personalinfor',
+      component: () => import('@/components/createcentre/header/personalinfor.vue')
     }]
   },
   {
