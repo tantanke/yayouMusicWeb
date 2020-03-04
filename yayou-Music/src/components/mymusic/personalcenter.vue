@@ -1,7 +1,7 @@
 <template>
   <div class="personal-center">
         <el-row>
-           <div class="personal-back">
+           <div class="personal-back" style="background-image:url('../../../static/image/我的音乐.jpg')">
           <div class="user">
             <img src="../../assets/img/homePage/sliderPic.png" alt="">
             <div class="wodemusic"><span>我的音乐</span><i class="el-icon-ice-cream"></i></div>
@@ -50,6 +50,6 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+@import "@/assets/css/mymusic/index.scss";
 </style>
