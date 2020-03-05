@@ -9,6 +9,7 @@ import ChangeLanguage from '@/page/changeLanguage.vue'
 import Singer from '@/page/singer.vue'
 import MyMusic from '@/page/mymusic.vue'
 import Register from '@/page/register'
+import musicPlayer from '@/layout/musicplayer.vue'
 // 一级路由直接加载 之后的子路由全部使用懒加载
 Vue.use(Router)
 export default new Router({
@@ -169,6 +170,11 @@ export default new Router({
     path: '/doRegister',
     name: 'Register',
     component: Register
-  }
-  ]
+  },
+  {
+    /* path: '/musicplayer/:songId', */ // 动态路由歌曲id
+    path: '/musicplayer',
+    name: 'musicplayer',
+    component: musicPlayer
+  }]
 })

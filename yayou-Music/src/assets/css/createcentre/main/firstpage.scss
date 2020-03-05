@@ -1,87 +1,5 @@
 
-  .numcate{
-      .line{
-          position: relative;
-          top: 62px;
-      }
-      .cate{
-          margin-left: 600px;
-          .router-link-active{
-              border-bottom: 2px solid #FF4751;
-              color: red;
-          }
-          
-          li{
-              list-style: none;
-              float: left;
-              text-align: center;
-              margin-right: 150px;
-              height: 60px;
-              line-height: 60px;
-          }
-      }
-      .yesdata{
-          margin-top: 150px;
-          ul{
-              margin-top: 30px;
-              border: 1px solid  #F5FAF8;
-              .all{
-                  background-color: #F4F4F4;
-              }
-              li{
-                  list-style: none;
-                  float: left;
-                  width: 237px;
-                  text-align: center;
-                  height: 360px;
-                  div:nth-child(1)
-                  {
-                      height: 160px;
-                      line-height: 160px;
-
-                  }
-                  div:nth-child(2)
-                  {
-                     font-size: 36px;
-                  }
-              }
-              
-              &::after{
-                  display: block;
-                  content: " ";
-                  clear: both;
-              }
-              .all{
-
-              }
-          }
-      }
-      .mostspeed{
-          position: relative;
-          top: 60px;  
-          .title{
-              display: block;
-               margin-bottom: 20px;       
-          }
-          table{
-              tr{
-                  
-                  th{
-                      height: 80px;
-                      font-size: 16px;
-                      background-color: #F5FAF8;
-                      .cell{
-                          text-align: center;                              
-                      }
-                      
-                  }
-                  th:nth-child(1),th:nth-child(7){
-                      color: red;
-                  }
-              }
-          }          
-      }
-  }
+  
   .create-firstpage{
       margin-top: 30px;
       .step{
@@ -137,4 +55,79 @@
               }
           }
       }
+      .upload{
+          .line{
+              width: 1400px;
+          }
+          margin-top: 20px;
+              .title{
+                  position: relative;
+                  left: 20px;
+                  font-size: 20px;
+              }
+              .createcate{
+                  .upul{
+                     &::after{
+                        display: block;
+                        content: "";
+                        clear: both;
+                    }
+                    li{
+                        float: left;
+                        list-style: none;
+                        margin-left: 5px;
+                        margin-right: 107px;
+                        .el-upload{
+                            .el-upload-dragger{
+                                height: 300px;
+                                width: 625px;
+                                .normol{
+                                   position: relative;
+                                   top: 30px;
+                                   left: 40px;
+                                }
+                                .shuzi{
+                                   position: relative;
+                                   top: 35px;
+                                   left: 50px;
+                                }
+                            }
+                        }
+                    }
+                  }
+                  .el-upload-list{
+                      height: 130px;
+                      width: 625px;
+                      li{
+                          width: 125px;
+                          margin: 0;
+                      }
+                  }
+                  margin-left: 20px;
+                  img{
+                      display: inline;
+                      position: relative;
+                      margin-right: 100px;
+                      cursor: pointer;
+                  }    
+              }
+              .upbutton{
+                  margin-left: 5px;
+                  .el-button{
+                      width: 625px;
+                      height: 90px;
+                      font-size: 20px;
+                  }
+                  .hasup{
+                      margin-right: 100px;
+                  }
+                  
+              }
+      }
+      .confirmuse{
+          .xieyiBox{
+              margin-left: 130px;
+          }
+      }
+      .sucessfully{}
   }

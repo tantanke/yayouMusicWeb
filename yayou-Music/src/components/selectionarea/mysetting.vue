@@ -56,7 +56,7 @@ export default {
       this.imgUrl2 = URL.createObjectURL(file.raw)
     },
     beforeAvatarUpload (file) {
-      const isJPG = file.type === 'image/jpeg'||'image/png'||'image/bmp'
+      const isJPG = file.type === 'image/jpeg' || 'image/png' || 'image/bmp'
       const isLt20M = file.size / 1024 / 1024 < 20
 
       if (!isJPG) {
@@ -65,7 +65,7 @@ export default {
       if (!isLt20M) {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
-      return isJPG && isLt2M
+      return isJPG && isLt20M
     }
   }
 }

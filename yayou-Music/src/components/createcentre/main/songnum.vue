@@ -11,49 +11,75 @@
       <ul>
         <li>
           <div>播放量</div>
-          <div>8</div>
+          <div>{{yesData}}</div>
         </li>
         <li>
           <div>点赞数</div>
-          <div>0</div>
+          <div>{{yesLikes}}</div>
         </li>
         <li>
           <div>评论数</div>
-          <div>1</div>
+          <div>23</div>
         </li>
         <li>
           <div>收藏数</div>
-          <div>1</div>
+          <div>{{yesCollect}}</div>
         </li>
         <li>
           <div>分享数</div>
-          <div>1</div>
+          <div>5</div>
         </li>
         <li class="all">
           <div>累计播放量</div>
-          <div>25907</div>
+          <div>{{totalPlay}}</div>
         </li>
       </ul>
     </div>
     <div class="mostspeed">
-      <span class="title">昨七日飙升最快</span>
-        <el-table :data="tableData" border style="width: 95%">
-          <el-table-column prop="play" label="播放数" class="active"></el-table-column>
-          <el-table-column prop="good" label="点赞数" ></el-table-column>
-          <el-table-column prop="remark" label="评论数" ></el-table-column>
-          <el-table-column prop="like" label="收藏数" ></el-table-column>
-          <el-table-column prop="share" label="分享数"></el-table-column>
-          <el-table-column  ></el-table-column>
-          <el-table-column prop="sevendays" label="近7天" ></el-table-column>
-          <el-table-column prop="thirtydays" label="近30天" ></el-table-column>
-        </el-table>
+      <p class="title">昨七日飙升最快</p>
+      <ul>
+        <li class="active7">播放数</li>
+        <li>点赞数</li>
+        <li>评论数</li>
+        <li>收藏数</li>
+        <li>分享数</li>
+        <li></li>
+        <li class="active7">近7天</li>
+        <li>近30天</li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data () {
+    return {
+      yesData: '',
+      totalPlay: '',
+      yesLikes: '',
+      yesCollect: ''
+    }
+  },
+  methods: {},
+  mounted () {
+    let _this = this
+    this.$axios.all([
+      this.$axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/s/getYesterdayPlayNum'),
+      this.$axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/s/getTotalPlay'),
+      this.$axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/s/getYesterdayLikes'),
+      this.$axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/s/getYesterdayCollect')
+    ]).then(this.$axios.spread((res1, res2, res3, res4) => {
+      _this.yesData = res1.data.data.昨日播放量
+      _this.totalPlay = res2.data.data.累计播放量
+      _this.yesLikes = res3.data.data.昨日点赞数
+      _this.yesCollect = res4.data.data.收藏数
+    }))
+  },
+  computed: {}
+}
 </script>
 
-<style>
+<style lang="scss">
+  @import "@/assets/css/createcentre/main/numinfo.scss";
 </style>
