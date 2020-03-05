@@ -1,6 +1,6 @@
 <template>
-  <div class="mysetting">
-    <router-view></router-view>
+  <div>
+dsf
   </div>
 </template>
 
@@ -10,4 +10,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 </style>

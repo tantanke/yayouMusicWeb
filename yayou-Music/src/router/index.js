@@ -9,13 +9,16 @@ import ChangeLanguage from '@/page/changeLanguage.vue'
 import Singer from '@/page/singer.vue'
 import MyMusic from '@/page/mymusic.vue'
 import Register from '@/page/register'
+<<<<<<< HEAD
 import musicPlayer from '@/layout/musicplayer.vue'
+=======
+import Mysetting from '@/components/selectionarea/mysetting.vue'
+>>>>>>> 0c84679005b11867275c1cc3b2f5cdc21954433f
 // 一级路由直接加载 之后的子路由全部使用懒加载
 Vue.use(Router)
 export default new Router({
   mode: 'history',
   routes: [{
-
     path: '/',
     name: 'defaultPage',
     redirect: '/index',
@@ -51,9 +54,31 @@ export default new Router({
       name: 'shop',
       component: Shop
     }, {
+      path: '/songlistdetail/:songlistid',
+      name: 'songlistdetail',
+      component: () => import('@/components/mymusic/songlistdetail.vue')
+    }, {
+      path: '/songlistdetail/songdetail/:songid',
+      name: 'songdetail', // 测试用的之后要重新更改路由
+      component: () => import('@/components/mymusic/songdetail.vue')
+    }, {
       path: '/setting',
       name: 'setting',
-      component: () => import('@/components/selectionarea/mysetting.vue')
+      redirect: '/setting/resetheadimg',
+      component: Mysetting,
+      children: [{
+        path: '/setting/resetphone',
+        name: 'resetphone',
+        component: () => import('@/components/selectionarea/mysetting/resetphone.vue')
+      }, {
+        path: '/setting/resetpassword',
+        name: 'resetpassword',
+        component: () => import('@/components/selectionarea/mysetting/resetpassword.vue')
+      }, {
+        path: '/setting/resetheadimg',
+        name: 'resetheadimg',
+        component: () => import('@/components/selectionarea/mysetting/resetheadimg.vue')
+      }]
     }, {
       path: '/changelanguage',
       name: 'changeLanguage',

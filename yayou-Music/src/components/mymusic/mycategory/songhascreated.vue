@@ -1,7 +1,7 @@
 <template>
   <div class="mysonglist">
     <el-row class="title">
-      <div>
+      <div class="song-list">
         <i class="el-icon-plus"></i>
         <span @click="dialogFormVisible = true">新建歌单</span>
         <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
@@ -16,34 +16,42 @@
         </div>
         </el-dialog>
       </div>
-      <div>
+      <div class="led-songlist">
         <i class="el-icon-upload2"></i>
         <span>导入歌单</span>
       </div>
     </el-row>
     <el-row>
       <el-table :data="songTableData" style="width: 100%" stripe>
-        <el-table-column prop="order" label="序号" width="70"></el-table-column>
-        <el-table-column prop="song" label="歌曲" width="320">
+        <el-table-column label="歌单" width="700" >
+          <template slot-scope="scope">
+            <i class="el-icon-time"></i>
+            <router-link :to="{name: 'songlistdetail', params:{songlistid: scope.row.id}}" tag="span" style="margin-left: 10px">
+              {{ scope.row.songlist }}
+              </router-link>
+          </template>
         </el-table-column>
-        <el-table-column prop="singer" label="歌手" width="150">
+        <el-table-column prop="songnum" label="曲目数" width="150"></el-table-column>
+        <el-table-column label="收听" width="150">
+          <template slot-scope="scope">
+            <i class="el-icon-plus"></i>
+            <span style="margin-left: 10px">{{ scope.row.listen }}</span>
+          </template>
         </el-table-column>
-        <el-table-column prop="ed" label="专辑" width="180"></el-table-column>
-        <el-table-column prop="time" label="时长" width='70'></el-table-column>
       </el-table>
     </el-row>
     <span @click="dialogFormVisible = true"></span>
-        <el-dialog title="歌单名字" center :visible.sync="dialogFormVisible">
-        <el-form :model="form">
-        <el-form-item label="歌单名字" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-        </div>
-        </el-dialog>
+    <el-dialog title="歌单名字" center :visible.sync="dialogFormVisible">
+    <el-form :model="form">
+    <el-form-item label="歌单名字" :label-width="formLabelWidth">
+    <el-input v-model="form.name" autocomplete="off"></el-input>
+    </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+    </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -53,32 +61,27 @@ export default {
     return {
       songTableData: [
         {
-          order: 1,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
+          id: '001',
+          imgUrl1: 'static/image/发布作品.jpg',
+          songlist: '我喜欢',
+          songnum: '面朝大海',
+          listen: ''
         },
         {
-          order: 2,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
+          imgUrl1: 'static/image/发布作品.jpg',
+          songlist: '我hgj',
+          songnum: '面朝大海',
+          listen: ''
         },
         {
-          order: 3,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
+          songlist: '我喜欢',
+          songnum: '3首',
+          listen: '南瑶乐队'
         },
         {
-          order: 4,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
+          songlist: '我喜欢',
+          songnum: '3首',
+          listen: '南瑶乐队'
         }
       ],
       dialogTableVisible: false,
@@ -99,5 +102,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+@import "@/assets/css/mymusic/mycategory/songhascreated.scss";
 </style>
