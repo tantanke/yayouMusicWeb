@@ -9,11 +9,8 @@ import ChangeLanguage from '@/page/changeLanguage.vue'
 import Singer from '@/page/singer.vue'
 import MyMusic from '@/page/mymusic.vue'
 import Register from '@/page/register'
-<<<<<<< HEAD
 import musicPlayer from '@/layout/musicplayer.vue'
-=======
 import Mysetting from '@/components/selectionarea/mysetting.vue'
->>>>>>> 0c84679005b11867275c1cc3b2f5cdc21954433f
 // 一级路由直接加载 之后的子路由全部使用懒加载
 Vue.use(Router)
 export default new Router({
@@ -166,13 +163,28 @@ export default new Router({
       name: 'fanscentre',
       component: () => import('@/components/createcentre/main/fanscentre.vue')
     }, {
-      path: '/createcentre/firstpage',
-      name: 'createfirstpage',
-      component: () => import('@/components/createcentre/main/firstpage.vue')
+      path: '/createcentre/createablum',
+      name: 'createablum',
+      component: () => import('@/components/createcentre/main/createablum.vue'),
+      beforeEnter: (to, from, next) => { // 限制该路由的进入
+        if (from.meta.fromhand) {
+          if (from.meta.isNormol) {
+            to.meta.isNormol = true
+          } else {
+            to.meta.isNormol = false
+          }
+          next()
+        } else {
+          next('/createcentre/handinprodution')
+        }
+      },
+      meta: {isNormol: false}
     }, {
       path: '/createcentre/handinprodution',
       name: 'handinprodution',
-      component: () => import('@/components/createcentre/main/handinprodution.vue')
+      component: () => import('@/components/createcentre/main/handinprodution.vue'),
+      meta: { isNormol: true,
+        fromhand: true}
     }, {
       path: '/createcentre/mymoney',
       name: 'mymoney',
@@ -189,6 +201,10 @@ export default new Router({
       path: '/createcentre/personalinfor',
       name: 'personalinfor',
       component: () => import('@/components/createcentre/header/personalinfor.vue')
+    }, {
+      path: '/createcentre/managemusic',
+      name: 'managemusic',
+      component: () => import('@/components/createcentre/main/managemusic.vue')
     }]
   },
   {
