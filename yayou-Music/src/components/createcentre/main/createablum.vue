@@ -2,7 +2,7 @@
   <div class="create-firstpage">
     <div class="step">
       <el-steps :active="active" finish-status="success" :space="400" align-center>
-        <el-step title="编辑专辑信息" ></el-step>
+        <el-step :title="ablumCate" ></el-step>
         <el-step title="上传作品" ></el-step>
         <el-step title="确认使用许可" ></el-step>
         <el-step title="提交成功"></el-step>
@@ -59,32 +59,24 @@
 </div><el-button style="margin-top: 35px;" @click="next">下一步</el-button>
     </div>
   <div class="upload" v-if="active == 1">
-    <p class="title">创作类型</p>
+    <p class="title">上传专辑歌曲</p>
      <el-divider class="line"></el-divider>
     <div class="createcate">
       <ul class="upul">
-        <li>
+        <li >
           <el-upload
         drag
         action="https://jsonplaceholder.typicode.com/posts/"
         :beforeUpload="beforeAvatarUpload"
         multiple>
-        <img src="../../../assets/img/homePage/normole.png" alt="" class="normol">
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将音频文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">只能上传MP3文件</div>
       </el-upload>
-        </li>
-        <li>
-          <el-upload
-        drag
-        action="https://jsonplaceholder.typicode.com/posts/"
-        :beforeUpload="beforeAvatarUpload"
-        multiple>
-        <img src="../../../assets/img/homePage/shuzie.png" alt="" class="shuzi">
-      </el-upload>
-        </li>
+      </li>
       </ul>
       <div class="upbutton">
-        <el-button class="hasup"><i class="el-icon-plus"></i>上传作品至已发布专辑</el-button>
-        <el-button class="caogao"><i class="el-icon-plus"></i>上传至草稿箱</el-button>
+        <el-button @click="uploadFile" class="hasup"><i class="el-icon-plus"></i>点我立刻上传</el-button>
       </div>
     </div>
           <el-button style="margin-top: 35px;" @click="next">下一步</el-button>
@@ -97,8 +89,11 @@
     </div>
   </div>
   <div class="successfully" v-if="active == 3 && checked == true">
-     提交成功
-    <el-button style="margin-top: 35px;" @click="next">继续添加</el-button></div>
+    <p>恭喜你,添加成功！</p>
+    <div><i class="el-icon-check"></i></div>
+    <router-link tag="el-button" :to="{name:'handinprodution'}" style="margin-top: 35px;">继续添加</router-link>
+    <router-link tag="el-button" :to="{name:'index'}" style="margin-top: 35px;">回首页</router-link>
+    </div>
   </div>
 </template>
 
@@ -111,6 +106,7 @@ export default {
       checked: '',
       next2: false,
       next3: false,
+      ablumCate: '',
       ruleForm: {
         name: '',
         category: '',
@@ -151,6 +147,7 @@ export default {
     }
   },
   methods: {
+    // Content-Type: application/json表单 Content-Type: multipart/form-data 文件 url 参数 请求头
     beforeAvatarUpload (file) {
       var testmsg = file.name.substring(file.name.lastIndexOf('.') + 1)
       const extension = testmsg === 'mp3'
@@ -174,6 +171,7 @@ export default {
             this.checked = false
             // axios
             console.log(this.ruleForm)
+            this.$refs.isShuzi.disabled = true
           }
         } else {
           console.log('提交失败，请重试！')
@@ -189,8 +187,8 @@ export default {
       console.log(this.active)
     },
     nextclick2 () {
+      // 用户至少要完成创造专辑和上传音乐的任意一步才能到下一步
       if (this.active++ > 2) this.active = 0
-      console.log(this.active)
     },
     nextclick3 () {
       if (this.checked) {
@@ -199,8 +197,19 @@ export default {
         alert('请先同意用户协议!')
       }
     },
-    submitFile () { // 上传音乐文件（一次可以上传多个或者一个） 若不需要创建音乐文件可以直接跳过这步
+    isShuzi () {
+      // 鼠标移入的一瞬间就判断是否符合要求
+      this.$refs.isShuzi.disabled = true
+    },
+    submitFileNew () { // 上传新建专辑音乐
 
+    }
+  },
+  mounted () {
+    if (this.$route.meta.isNormol) {
+      this.ablumCate = '编辑普通专辑信息'
+    } else {
+      this.ablumCate = '编辑数字专辑信息'
     }
   }
 }

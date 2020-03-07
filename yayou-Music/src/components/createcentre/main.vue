@@ -10,7 +10,7 @@
             <span class="title">综合</span>
         </div>
         <ul>
-          <router-link tag='li' :to="{name:'createfirstpage'}"  ><span>首页</span></router-link>
+          <router-link tag="li" :to="{name:'handinprodution'}"  ><span>首页</span></router-link>
           <router-link tag='li' :to="{name:'dutycentre'}"  ><span>任务中心</span></router-link>
           <router-link tag='li' :to="{name:'createsongnum'}"  ><span>作品数量</span></router-link>
           <router-link tag='li' :to="{name:'fanscentre'}"  ><span>粉丝中心</span></router-link>
@@ -24,7 +24,7 @@
             <span class="title">音乐</span>
         </div>
         <ul>
-          <li><span>音乐管理</span><i class="el-icon-caret-bottom"></i></li>
+          <router-link tag='li' :to="{name:'managemusic'}"><span>音乐管理</span><i class="el-icon-caret-bottom"></i></router-link>
           <li><span>授权中心</span></li>
         </ul>
       </div>

@@ -66,6 +66,8 @@
                   font-size: 20px;
               }
               .createcate{
+                  position: relative;
+                  left: 350px;
                   .upul{
                      &::after{
                         display: block;
@@ -96,7 +98,7 @@
                     }
                   }
                   .el-upload-list{
-                      height: 130px;
+                      height: 100px;
                       width: 625px;
                       li{
                           width: 125px;
@@ -104,15 +106,9 @@
                       }
                   }
                   margin-left: 20px;
-                  img{
-                      display: inline;
-                      position: relative;
-                      margin-right: 100px;
-                      cursor: pointer;
-                  }    
               }
               .upbutton{
-                  margin-left: 5px;
+                  margin-left: 6px;
                   .el-button{
                       width: 625px;
                       height: 90px;
@@ -129,5 +125,17 @@
               margin-left: 130px;
           }
       }
-      .sucessfully{}
+      .successfully{
+          position: relative;
+          top: 100px;
+          left: 600px;
+          p{
+              
+              font-size: 25px;
+          }
+          i{
+              font-size: 180px;
+              color: #67C23A
+          }
+      }
   }
