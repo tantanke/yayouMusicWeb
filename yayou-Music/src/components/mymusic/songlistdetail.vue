@@ -10,8 +10,6 @@
             <div :model="songlistinfo.songlistname" class="songlistname"><span>{{songlistinfo.songlistname}}</span></div>
             <div :model="songlistinfo.createdtime" class="createdtime"><span>{{songlistinfo.createdtime}}&nbsp;创建</span></div>
             <div class="icon">
-              <i class="el-icon-video-play" title="播放全部"></i>
-              <i class="el-icon-video-pause" title="暂停播放"></i>
               <i class="el-icon-collection-tag"  title="收藏歌单"></i>
               <i class="el-icon-share" title="分享歌单"></i>
             </div>
@@ -32,8 +30,11 @@
           </el-col>
         </el-row>
         <el-row class="function">
-          <el-col :span="3" class="playall"><i class="el-icon-video-play"></i> 播放全部</el-col>
-          <el-col :span="6" :model="songlistinfo.songnumber">曲目数：{{songlistinfo.songnumber}}</el-col>
+          <el-col :span="4" class="playall">
+            <i v-if="playShow" class="el-icon-video-play" title="播放全部" @click="playAll"><span>播放全部</span></i>
+            <i v-else class="el-icon-video-pause" title="暂停播放" @click="playPause"><span>暂停播放</span></i>
+          </el-col>
+          <el-col :span="5" :model="songlistinfo.songnumber">曲目数：{{songlistinfo.songnumber}}</el-col>
           <el-col :span="3" offset="12" :model="songlistinfo.playnumber">播放：{{songlistinfo.playnumber}}次</el-col>
         </el-row>
         <el-table
@@ -43,7 +44,7 @@
           </el-table-column>
           <el-table-column
             label="曲目标题"
-            width="400">
+            width="300">
             <template slot-scope="scope">
               <router-link :to="{name:'songdetail', params:{songid: scope.row.id}}" tag="span" >
                 {{scope.row.title}}
@@ -71,9 +72,17 @@
           </el-table-column>
           <el-table-column
             label="专辑"
-            width="550">
+            width="100">
             <template slot-scope="scope">
               <span>{{scope.row.columni}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label=""
+            width="500">
+            <template slot-scope="scope">
+              <span :class="{'iconfont icon-dianzan': show, 'agree-style': scope.row.agreeStyle}"  @click="handleSongAgree(scope.row)" title="赞" ref="agree" ></span>
+              <span>{{scope.row.agreeNum}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -83,11 +92,11 @@
             <el-col :span="4" :offset="17" pull="17" v-model="comment.commentnumber">共29{{comment.commentnumber}}条评论</el-col>
           </el-row>
           <div class="my-comment" >
-            <img :src="myHeadImgUrl" alt="" class="my-head-img">
-            <textarea class="comment-input" placeholder="评论不超过140字" v-model="comment.commentText" ref="count" :maxlength="maxWord"></textarea>
+            <img :src="userInfo.userHeadImg" alt="" class="my-head-img">
+            <textarea class="comment-input" placeholder="评论不超过140字" :model="comment.commentText" ref="count" :maxlength="maxWord"></textarea>
           </div>
           <el-row class="submit-area">
-            <el-col :span="1" :offset="18"  class="rest-word" v-model="comment.wordNumber">{{comment.wordNumber}}字</el-col>
+            <el-col :span="1" :offset="18"  class="rest-word" :model="comment.wordNumber">{{comment.wordNumber}}字</el-col>
             <el-col :span="1"><el-button @click="submitComment" class="ebutton">评论</el-button></el-col>
           </el-row>
           <el-row class="comment-display" v-for="(item, index) in comment.commentDetail" :key="index">
@@ -97,9 +106,12 @@
                 <span :model="item.username" class="username">{{item.username}}:</span>
                 <span :model="item.commentContent" class="comment-content">{{item.commentContent}}</span>
               </el-row>
-              <el-row class="span-icon">
+              <el-row class="span-icon" type="flex" align="right">
                 <el-col :span="2" v-model="item.conmentTime" >{{item.conmentTime}}</el-col>
-                <el-col :span="2" :offset="18"><i class="el-icon-s-comment" title="赞">(14)</i></el-col>
+                <el-col :span="3" :offset="17" align="right">
+                  <i :class="{'iconfont icon-dianzan': show, 'agree-style': item.agreeStyle}"  @click="handleCommentAgree(item)" title="赞" ref="agree" ></i>
+                  <span>{{item.agreeNum}}</span>
+                </el-col>
                 <el-col :span="0.5"><el-divider direction="vertical"></el-divider></el-col>
                 <el-col :span="1"><i class="el-icon-s-comment" title="回复"></i></el-col>
                 </el-row>
@@ -135,40 +147,69 @@
 </template>
 
 <script>
+import axios from 'axios'
+import qs from 'qs'
 export default {
   data () {
     return {
+      url: [{
+        songAgreeUrl: '',
+        commentAgreeUrl: '',
+        songDisagreeUrl: '',
+        commentDisagreeUrl: ''
+      }],
+      playShow: true,
+      show: true,
       maxWord: '140',
-      myHeadImgUrl: require('../../assets/img/homePage/狂徒(dts版).png'),
+      userInfo: {
+        id: '',
+        username: '',
+        userHeadImg: require('../../assets/img/homePage/狂徒(dts版).png')
+      },
       comment: {
         commentText: '',
         commentnumber: '',
         wordNumber: '',
         commentDetail: [{
+          id: '001',
           username: '1',
           headImgUrl: require('../../assets/img/homePage/狂徒(dts版).png'),
           commentContent: 'qweq',
-          conmentTime: '2020/1/1'
+          conmentTime: '2020/1/1',
+          agreeNum: '',
+          agreeStyle: false
         }, {
+          id: '001',
           username: '2',
           headImgUrl: require('../../assets/img/homePage/狂徒(dts版).png'),
           commentContent: 'asdd电饭锅电饭dd电饭锅电饭dd电饭锅电饭锅add电饭锅电饭dd电饭锅电饭dd电饭锅电饭dd电饭锅电饭',
-          conmentTime: '2020/2/1'
+          conmentTime: '2020/2/1',
+          agreeNum: '5',
+          agreeStyle: false
         }, {
+          id: '001',
           username: '3',
           headImgUrl: require('../../assets/img/homePage/狂徒(dts版).png'),
           commentContent: 'Zzzxc',
-          conmentTime: '2020/3/4'
+          conmentTime: '2020/3/4',
+          agreeNum: '35',
+          agreeStyle: false
         }, {
+          id: '001',
           username: '3',
           headImgUrl: require('../../assets/img/homePage/狂徒(dts版).png'),
           commentContent: 'Zzzxc',
-          conmentTime: '2020/3/4'
+          conmentTime: '2020/3/4',
+          agreeNum: '57',
+          agreeStyle: false
         }, {
+          id: '001',
           username: '6',
           headImgUrl: require('../../assets/img/homePage/狂徒(dts版).png'),
           commentContent: 'Zzzxc',
-          conmentTime: '2020/3/4'
+          conmentTime: '2020/3/4',
+          agreeNum: '52',
+          agreeStyle: false
         }]
       },
       likeArrary: [{
@@ -191,6 +232,7 @@ export default {
         Title: ''
       }],
       songlistinfo: {
+        id: '',
         username: '',
         imgUrl: require('../../assets/img/homePage/狂徒(dts版).png'),
         songlistname: '歌单名',
@@ -200,72 +242,148 @@ export default {
         tags: [{tagi: '华语vbfg'}, {tagi: '流行'}, {tagi: '治愈'}]
       },
       tableData: [{
-        id: '000',
+        songId: '000',
         title: '老男孩',
         time: '3.40',
         singer: '筷子兄弟',
-        columni: '老男孩'
+        columni: '老男孩',
+        agreeNum: '2',
+        agreeStyle: false
       }, {
-        id: '001',
+        songId: '001',
         title: '老男孩',
         time: '3.40',
         singer: '筷子兄弟',
-        columni: '老男孩'
+        columni: '老男孩',
+        agreeNum: '25',
+        agreeStyle: false
       }, {
-        id: '002',
+        songId: '002',
         title: '老男孩',
         time: '3.40',
         singer: '筷子兄弟',
-        columni: '老男孩'
+        columni: '老男孩',
+        agreeNum: '2',
+        agreeStyle: false
       }, {
-        id: '003',
+        songId: '003',
         title: '老男孩',
         time: '3.40',
         singer: '筷子兄弟',
-        columni: '老男孩'
+        columni: '老男孩',
+        agreeNum: '2',
+        agreeStyle: false
       }, {
-        id: '004',
+        songId: '004',
         title: '老男孩',
         time: '3.40',
         singer: '筷子兄弟',
-        columni: '老男孩'
+        columni: '老男孩',
+        agreeNum: '2',
+        agreeStyle: false
       }, {
-        id: '005',
+        songId: '005',
         title: '老男孩',
         time: '3.40',
         singer: '筷子兄弟',
-        columni: '老男孩'
+        columni: '老男孩',
+        agreeNum: '2',
+        agreeStyle: false
       }, {
-        id: '006',
+        songId: '006',
         title: '老男孩',
         time: '3.40',
         singer: '筷子兄弟',
-        columni: '老男孩'
+        columni: '老男孩',
+        agreeNum: '',
+        agreeStyle: false
       }]
     }
   },
   methods: {
+    playAll () {
+      this.playShow = !this.playShow
+    },
+    playPause () {
+      this.playShow = !this.playShow
+    },
+    handleCommentAgree (e) {
+      e.agreeStyle = !e.agreeStyle
+      if (e.agreeStyle) {
+        e.agreeNum++
+      } else {
+        e.agreeNum--
+      }
+      axios.post(this.url.commentAgreeUrl, JSON.stringify(e.id))
+        .then(res => {
+          if (res.data.code === 1) {
+            this.successMessage('数据上传成功')
+          } else {
+            if (res.data.code === 40001) {
+              this.errorMessage(res.msg)
+            } else {
+              this.errorMessage('数据上传失败')
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    handleSongAgree (e) {
+      e.agreeStyle = !e.agreeStyle
+      if (e.agreeStyle) {
+        e.agreeNum++
+      } else {
+        e.agreeNum--
+      }
+      alert('0')
+      axios.post(this.url.songAgreeUrl, qs.stringify(e.songId))
+        .then(res => {
+          console.log(res)
+          if (res.data.code === 1) {
+            this.successMessage('数据上传成功')
+          } else {
+            if (res.data.code === 40001) {
+              this.errorMessage(res.msg)
+            } else {
+              this.errorMessage('数据上传失败')
+            }
+          }
+        })
+        .catch(err => {
+          alert('err')
+          console.log(err)
+        })
+    },
     submitComment () {
       var iDate = new Date()
       var _this = this
       var arr = {
+        id: '',
         username: '',
         commentContent: '',
         conmentTime: '',
         headImgUrl: ''
       }
-      arr.username = _this.songlistinfo.username
+      arr.id = _this.userInfo.id
+      arr.username = _this.userInfo.username
       arr.commentContent = _this.comment.commentText
       arr.conmentTime = iDate.getFullYear
       arr.headImgUrl = _this.comment.myHeadImgUrl
-      _this.comment.push(arr)
-      console.log(this.comment.commentDetail)
+      _this.comment.commentDetail.push(arr)
     },
     handleEdit (index, row) {
       console.log(index, row)
     },
     handleDelete (index, row, column) {
       console.log(index, row, column)
+    },
+    successMessage (msg) {
+      console.log(msg)
+    },
+    errorMessage (msg) {
+      console.log(msg)
     }
   },
   watch: {
@@ -279,5 +397,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import url('//at.alicdn.com/t/font_1609227_aoyxcedssdg.css');
 @import '@/assets/css/mymusic/songlistdetail.scss';
 </style>

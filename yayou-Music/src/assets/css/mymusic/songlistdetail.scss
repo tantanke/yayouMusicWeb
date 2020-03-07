@@ -28,19 +28,9 @@
       margin-top:15px;
       font-size: 24px;
       line-height: 30px;
-      .el-icon-video-play{
-        font-size: 25px;
-        margin-left: 30px;
-        margin-right: 5px;
-        color: #67C23A;
-      }
-      .el-icon-video-pause{
-        font-size: 25px;
-        margin-right: 5px;
-        color: #000;
-      }
       .el-icon-collection-tag{
         margin-right: 5px;
+        margin-left: 30px;
         color: #409EFF;
       }
       .el-icon-share{
@@ -86,11 +76,23 @@
     }
   }
   .function{
+    height:32px;
     padding-bottom: 10px;
     border-bottom: 2px solid #999;
     color: #999;
     .playall{
-      color: #333;
+      height:20px;
+      font-size:20px;
+      line-height: 20px;
+      color: #000;
+      font-weight: 600;
+      span{
+        padding-right: 10px;
+        padding-left: 3px;
+        font-size:16px;
+        line-height: 20px;
+        color: #666;
+      }
     }
   }
   .right{
@@ -242,4 +244,13 @@
   &:hover i{
     display: inline;
   }
+}
+//赞的样式
+.agree-style{
+  font-size: 20px;
+  line-height: 20px;
+  color: #409EFF;
+}
+.iconfont{
+  cursor: pointer;
 }

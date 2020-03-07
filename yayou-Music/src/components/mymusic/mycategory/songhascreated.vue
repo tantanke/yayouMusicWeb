@@ -26,7 +26,7 @@
         <el-table-column label="歌单" width="700" >
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
-            <router-link :to="{name: 'songlistdetail', params:{songlistid: scope.row.id}}" tag="span" style="margin-left: 10px">
+            <router-link :to="{name: 'songlistdetail', params:{songlistid: scope.row.id}}" tag="span" style="margin-left: 10px;cursor:pointer">
               {{ scope.row.songlist }}
               </router-link>
           </template>
