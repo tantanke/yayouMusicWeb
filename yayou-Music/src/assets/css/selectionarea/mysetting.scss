@@ -61,7 +61,8 @@
       display: block;
       width: 180px;
       height: 180px;
-      margin-top: 10px;
+      //margin-top: 10px;
+      margin-left: 50px;
       border: 1px solid #eeeeee;
       background-color: #eee
     }
@@ -89,7 +90,7 @@
       display: block;
       width: 40px;
       height: 40px;
-      margin-top: 150px;
+      //margin-top: 150px;
       border: 1px solid #eeeeee;
       background-color: #eee
     }
@@ -132,8 +133,7 @@
   position: relative;
   overflow: hidden;
   background-color: #eee;
-  &::after{
-    content: '选择一张本地图片';
+  .ti{
     display: block;
     position: absolute;
     width: 250px;

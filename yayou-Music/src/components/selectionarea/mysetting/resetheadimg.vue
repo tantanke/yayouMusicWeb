@@ -1,16 +1,16 @@
 <template>
   <div class="mysetting">
-    <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-left:310px;">
+    <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-left:510px;">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>我的设置</el-breadcrumb-item>
       <el-breadcrumb-item>头像设置</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row tag="div" class="top-area">
-      <el-col :span="1" :offset="4" class="submit" @click="Submit"><span>上传头像</span></el-col>
+      <el-col :span="1" :offset="7" class="submit" @click="Submit"><span>上传头像</span></el-col>
       <el-col :span="5" :offset="1" tag="div" class="title">支持JPG、PNG、BMP格式的图片，且文件小于20M</el-col>
     </el-row>
     <el-row>
-      <el-col :span="2" :offset="4">
+      <el-col :span="2" :offset="7">
         <el-upload
           class="avatar-uploader"
           action="https://jsonplaceholder.typicode.com/posts/"
@@ -19,7 +19,7 @@
           :before-upload="beforeAvatarUpload">
           <img v-if="imageUrl" :src="imageUrl" class="avatar">
           <div v-else>
-            <i class="el-icon-plus avatar-uploader-icon"></i>
+            <i class="el-icon-plus avatar-uploader-icon"></i><span class="ti">选择一张本地图片</span>
           </div>
         </el-upload>
         <el-row class="sec">
@@ -47,8 +47,8 @@ export default {
   data () {
     return {
       imageUrl: '',
-      imgUrl1: 'static/image/发布作品.jpg',
-      imgUrl2: 'static/image/发布作品.jpg'
+      imgUrl1: require('../../../assets/img/homePage/狂徒(dts版).png'),
+      imgUrl2: require('../../../assets/img/homePage/狂徒(dts版).png')
     }
   },
   methods: {
