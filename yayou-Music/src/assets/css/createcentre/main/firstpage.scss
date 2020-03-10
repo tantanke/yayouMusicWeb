@@ -33,9 +33,9 @@
           .cover{
               position: relative;
               float: left;
-              top:-600px;
+              top:-550px;
               left:1070px;
-              height: 250px;
+              height: 230px;
               width: 230px;
               background-color: #DBDCDE;
               img{
@@ -43,15 +43,18 @@
                   height: 190px;
               }
               .el-button--default{
-                  margin-left: 10px;
                   color: black;
               }
-              .el-button--primary{
-                  background-color: black;
-                  color: #ffffff;
+              .upButtons{
+                  li{
+                      list-style: none;
+                      float: left;
+                      margin-left: 10px;
+                  }
               }
               button{
                border: 1px solid black;   
+               width: 230px;
               }
           }
       }
@@ -62,50 +65,18 @@
           margin-top: 20px;
               .title{
                   position: relative;
-                  left: 20px;
-                  font-size: 20px;
+                  font-size: 22px;
               }
               .createcate{
                   position: relative;
                   left: 350px;
-                  .upul{
-                     &::after{
-                        display: block;
-                        content: "";
-                        clear: both;
-                    }
-                    li{
-                        float: left;
-                        list-style: none;
-                        margin-left: 5px;
-                        margin-right: 107px;
-                        .el-upload{
-                            .el-upload-dragger{
-                                height: 300px;
-                                width: 625px;
-                                .normol{
-                                   position: relative;
-                                   top: 30px;
-                                   left: 40px;
-                                }
-                                .shuzi{
-                                   position: relative;
-                                   top: 35px;
-                                   left: 50px;
-                                }
-                            }
-                        }
-                    }
-                  }
-                  .el-upload-list{
-                      height: 100px;
-                      width: 625px;
-                      li{
-                          width: 125px;
-                          margin: 0;
-                      }
-                  }
                   margin-left: 20px;
+              }
+              .el-form{
+                  margin-left: 300px;
+              }
+              .el-input{
+                  width: 280px;
               }
               .upbutton{
                   margin-left: 6px;
