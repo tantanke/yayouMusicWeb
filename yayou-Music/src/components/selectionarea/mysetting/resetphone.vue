@@ -33,7 +33,8 @@
 </template>
 
 <script>
-/* import axios from 'axios' */
+import axios from 'axios'
+import qs from 'qs'
 const TIME_COUNT = 60
 /* 重新发送验证码的时间间隔 */
 export default {
@@ -71,10 +72,14 @@ export default {
       show: true,
       count: '',
       timer: null,
+      urls: {
+        getCode: '',
+        changPhone: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/userInfo/changePhone'
+      },
       ruleForm: {
         username: '',
         checkPass: '',
-        phone: '',
+        newphone: '',
         code: ''
       },
       rules: {
@@ -94,7 +99,23 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          console.log(valid)
+          axios.post(this.urls.changPhone, qs.stringify(formName.newphone))
+            .then(res => {
+              if (res.data.errorCode === '1') {
+                this.$message({
+                  message: res.data.msg,
+                  type: 'success'
+                })
+              } else {
+                if (res.data.msg) {
+                  this.$message.error(res.data.msg)
+                } else {
+                  this.$message.error('请稍后尝试')
+                }
+              }
+            })
+            .catch(err => { console.log(err) })
         } else {
           console.log('error submit!!')
           return false
@@ -105,19 +126,19 @@ export default {
       this.$refs[formName].resetFields()
     },
     getCode (phone) {
-      // axios.post('', phone)
-      //   .then(res => {
-      //     if (res.data.errorCode === '0') {
-      //       this.successMessage('文件上传成功')
-      //     } else {
-      //       if (res.data.errorMessage) {
-      //         this.errorMessage(res.data.errorMessage)
-      //       } else {
-      //         this.errorMessage('文件上传失败')
-      //       }
-      //     }
-      //   })
-      //   .catch(err => { console.log(err) })
+      axios.post('this.urls.getCode', qs.stringify(phone))
+        .then(res => {
+          if (res.data.errorCode === '0') {
+            console.log('文件上传成功')
+          } else {
+            if (res.data.errorMessage) {
+              console.log(res.data.errorMessage)
+            } else {
+              console.log('文件上传失败')
+            }
+          }
+        })
+        .catch(err => { console.log(err) })
       if (!this.timer) {
         this.count = TIME_COUNT
         this.show = false

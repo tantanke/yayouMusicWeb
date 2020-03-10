@@ -30,11 +30,46 @@
     }
     .rightp{
         .singerpic{
+          position: relative;
             img{
-                display: inline;
+                display: inline-block;
                 margin-top: 10px;
                 width: 40px;
                 height: 40px;
+            }
+            &:hover{
+              ul{
+                  display: block;
+              }
+            } 
+            ul{
+                display: none;
+                position: absolute;
+                width: 180px;
+                top: 56px;
+                left: -60px;
+                box-shadow:0px 0px 5px #cccccc;
+                z-index: 999;
+                li{
+                    list-style: none;
+                    width: 180px;
+                    position: relative;
+                    background-color: #ffffff;
+                    line-height: 36px;
+                    height: 36px;
+                    font-size: 14px;
+                    cursor: pointer;
+                    i{
+                        display: inline;
+                        margin-left: 10px;
+                        margin-right: 10px;
+                    }
+                    
+                }
+                .router-link-active{
+                    color: #ffffff;
+                    background-color:#FF4752 ;
+                }
             }
         }
         .message{

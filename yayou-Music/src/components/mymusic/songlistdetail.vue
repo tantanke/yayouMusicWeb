@@ -93,10 +93,10 @@
           </el-row>
           <div class="my-comment" >
             <img :src="userInfo.userHeadImg" alt="" class="my-head-img">
-            <textarea class="comment-input" placeholder="评论不超过140字" :model="comment.commentText" ref="count" :maxlength="maxWord"></textarea>
+            <textarea class="comment-input" placeholder="评论不超过140字" v-model="comment.commentText" ref="count" :maxlength="maxWord" @keyup="wordNumberi"></textarea>
           </div>
           <el-row class="submit-area">
-            <el-col :span="1" :offset="18"  class="rest-word" :model="comment.wordNumber">{{comment.wordNumber}}字</el-col>
+            <el-col :span="1" :offset="18"  class="rest-word" v-model="comment.wordNumber" title="">{{comment.wordNumber}}字</el-col>
             <el-col :span="1"><el-button @click="submitComment" class="ebutton">评论</el-button></el-col>
           </el-row>
           <el-row class="comment-display" v-for="(item, index) in comment.commentDetail" :key="index">
@@ -149,27 +149,28 @@
 <script>
 import axios from 'axios'
 import qs from 'qs'
+// axios.defaults.headers.delete['Content-Type'] = 'text/plain'
 export default {
   data () {
     return {
-      url: [{
-        songAgreeUrl: '',
+      urls: {
+        songAgreeUrl: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/likeSong',
         commentAgreeUrl: '',
-        songDisagreeUrl: '',
+        songDisagreeUrl: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user//cancelLike',
         commentDisagreeUrl: ''
-      }],
+      },
       playShow: true,
       show: true,
       maxWord: '140',
       userInfo: {
-        id: '',
-        username: '',
+        id: '45',
+        username: '123',
         userHeadImg: require('../../assets/img/homePage/狂徒(dts版).png')
       },
       comment: {
         commentText: '',
         commentnumber: '',
-        wordNumber: '',
+        wordNumber: 0,
         commentDetail: [{
           id: '001',
           username: '1',
@@ -333,45 +334,75 @@ export default {
     handleSongAgree (e) {
       e.agreeStyle = !e.agreeStyle
       if (e.agreeStyle) {
-        e.agreeNum++
-      } else {
-        e.agreeNum--
-      }
-      alert('0')
-      axios.post(this.url.songAgreeUrl, qs.stringify(e.songId))
-        .then(res => {
-          console.log(res)
-          if (res.data.code === 1) {
-            this.successMessage('数据上传成功')
-          } else {
-            if (res.data.code === 40001) {
-              this.errorMessage(res.msg)
+        axios.post(this.urls.songAgreeUrl, qs.stringify(e.songId))
+          .then(res => {
+            console.log(res)
+            if (res.data.errorCode === '1') {
+              this.$message({
+                message: res.data.msg,
+                type: 'success'
+              })
+              e.agreeNum++
             } else {
-              this.errorMessage('数据上传失败')
+              if (res.data.msg) {
+                this.$message.error(res.data.msg)
+              } else {
+                this.$message.error('请稍后尝试')
+              }
             }
-          }
-        })
-        .catch(err => {
-          alert('err')
-          console.log(err)
-        })
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      } else {
+        axios.request({
+          url: this.urls.songDisagreeUrl,
+          method: 'post',
+          params: {
+            _method: 'delete'
+          },
+          songId: qs.stringify(e.songId)})
+          .then(res => {
+            console.log(res)
+            if (res.data.errorCode === '1') {
+              this.$message({
+                message: res.data.msg,
+                type: 'success'
+              })
+              e.agreeNum--
+            } else {
+              if (res.data.msg) {
+                this.$message.error(res.data.msg)
+              } else {
+                this.$message.error('请稍后尝试')
+              }
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
     },
     submitComment () {
-      var iDate = new Date()
+      var date = new Date()
       var _this = this
       var arr = {
-        id: '',
-        username: '',
-        commentContent: '',
-        conmentTime: '',
-        headImgUrl: ''
+        id: '001',
+        username: '1',
+        headImgUrl: require('../../assets/img/homePage/狂徒(dts版).png'),
+        commentContent: 'qweq',
+        conmentTime: '2020/1/1',
+        agreeNum: 0,
+        agreeStyle: false
       }
       arr.id = _this.userInfo.id
       arr.username = _this.userInfo.username
       arr.commentContent = _this.comment.commentText
-      arr.conmentTime = iDate.getFullYear
-      arr.headImgUrl = _this.comment.myHeadImgUrl
-      _this.comment.commentDetail.push(arr)
+      arr.conmentTime = date.getUTCFullYear() + '/' + parseInt(date.getUTCMonth() + 1) + '/' + date.getDate()
+      arr.headImgUrl = _this.userInfo.userHeadImg
+      _this.comment.commentDetail.unshift(arr)
+      _this.comment.commentText = ''
+      _this.comment.wordNumber = 0
     },
     handleEdit (index, row) {
       console.log(index, row)
@@ -384,15 +415,22 @@ export default {
     },
     errorMessage (msg) {
       console.log(msg)
+    },
+    wordNumberi () {
+      var _this = this
+      var l = 0
+      var L = _this.$refs.count.value.split('').join('')
+      for (var i = 0; i < L.length; i++) {
+        if (L[i] === ' ') {
+        } else if (L[i] === '\n') {
+        } else {
+          l++
+        }
+      }
+      _this.comment.wordNumber = l
     }
   },
   watch: {
-    wordNumber: () => {
-      var _this = this
-      var L = _this.$refs.count.value.split('').join('').length
-      alert(L)
-      return L
-    }
   }
 }
 </script>
