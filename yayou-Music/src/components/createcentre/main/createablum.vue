@@ -11,7 +11,7 @@
     <div class="stepform" v-if="active == 0">
    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
   <el-form-item label="专辑名称" prop="name">
-    <el-input v-model="ruleForm.name"></el-input>
+  <el-input v-model="ruleForm.name" placeholder="请输入专辑名称"></el-input>
   </el-form-item>
   <el-form-item label="专辑类型" prop="category">
     <el-select v-model="ruleForm.category" placeholder="请选择专辑类型">
@@ -25,13 +25,12 @@
       <el-option label="录制版" value="beijing"></el-option>
     </el-select>
   </el-form-item>
-  <el-form-item label="活动时间" required>
-    <el-col :span="11">
-      <el-form-item prop="date">
-        <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date" style="width: 100%;"></el-date-picker>
-      </el-form-item>
-    </el-col>
-  </el-form-item>
+  <el-form-item label="是否vip专属" >
+    <el-select v-model="ruleForm.isvip" placeholder="请选择视频权限">
+      <el-option label="是" value="1"></el-option>
+      <el-option label="不是" value="0"></el-option>
+    </el-select>
+    </el-form-item>
   <el-form-item label="语种" prop="language">
     <el-select v-model="ruleForm.language" placeholder="请选择专辑语种">
       <el-option label="彝语" value="shanghai"></el-option>
@@ -53,33 +52,65 @@
   </el-form-item>
 </el-form>
 <div class="cover">
-  <img src="./../../../assets/img/homePage/cover.png" alt="">
-   <el-button >本地上传</el-button>
-  <el-button type="primary">智能生成</el-button>
+  <el-upload
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :show-file-list="false"
+        :on-change="imgPreview"
+        :auto-upload="false">
+        <img v-if="posterURL" :src="posterURL" >
+        <img v-else src="../../../assets/img/homePage/cover.png" alt="">
+        <el-button v-if="posterURL">更换我的专辑封面</el-button>
+        <el-button v-else>上传我的专辑封面</el-button>
+</el-upload>
 </div><el-button style="margin-top: 35px;" @click="next">下一步</el-button>
     </div>
   <div class="upload" v-if="active == 1">
-    <p class="title">上传专辑歌曲</p>
+     <span class="title">上传专辑歌曲</span><span class='title2'>(如暂不需要加入歌曲可点击下一步按钮)</span>
      <el-divider class="line"></el-divider>
-    <div class="createcate">
-      <ul class="upul">
-        <li >
-          <el-upload
-        drag
-        action="https://jsonplaceholder.typicode.com/posts/"
-        :beforeUpload="beforeAvatarUpload"
-        multiple>
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将音频文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">只能上传MP3文件</div>
-      </el-upload>
-      </li>
-      </ul>
-      <div class="upbutton">
-        <el-button @click="uploadFile" class="hasup"><i class="el-icon-plus"></i>点我立刻上传</el-button>
-      </div>
-    </div>
-          <el-button style="margin-top: 35px;" @click="next">下一步</el-button>
+    <el-button style="margin-left: 35px;" @click="noMusicNext">下一步</el-button>
+     <el-form :model='ablumForm'>
+       <el-form-item label="歌曲名" :label-width="formLabelWidth">
+              <el-input v-model="ablumForm.songName" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="作者名" :label-width="formLabelWidth">
+              <el-input v-model="ablumForm.artist" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="是否vip专属" :label-width="formLabelWidth">
+              <el-select v-model="ablumForm.isvip" placeholder="请选择视频权限">
+                <el-option label="是" value="1"></el-option>
+                <el-option label="不是" value="0"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="视频文件" :label-width="formLabelWidth">
+              <el-upload
+              ref="uploadAblumMusic"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :auto-upload="false"
+              :limit='1'>
+              <el-button slot="trigger"  type="primary">选取音频文件</el-button>
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="歌词文件" :label-width="formLabelWidth">
+              <el-upload
+              ref="uploadAblumWord"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :auto-upload="false"
+              :limit='1'>
+              <el-button slot="trigger"  type="primary">选取歌词文件</el-button>
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="封面文件" :label-width="formLabelWidth">
+              <el-upload
+              ref="uploadAblumCover"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :auto-upload="false"
+              :limit='1'>
+              <el-button slot="trigger"  type="primary">选取封面文件</el-button>
+              <div slot="tip" class="el-upload__tip">每种文件单次最多上传一个</div>
+              </el-upload>
+              </el-form-item>
+               <el-button style="margin-left:160px" type="primary" @click='uploadMusic'>确 定 上 传</el-button>
+     </el-form>
   </div>
   <div class="confirmuse" v-if="active == 2">
     <div class="xieyiBox">
@@ -112,14 +143,27 @@ export default {
         category: '',
         edition: '',
         language: '',
-        date: '',
         style: '',
-        desc: ''
+        desc: '',
+        isvip: ''
       },
+      // 上传作品表单 每次填完立刻上传
+      formLabelWidth: '150px',
+      ablumForm: {
+        'songName': '',
+        'artist': '',
+        'cover': '', // 用户上传音乐封面 点击确定后 发送请求拿到url 把url设置进入表单后一起发送
+        'isvip': '',
+        'file': '',
+        'lyrics': '',
+        'albumId': '' // 先获取用户当前已有专辑 然后加入选项中
+      },
+      posterURL: '',
+      coverFile: '', // 记录封面文件
       rules: {
         name: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { required: true, message: '请输入专辑名称', trigger: 'blur' },
+          { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
         ],
         category: [
           { required: true, message: '请选择专辑类型', trigger: 'change' }
@@ -148,6 +192,22 @@ export default {
   },
   methods: {
     // Content-Type: application/json表单 Content-Type: multipart/form-data 文件 url 参数 请求头
+    uploadMusic () {
+      // 每首歌上传之后询问用户是否继续上传
+    },
+    // 文件预览图
+    imgPreview (file, fileList) {
+      let fileName = file.name
+      let regex = /(.jpg|.jpeg|.gif|.png|.bmp)$/
+      if (regex.test(fileName.toLowerCase())) {
+        this.posterURL = URL.createObjectURL(file.raw)
+        // 获取当前改变的文件信息
+        console.log(file.raw)
+        this.coverFile = file.raw
+      } else {
+        this.$message.error('请选择图片文件')
+      }
+    },
     beforeAvatarUpload (file) {
       var testmsg = file.name.substring(file.name.lastIndexOf('.') + 1)
       const extension = testmsg === 'mp3'
@@ -189,6 +249,13 @@ export default {
     nextclick2 () {
       // 用户至少要完成创造专辑和上传音乐的任意一步才能到下一步
       if (this.active++ > 2) this.active = 0
+    },
+    noMusicNext () {
+      if (confirm('确认不向专辑里添加任何歌曲吗？')) {
+        this.active++
+      } else {
+        return false
+      }
     },
     nextclick3 () {
       if (this.checked) {
