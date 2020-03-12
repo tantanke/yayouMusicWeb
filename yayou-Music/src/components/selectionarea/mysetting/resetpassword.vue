@@ -33,17 +33,18 @@
 </template>
 
 <script>
-/* import axios from 'axios' */
+import axios from 'axios'
+import qs from 'qs'
 const TIME_COUNT = 60
 /* 重新发送验证码的时间间隔 */
 export default {
   data () {
-    var checkAge = (rule, value, callback) => {
+    var checkPhone = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('年龄不能为空'))
+        return callback(new Error('电话号码不能为空'))
       }
       setTimeout(() => {
-        if (!Number.isInteger(value)) {
+        if (!(/^1[34578]\d{9}$/.test(value))) {
           callback(new Error('请输入正确电话号码'))
         } else {
           callback()
@@ -73,6 +74,10 @@ export default {
       show: true,
       count: '',
       timer: null,
+      urls: {
+        changPassword: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/userInfo/changePassword',
+        getCode: ''
+      },
       ruleForm: {
         pass: '',
         checkPass: '',
@@ -86,8 +91,8 @@ export default {
         checkPass: [
           { validator: validatePass2, trigger: 'blur' }
         ],
-        age: [
-          { validator: checkAge, trigger: 'blur' }
+        phone: [
+          { validator: checkPhone, trigger: 'blur' }
         ]
       }
     }
@@ -96,7 +101,30 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          axios.request({
+            url: this.urls.changPassword,
+            method: 'post',
+            params: {
+              _method: 'put'
+            },
+            data: JSON.stringify({
+              phone: formName.phone,
+              changPassword: formName.pass
+            })
+            .then(res => {
+              if (res.data.errorCode === '1') {
+              } else {
+                if (res.data.msg) {
+                  this.$message.error(res.data.msg)
+                } else {
+                  this.$message.error('请稍后尝试')
+                }
+              }
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          })
         } else {
           console.log('error submit!!')
           return false
@@ -107,19 +135,20 @@ export default {
       this.$refs[formName].resetFields()
     },
     getCode (phone) {
-      // axios.post('', phone)
-      //   .then(res => {
-      //     if (res.data.errorCode === '0') {
-      //       this.successMessage('文件上传成功')
-      //     } else {
-      //       if (res.data.errorMessage) {
-      //         this.errorMessage(res.data.errorMessage)
-      //       } else {
-      //         this.errorMessage('文件上传失败')
-      //       }
-      //     }
-      //   })
-      //   .catch(err => { console.log(err) })
+      axios.post(this.urls.getCode, qs.stringify(phone))
+        .then(res => {
+          if (res.data.errorCode === '1') {
+          } else {
+            if (res.data.msg) {
+              this.$message.error(res.data.msg)
+            } else {
+              this.$message.error('请稍后尝试')
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
       if (!this.timer) {
         this.count = TIME_COUNT
         this.show = false
