@@ -11,33 +11,34 @@
       </router-link>
       </div>
       <div class="upButtons">
-        <el-button  @click="dialogFormAblum = true"><i class="el-icon-plus"></i>上传作品至已发布专辑</el-button>
+        <el-button  @click="getAblumData"><i class="el-icon-plus"></i>上传作品至已发布专辑</el-button>
         <el-button  @click="dialogFormDraft"><i class="el-icon-plus"></i>上传至草稿箱</el-button>
         <el-button  @click="dialogFormVideo = true" @mouseenter="resetForm"><i class="el-icon-plus"></i>上传视频</el-button>
       </div>
       <!--上传作品至已发布专辑表单 -->
         <el-dialog title="上传作品至已发布专辑" :visible.sync="dialogFormAblum" :show-close='false' :close-on-click-modal='false' :close-on-press-escape='false'>
-          <el-form :model="ablumForm">
+          <el-form :model="ablumForm" :rules='musicRules' ref="ablumForm" v-loading="loadingMusic">
             <el-form-item label="已有专辑名" :label-width="formLabelWidth">
               <el-input v-model="hasAblumName" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="歌曲名" :label-width="formLabelWidth">
+            <el-form-item label="歌曲名" :label-width="formLabelWidth" prop='songName'>
               <el-input v-model="ablumForm.songName" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="作者名" :label-width="formLabelWidth">
+            <el-form-item label="作者名" :label-width="formLabelWidth" prop='artist'>
               <el-input v-model="ablumForm.artist" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="是否vip专属" :label-width="formLabelWidth">
+            <el-form-item label="是否vip专属" :label-width="formLabelWidth" prop='isvip'>
               <el-select v-model="ablumForm.isvip" placeholder="请选择视频权限">
                 <el-option label="是" value="1"></el-option>
                 <el-option label="不是" value="0"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="视频文件" :label-width="formLabelWidth">
+            <el-form-item label="音频文件" :label-width="formLabelWidth">
               <el-upload
               ref="uploadAblumMusic"
               action="https://jsonplaceholder.typicode.com/posts/"
               :auto-upload="false"
+              :on-change='checkTypeMusic'
               :limit='1'>
               <el-button slot="trigger"  type="primary">选取音频文件</el-button>
               </el-upload>
@@ -46,6 +47,7 @@
               <el-upload
               ref="uploadAblumWord"
               action="https://jsonplaceholder.typicode.com/posts/"
+              :on-change='checkTypeLrc'
               :auto-upload="false"
               :limit='1'>
               <el-button slot="trigger"  type="primary">选取歌词文件</el-button>
@@ -56,16 +58,17 @@
               ref="uploadAblumCover"
               action="https://jsonplaceholder.typicode.com/posts/"
               :auto-upload="false"
+              :on-change='checkTypeCover'
               :limit='1'>
               <el-button slot="trigger"  type="primary">选取封面文件</el-button>
               <div slot="tip" class="el-upload__tip">每种文件单次最多上传一个</div>
               </el-upload>
             </el-form-item>
+            <el-form-item>
+            <el-button @click="confirmCancel2" style="margin-left:125px">取 消</el-button>
+            <el-button type="primary" @click="confirmForm">确 定</el-button>
+            </el-form-item>
           </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="confirmCancel2">取 消</el-button>
-            <el-button type="primary" @click="uploadFileMusic">确 定</el-button>
-          </div>
         </el-dialog>
         <!--上传作品至草稿箱 暂时禁用-->
         <el-dialog title="上传至草稿箱" :visible.sync="dialogFormDraft">
@@ -77,14 +80,14 @@
         <!--上传作品至视频列表 -->
         <el-dialog title="上传视频作品" :visible.sync="dialogFormVideo" :show-close='false' :close-on-click-modal='false' :close-on-press-escape='false' :destroy-on-close='true'>
           <el-form  :model="videoForm" ref="videoForm" v-loading="loadingVideo" :rules="videoRules">
-            <el-form-item label="视频名称" :label-width="formLabelWidth">
+            <el-form-item label="视频名称" :label-width="formLabelWidth" prop='videoName'>
               <el-input v-model="videoForm.videoName" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="作者名称" :label-width="formLabelWidth">
+            <el-form-item label="作者名称" :label-width="formLabelWidth" prop='artist'>
               <el-input v-model="videoForm.artist" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="是否vip专属" :label-width="formLabelWidth">
-              <el-select v-model="videoForm.isvip" placeholder="请选择视频权限">
+            <el-form-item label="是否vip专属" :label-width="formLabelWidth" prop='isvip'>
+              <el-select v-model="videoForm.isvip" placeholder="请选择视频权限" >
                 <el-option label="是" value="1"></el-option>
                 <el-option label="不是" value="0"></el-option>
               </el-select>
@@ -100,12 +103,12 @@
               <div slot="tip" class="el-upload__tip">只能上传视频相关文件，且单次最多上传一个</div>
               </el-upload>
             </el-form-item>
-            <el-form-item label="视频描述" :label-width="formLabelWidth" >
+            <el-form-item label="视频描述" :label-width="formLabelWidth" prop='videoDes'>
               <el-input v-model="videoForm.videoDes" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item  :label-width="formLabelWidth">
             <el-button @click="confirmCancel1">取 消</el-button>
-            <el-button type="primary" @click="uploadFileVideo">确 定</el-button>
+            <el-button type="primary" @click="uploadVideoForm">确 定</el-button>
             </el-form-item>
           </el-form>
         </el-dialog>
@@ -151,10 +154,24 @@ export default {
           { required: true, message: '请输入视频作者', trigger: 'blur' },
           { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
         ],
-        region: [
+        isvip: [
           { required: true, message: '请选择是否为vip', trigger: 'change' }
         ]
       },
+      musicRules: {
+        songName: [
+          { required: true, message: '请输入视频名称', trigger: 'blur' },
+          { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
+        ],
+        artist: [
+          { required: true, message: '请输入视频作者', trigger: 'blur' },
+          { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
+        ],
+        isvip: [
+          { required: true, message: '请选择是否为vip', trigger: 'change' }
+        ]
+      },
+      allAblums: [],
       isImg: false,
       isMp3: false,
       isLrc: false,
@@ -162,6 +179,7 @@ export default {
       dialogTableVisible: false,
       dialogFormVideo: false,
       loadingVideo: false,
+      loadingMusic: false,
       dialogFormDraft: false,
       dialogFormAblum: false,
       formLabelWidth: '120px',
@@ -177,6 +195,10 @@ export default {
   },
   methods: {
     // 音乐表单相关
+    getAblumData () {
+      this.dialogFormAblum = true
+    },
+    // 获取专辑信息 来整合信息
     confirmCancel2 () {
       if (window.confirm('是否取消上传?')) {
         this.dialogFormAblum = false
@@ -191,84 +213,108 @@ export default {
       const extension = fileType === 'lrc'
       if (!extension) {
         this.$message({
-          message: '歌词文件只能是lrc格式！',
+          message: '歌词文件只能是lrc格式！请删除后重选！',
           type: 'error'
         })
-        alert('歌词只能上传lrc文件,请删除之后重选')
       } else {
         this.isLrc = true
       }
-      this.ablumForm.lyrics = file
-      return extension
+      this.ablumForm.lyrics = file.raw
     },
     checkTypeCover (file, fileList) {
       let fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
-      const extension = fileType === 'mp4'
-      if (!extension) {
+      if (fileType !== 'png' && fileType !== 'jpg') {
         this.$message({
-          message: '上传文件只能是mp4格式！',
+          message: '封面文件只能是png，jpg格式！请删除后重选！',
           type: 'error'
         })
-        alert('只能上传MP4文件,请删除之后重选')
       } else {
-        this.isMp4 = true
+        this.isMp3 = true
       }
-      this.ablumForm.file = file
-      return extension
+      this.ablumForm.file = file.raw
     },
     checkTypeMusic (file, fileList) {
       let fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
-      const extension = fileType === 'png' && 'jpg'
+      const extension = fileType === 'mp3'
       if (!extension) {
         this.$message({
-          message: '上传文件只能是png,jpg格式！',
+          message: '上传文件只能是mp3格式！请删除后重选！',
           type: 'error'
         })
-        alert('封面上传png,jpg文件,请删除之后重选')
       } else {
         this.isImg = true
       }
-      this.coverFile = file
-      return extension
+      this.coverFile = file.raw
+    },
+    confirmForm () {
+      this.$refs.ablumForm.validate((valid) => {
+        let _this = this
+        let isHave = false
+        if (valid) {
+          if (confirm('确认提交吗？')) {
+            let ablumName = _this.hasAblumName
+            _this.allAblums.forEach((item, index) => {
+              if (ablumName === item.ablumName) {
+                _this.ablumForm.albumId = item.ablumId
+                isHave = true
+                return false
+              }
+            })
+            if (isHave) {
+              console.log(_this.ablumForm)
+              _this.uploadFileMusic()
+            } else {
+              this.$message.error('请检查你的专辑名是否正确！！！')
+            }
+          }
+        } else {
+          console.log('提交失败，请重试！')
+          return false
+        }
+      })
     },
     uploadFileMusic () {
-      this.loadingVideo = true
-      let cover = this.coverFile.raw
+      let cover = this.coverFile
       let _this = this
       if (!_this.isLrc || !_this.isImg || !_this.isMp3) {
-        alert('请确认文件格式！')
+        this.$message.error('请确认文件格式！')
         this.loadingVideo = false
         return false
       }
       _this.isMp3 = false
       _this.isImg = false
       _this.isLrc = false
-      // 验证该歌手是否有该专辑名 没有就return 加入ablumid
-      _this.$axios.post(_this.getVideoUrl, cover)
+      _this.loadingMusic = true
+      _this.$axios({
+        method: 'post',
+        url: _this.uploadCoverUrl,
+        data: cover
+      })
         .then(res => {
-          /* this.videoForm.videoUrl = res.data */
           if (res.data.code === 1) {
             // 封面信息
             _this.ablumForm.cover = res.data.data
             console.log(_this.ablumForm)
-            return this.$axios.post(_this.uploadVideoUrl, _this.ablumForm)
+            return _this.$axios({
+              method: 'post',
+              url: _this.uploadVideoUrl,
+              data: _this.ablumForm
+            })
           }
         })
         .then(res => {
           console.log(res)
           if (res.data.code === 1) {
-            alert('上传成功')
+            this.$message.success('上传成功')
+            _this.loadingMusic = false
           } else {
-            alert('上传失败，请稍后再试！')
+            this.$message.error('上传失败，请稍后再试！')
           }
           // 重置表单
           this.loadingVideo = false
           this.dialogFormVideo = false
           _this.ablumForm.songName = ''
           _this.ablumForm.artist = ''
-          _this.ablumForm = ''
-          _this.ablumForm = ''
-          _this.ablumForm = ''
         })
         .catch(err => {
           console.log(err)
@@ -278,7 +324,7 @@ export default {
     },
     // 视频表单相关
     confirmCancel1 () {
-      if (window.confirm('是否取消上传?')) {
+      if (window.confirm('是否不在添加了?')) {
         this.dialogFormVideo = false
       } else {
         this.dialogFormVideo = true
@@ -290,10 +336,9 @@ export default {
       const extension = fileType === 'mp4'
       if (!extension) {
         this.$message({
-          message: '上传文件只能是mp4格式！',
+          message: '上传文件只能是mp4格式！请删除后重选！',
           type: 'error'
         })
-        alert('只能上传MP4文件,请删除之后重选')
       } else {
         this.isMp4 = true
       }
@@ -302,19 +347,23 @@ export default {
     },
     // 先上传视频拿到连接后 整合表单发送 有一步错就全错
     uploadFileVideo () {
-      this.loadingVideo = true
       let videoForm = {'mvFile': '', 'isvip': ''}
       let _this = this
       if (!_this.isMp4) {
-        alert('请确认文件格式！')
+        this.$message.error('请确认文件格式！')
         this.loadingVideo = false
         return false
       }
       _this.isMp4 = false
       videoForm.mvFile = _this.videoFile.raw
       videoForm.isvip = videoForm.isvip
+      this.loadingVideo = true
       console.log(videoForm)
-      _this.$axios.post(_this.getVideoUrl, videoForm)
+      _this.$axios({
+        method: 'post',
+        url: _this.getVideoUrl,
+        data: videoForm
+      })
         .then(res => {
           /* this.videoForm.videoUrl = res.data */
           if (res.data.code === 1) {
@@ -325,15 +374,19 @@ export default {
             videoFormData.isvip = _this.videoForm.isvip
             videoFormData.videoUrl = res.data.data
             console.log(videoFormData)
-            return this.$axios.post(_this.uploadVideoUrl, videoFormData)
+            return _this.$axios({
+              method: 'post',
+              url: _this.uploadVideoUrl,
+              data: videoFormData
+            })
           }
         })
         .then(res => {
           console.log(res)
           if (res.data.code === 1) {
-            alert('上传成功')
+            this.$message.success('上传成功')
           } else {
-            alert('上传失败，请稍后再试！')
+            this.$message.error('上传失败，请稍后再试！')
           }
           // 重置表单
           this.loadingVideo = false
@@ -349,6 +402,18 @@ export default {
           this.loadingVideo = false
           this.dialogFormVideo = false
         })
+    },
+    uploadVideoForm () {
+      this.$refs.videoForm.validate((valid) => {
+        if (valid) {
+          if (confirm('确认提交吗？')) {
+            this.uploadFileVideo()
+          }
+        } else {
+          console.log('提交失败，请重试！')
+          return false
+        }
+      })
     },
     // 判断创建的专辑类型
     changeShuzi () {
@@ -374,6 +439,23 @@ export default {
   mounted () {
     // 拿到该歌手的全部专辑信息 方便上传歌曲到已有专辑
     // this.$axios.post(this.getVideoUrl, this.getAlbumUrl)
+    let _this = this
+    _this.$axios({
+      method: 'get',
+      data: '',
+      url: this.getAlbumUrl
+    }).then(res => {
+      // 获取所有专辑信息
+      res.data.list.forEach((item, index) => {
+        let e = {}
+        e.ablumId = item.ablumId
+        e.ablumName = item.ablumName
+        _this.allAblums.push(e)
+      })
+      console.log(_this.allAblums)
+    }).catch(err => {
+      this.$message.error(err)
+    })
   }
 }
 </script>
