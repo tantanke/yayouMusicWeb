@@ -3,16 +3,43 @@
     <el-row class="title">
       <div class="song-list">
         <i class="el-icon-plus"></i>
-        <span @click="dialogFormVisible = true">新建歌单</span>
-        <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
-        <el-form :model="form">
-        <el-form-item label="活动名称" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off"></el-input>
+        <span @click="dialogCoverVisible = true">新建歌单</span>
+        <el-dialog title="歌单封面" center :visible.sync="dialogCoverVisible">
+          <el-form :model="form" class="upload-cover">
+            <el-form-item label="">
+              <el-upload
+                ref="upload"
+                class="avatar-uploader"
+                action="#"
+                http-request=""
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+                title="点击上传图片">
+                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                <div v-else>
+                  <i class="el-icon-plus avatar-uploader-icon"></i><span >选择一张本地图片</span>
+                </div>
+              </el-upload>
+            </el-form-item>
+            <el-form-item>
+              <el-button size="small" type="primary" @click="uploadFile">立即上传</el-button>
+              <el-button @click="dialogCoverVisible = false; dialogFormVisible = true" :disabled="disabled" title="图片上传才能点击">下一步</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
+        <el-dialog title="歌单上传" center :visible.sync="dialogFormVisible">
+        <el-form :model="formData">
+        <el-form-item label="歌单名字" :label-width="formLabelWidth">
+        <el-input v-model="formData.name" autocomplete="off" placeholder="小于10字" maxlength="10"></el-input>
+        </el-form-item>
+        <el-form-item label="歌单介绍" :label-width="formLabelWidth" >
+        <el-input v-model="formData.introduce" autocomplete="off" placeholder="小于140字" maxlength="140"></el-input>
         </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="submitSonglist(formData)">上传歌单</el-button>
         </div>
         </el-dialog>
       </div>
@@ -23,7 +50,7 @@
     </el-row>
     <el-row>
       <el-table :data="songTableData" style="width: 100%" stripe>
-        <el-table-column label="歌单" width="700" >
+        <el-table-column label="歌单" width="700">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
             <router-link :to="{name: 'songlistdetail', params:{songlistid: scope.row.id}}" tag="span" style="margin-left: 10px;cursor:pointer">
@@ -40,18 +67,13 @@
         </el-table-column>
       </el-table>
     </el-row>
-    <span @click="dialogFormVisible = true"></span>
-    <el-dialog title="歌单名字" center :visible.sync="dialogFormVisible">
-    <el-form :model="form">
-    <el-form-item label="歌单名字" :label-width="formLabelWidth">
-    <el-input v-model="form.name" autocomplete="off"></el-input>
-    </el-form-item>
-    </el-form>
-    <div slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+    <div>
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="100">
+      </el-pagination>
     </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -59,6 +81,15 @@
 export default {
   data () {
     return {
+      imageUrl: '',
+      disabled: true,
+      urls: {
+        uploadCover: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/setCover',
+        uploadSonglist: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/createSongList'
+      },
+      form: {
+        file: ''
+      },
       songTableData: [
         {
           id: '001',
@@ -84,19 +115,68 @@ export default {
           listen: '南瑶乐队'
         }
       ],
-      dialogTableVisible: false,
+      dialogCoverVisible: false,
       dialogFormVisible: false,
-      form: {
+      formData: {
         name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        cover: '',
+        introduce: ''
       },
       formLabelWidth: '120px'
+    }
+  },
+  methods: {
+    handleAvatarSuccess (res, file) {
+      this.imageUrl = URL.createObjectURL(file)
+    },
+    beforeAvatarUpload (file) {
+      this.imageUrl = URL.createObjectURL(file)
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
+    },
+    uploadFile () {
+      // this.$refs.upload.submit()
+      this.disabled = false // xiugai
+      let formData = new FormData()
+      formData.append('file', this.form.file)
+      this.$axios.post(this.urls.uploadCover,
+        formData,
+        {'Content-Type': 'multipart/form-data'}
+      )
+        .then(res => {
+          console.log('res')
+          console.log(res)
+          if (res.data.code === 1) {
+            this.disabled = false
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    submitSonglist (formData) {
+      this.$axios.post(this.urls.uploadSonglist, JSON.stringify({
+        cover: formData.cover,
+        introduce: formData.introduce
+      }))
+        .then(res => {
+          console.log('res')
+          console.log(res)
+          if (res.data.code === 1) {
+            console.log('上传成功')
+          }
+          this.dialogFormVisible = false
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }

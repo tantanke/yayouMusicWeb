@@ -53,7 +53,7 @@ export default new Router({
     }, {
       path: '/songlistdetail/:songlistid',
       name: 'songlistdetail',
-      component: () => import('@/components/mymusic/songlistdetail.vue')
+      component: () => import('@/components/detailpage/songlistdetail.vue')
     }, {
       path: '/songlistdetail/songdetail/:songid',
       name: 'songdetail', // 测试用的之后要重新更改路由
@@ -61,9 +61,17 @@ export default new Router({
     }, {
       path: '/setting',
       name: 'setting',
-      redirect: '/setting/resetheadimg',
+      redirect: '/setting/default',
       component: Mysetting,
       children: [{
+        path: '/setting/default',
+        name: 'resetdefault',
+        component: () => import('@/components/selectionarea/mysetting/default.vue')
+      }, {
+        path: '/setting/check',
+        name: 'resetcheck',
+        component: () => import('@/components/selectionarea/mysetting/check.vue')
+      }, {
         path: '/setting/resetphone',
         name: 'resetphone',
         component: () => import('@/components/selectionarea/mysetting/resetphone.vue')
