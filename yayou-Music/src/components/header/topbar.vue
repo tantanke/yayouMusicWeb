@@ -30,10 +30,11 @@
             <li><i class="el-icon-lollipop"></i><span>我的歌单</span></li>
             <li><i class="el-icon-wind-power"></i><span>我的下载</span></li>
             <li><i class="el-icon-time"></i><span>最近播放</span></li>
+            <router-link tag='li' :to="{name: this.createdRouter}" @click.native='judge' replace><i class="el-icon-plus"></i><span>创作中心</span></router-link>
           </ul>
         </div>
         <el-divider direction="vertical"></el-divider>
-        <router-link tag='span' :to="{name:'Register'}">注册</router-link>
+        <span>注册</span>
       </el-col>
     </el-row>
   </div>
@@ -49,11 +50,24 @@ export default {
         navList: ['我的发现', '我的音乐', '视频', '商城', '音乐人', '彝汉切换'],
         inputValue: ''
       },
-      isnotLogin: false// 这里后期可以使用导航守卫进行判断是否登陆
+      isnotLogin: false, // 这里后期可以使用导航守卫进行判断是否登陆
+      createdRouter: 'registermusician', // 配置创作者中心路由
+      isSinger: true // 判断是否注册音乐人
     }
   },
   methods: {
-    Register () {
+    judge () {
+      if (this.isnotLogin) {
+        this.createdRouter = 'index'
+        this.$message.error('未登录')
+      } else {
+        if (this.isSinger) {
+          this.createdRouter = 'handinprodution'
+        } else {
+          this.createdRouter = 'registermusician'
+        }
+      }
+      this.$router.push({name: this.createdRouter})
     }
   }
 }

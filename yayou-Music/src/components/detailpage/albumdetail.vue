@@ -102,8 +102,8 @@ export default {
   data () {
     return {
       urls: {
-        collection: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/addMusicToCollection',
-        discollection: '',
+        collectionMusic: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/addMusicToCollection',
+        discollectionMusic: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/unCollectSong',
         songAgreeUrl: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/likeSong',
         songDisagreeUrl: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user//cancelLike'
       },
@@ -200,7 +200,7 @@ export default {
     handleCollection (e) {
       e.collectionStyle = !e.collectionStyle
       if (e.agreeStyle) {
-        axios.post(this.urls.collection, qs.stringify(e.songId))
+        axios.post(this.urls.collectionMusic, qs.stringify(e.songId))
           .then(res => {
             console.log(res)
             if (res.data.code === '1') {
@@ -221,7 +221,7 @@ export default {
           })
       } else {
         axios.request({
-          url: this.urls.discollection,
+          url: this.urls.discollectionMusic,
           method: 'post',
           params: {
             _method: 'delete'

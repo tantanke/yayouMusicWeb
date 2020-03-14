@@ -164,7 +164,8 @@ export default {
     submitSonglist (formData) {
       this.$axios.post(this.urls.uploadSonglist, JSON.stringify({
         cover: formData.cover,
-        introduce: formData.introduce
+        introduce: formData.introduce,
+        songListName: formData.name
       }))
         .then(res => {
           console.log('res')
