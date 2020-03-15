@@ -8,7 +8,6 @@ import Shop from '@/page/shop.vue'
 import ChangeLanguage from '@/page/changeLanguage.vue'
 import Singer from '@/page/singer.vue'
 import MyMusic from '@/page/mymusic.vue'
-import Register from '@/page/register'
 import musicPlayer from '@/layout/musicplayer.vue'
 import Mysetting from '@/components/selectionarea/mysetting.vue'
 // 一级路由直接加载 之后的子路由全部使用懒加载
@@ -53,17 +52,29 @@ export default new Router({
     }, {
       path: '/songlistdetail/:songlistid',
       name: 'songlistdetail',
-      component: () => import('@/components/mymusic/songlistdetail.vue')
+      component: () => import('@/components/detailpage/songlistdetail.vue')
     }, {
       path: '/songlistdetail/songdetail/:songid',
       name: 'songdetail', // 测试用的之后要重新更改路由
       component: () => import('@/components/mymusic/songdetail.vue')
     }, {
+      path: '/registermusician',
+      name: 'registermusician', // 注册音乐人路由
+      component: () => import('@/components/header/registermusician.vue')
+    }, {
       path: '/setting',
       name: 'setting',
-      redirect: '/setting/resetheadimg',
+      redirect: '/setting/default',
       component: Mysetting,
       children: [{
+        path: '/setting/default',
+        name: 'resetdefault',
+        component: () => import('@/components/selectionarea/mysetting/default.vue')
+      }, {
+        path: '/setting/check',
+        name: 'resetcheck',
+        component: () => import('@/components/selectionarea/mysetting/check.vue')
+      }, {
         path: '/setting/resetphone',
         name: 'resetphone',
         component: () => import('@/components/selectionarea/mysetting/resetphone.vue')
@@ -202,15 +213,14 @@ export default new Router({
       name: 'personalinfor',
       component: () => import('@/components/createcentre/header/personalinfor.vue')
     }, {
+      path: '/createcentre/resetmusician',
+      name: 'resetmusician', // 修改音乐人信息路由
+      component: () => import('@/components/createcentre/header/resetmusician.vue')
+    }, {
       path: '/createcentre/managemusic',
       name: 'managemusic',
       component: () => import('@/components/createcentre/main/managemusic.vue')
     }]
-  },
-  {
-    path: '/doRegister',
-    name: 'Register',
-    component: Register
   },
   {
     /* path: '/musicplayer/:songId', */ // 动态路由歌曲id

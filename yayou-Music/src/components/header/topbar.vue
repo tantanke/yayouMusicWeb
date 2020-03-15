@@ -24,16 +24,17 @@
           <ul>
             <router-link tag='li' class="active" :to="{name:'myMusic'}"><i class="el-icon-user"></i><span>个人中心</span></router-link>
             <li><i class="el-icon-chat-dot-round"></i><span>我的消息</span></li>
-            <router-link tag="li" :to="{name:'setting'}"><i class="el-icon-s-custom"></i><span>我的设置</span></router-link>
+            <router-link tag="li" :to="{name:'setting', params: {username: this.username}}"><i class="el-icon-s-custom"></i><span>我的设置</span></router-link>
             <li><i class="el-icon-service"></i><span>VIP会员</span></li>
             <li><i class="el-icon-s-order"></i><span>我的收藏</span></li>
             <li><i class="el-icon-lollipop"></i><span>我的歌单</span></li>
             <li><i class="el-icon-wind-power"></i><span>我的下载</span></li>
             <li><i class="el-icon-time"></i><span>最近播放</span></li>
+            <router-link tag='li' :to="{name: this.createdRouter}" @click.native='judge' replace><i class="el-icon-plus"></i><span>创作中心</span></router-link>
           </ul>
         </div>
         <el-divider direction="vertical"></el-divider>
-        <router-link tag='span' :to="{name:'Register'}">注册</router-link>
+        <span>注册</span>
       </el-col>
     </el-row>
   </div>
@@ -43,16 +44,30 @@
 export default {
   data () {
     return {
+      username: '',
       topInfo: {
         routerPath: ['myFind', 'myMusic', 'movie', 'shop', 'singer', 'changeLanguage'],
         navList: ['我的发现', '我的音乐', '视频', '商城', '音乐人', '彝汉切换'],
         inputValue: ''
       },
-      isnotLogin: false// 这里后期可以使用导航守卫进行判断是否登陆
+      isnotLogin: false, // 这里后期可以使用导航守卫进行判断是否登陆
+      createdRouter: 'registermusician', // 配置创作者中心路由
+      isSinger: true // 判断是否注册音乐人
     }
   },
   methods: {
-    Register () {
+    judge () {
+      if (this.isnotLogin) {
+        this.createdRouter = 'index'
+        this.$message.error('未登录')
+      } else {
+        if (this.isSinger) {
+          this.createdRouter = 'handinprodution'
+        } else {
+          this.createdRouter = 'registermusician'
+        }
+      }
+      this.$router.push({name: this.createdRouter})
     }
   }
 }
