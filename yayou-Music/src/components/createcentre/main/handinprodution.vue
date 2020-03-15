@@ -17,7 +17,8 @@
       </div>
       <!--上传作品至已发布专辑表单 -->
         <el-dialog title="上传作品至已发布专辑" :visible.sync="dialogFormAblum" :show-close='false' :close-on-click-modal='false' :close-on-press-escape='false'>
-          <el-form :model="ablumForm" :rules='musicRules' ref="ablumForm" v-loading="loadingMusic">
+          <el-form :model="ablumForm" :rules='musicRules' ref="ablumForm" v-loading="loadingMusic" element-loading-text="努力上传中,请不要关闭或刷新页面！"
+    element-loading-spinner="el-icon-loading">
             <el-form-item label="已有专辑名" :label-width="formLabelWidth">
               <el-input v-model="hasAblumName" autocomplete="off"></el-input>
             </el-form-item>
@@ -79,7 +80,8 @@
         </el-dialog>
         <!--上传作品至视频列表 -->
         <el-dialog title="上传视频作品" :visible.sync="dialogFormVideo" :show-close='false' :close-on-click-modal='false' :close-on-press-escape='false' :destroy-on-close='true'>
-          <el-form  :model="videoForm" ref="videoForm" v-loading="loadingVideo" :rules="videoRules">
+          <el-form  :model="videoForm" ref="videoForm" v-loading="loadingVideo" :rules="videoRules" element-loading-text="努力上传中，请不要刷新或关闭页面!"
+    element-loading-spinner="el-icon-loading">
             <el-form-item label="视频名称" :label-width="formLabelWidth" prop='videoName'>
               <el-input v-model="videoForm.videoName" autocomplete="off"></el-input>
             </el-form-item>
@@ -184,6 +186,7 @@ export default {
       dialogFormAblum: false,
       formLabelWidth: '120px',
       // 两个单独上传文件路径
+      upProgress: '', // 作为计算属性的载体
       upLoadMusicUrl: '',
       getCoverUrl: '',
       getVideoUrl: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/upVideo',
@@ -231,7 +234,7 @@ export default {
       } else {
         this.isMp3 = true
       }
-      this.ablumForm.file = file.raw
+      this.coverFile = file.raw
     },
     checkTypeMusic (file, fileList) {
       let fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
@@ -244,7 +247,7 @@ export default {
       } else {
         this.isImg = true
       }
-      this.coverFile = file.raw
+      this.ablumForm.file = file.raw
     },
     confirmForm () {
       this.$refs.ablumForm.validate((valid) => {
@@ -275,6 +278,8 @@ export default {
     },
     uploadFileMusic () {
       let cover = this.coverFile
+      let coverForm = new FormData()
+      coverForm.append('coverImage', cover)
       let _this = this
       if (!_this.isLrc || !_this.isImg || !_this.isMp3) {
         this.$message.error('请确认文件格式！')
@@ -284,21 +289,33 @@ export default {
       _this.isMp3 = false
       _this.isImg = false
       _this.isLrc = false
+      console.log(cover)
       _this.loadingMusic = true
       _this.$axios({
         method: 'post',
-        url: _this.uploadCoverUrl,
-        data: cover
+        url: 'http://yayoutes.utools.club/setCover',
+        data: coverForm,
+        processData: false
       })
         .then(res => {
+          console.log(res)
           if (res.data.code === 1) {
-            // 封面信息
+            console.log(res.data.data)
             _this.ablumForm.cover = res.data.data
             console.log(_this.ablumForm)
+            let upSongForm = new FormData()
+            upSongForm.append('songName', _this.ablumForm.songName)
+            upSongForm.append('artist', _this.ablumForm.artist)
+            upSongForm.append('cover', _this.ablumForm.cover)
+            upSongForm.append('isvip', _this.ablumForm.isvip)
+            upSongForm.append('file', _this.ablumForm.file)
+            upSongForm.append('lyrics', _this.ablumForm.lyrics)
+            upSongForm.append('albumId', _this.ablumForm.albumId)
             return _this.$axios({
               method: 'post',
-              url: _this.uploadVideoUrl,
-              data: _this.ablumForm
+              url: 'http://yayoutes.utools.club/singer/upSong',
+              data: upSongForm,
+              processData: false
             })
           }
         })
@@ -347,7 +364,7 @@ export default {
     },
     // 先上传视频拿到连接后 整合表单发送 有一步错就全错
     uploadFileVideo () {
-      let videoForm = {'mvFile': '', 'isvip': ''}
+      /* let videoForm = {'mvFile': '', 'isvip': ''} */
       let _this = this
       if (!_this.isMp4) {
         this.$message.error('请确认文件格式！')
@@ -355,28 +372,29 @@ export default {
         return false
       }
       _this.isMp4 = false
-      videoForm.mvFile = _this.videoFile.raw
-      videoForm.isvip = videoForm.isvip
+      let upVideoForm = new FormData()
+      console.log(_this.videoFile.raw, _this.videoForm.isvip)
+      upVideoForm.append('mvFile', _this.videoFile.raw)
+      upVideoForm.append('isvip', _this.videoForm.isvip)
       this.loadingVideo = true
-      console.log(videoForm)
       _this.$axios({
         method: 'post',
-        url: _this.getVideoUrl,
-        data: videoForm
+        url: 'http://yayoutes.utools.club/singer/upVideo',
+        data: upVideoForm,
+        processData: false
       })
         .then(res => {
-          /* this.videoForm.videoUrl = res.data */
           if (res.data.code === 1) {
             let videoFormData = {}
             videoFormData.videoName = _this.videoForm.videoName
             videoFormData.videoDes = _this.videoForm.videoDes
             videoFormData.artist = _this.videoForm.artist
             videoFormData.isvip = _this.videoForm.isvip
-            videoFormData.videoUrl = res.data.data
+            videoFormData.videoUrl = res.data.data.filePath
             console.log(videoFormData)
             return _this.$axios({
               method: 'post',
-              url: _this.uploadVideoUrl,
+              url: 'http://yayoutes.utools.club/singer/subMv',
               data: videoFormData
             })
           }
@@ -385,22 +403,23 @@ export default {
           console.log(res)
           if (res.data.code === 1) {
             this.$message.success('上传成功')
+            _this.videoForm.videoName = ''
+            _this.videoForm.videoDes = ''
+            _this.videoForm.artist = ''
+            _this.videoForm.isvip = ''
+            _this.videoForm.videoUrl = ''
           } else {
             this.$message.error('上传失败，请稍后再试！')
           }
           // 重置表单
           this.loadingVideo = false
           this.dialogFormVideo = false
-          _this.videoForm.videoName = ''
-          _this.videoForm.videoDes = ''
-          _this.videoForm.artist = ''
-          _this.videoForm.isvip = ''
-          _this.videoForm.videoUrl = ''
         })
         .catch(err => {
           console.log(err)
           this.loadingVideo = false
           this.dialogFormVideo = false
+          this.$message.error('上传失败，请稍后再试！')
         })
     },
     uploadVideoForm () {
@@ -436,10 +455,18 @@ export default {
       this.$refs.videoForm.resetFields()
     }
   },
+  computed: {
+    uploadProgress () {
+      return '请不要刷新或关闭页面，已上传 ' + this.upProgress
+    }
+  },
   mounted () {
     // 拿到该歌手的全部专辑信息 方便上传歌曲到已有专辑
     // this.$axios.post(this.getVideoUrl, this.getAlbumUrl)
     let _this = this
+    _this.$axios.create({
+      withCredentials: true
+    })
     _this.$axios({
       method: 'get',
       data: '',

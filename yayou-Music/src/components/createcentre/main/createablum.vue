@@ -10,8 +10,8 @@
     </div>
     <div class="stepform" v-if="active == 0">
    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
-  <el-form-item label="专辑名称" prop="name">
-  <el-input v-model="ruleForm.name" placeholder="请输入专辑名称"></el-input>
+  <el-form-item label="专辑名称" prop="ablumName">
+  <el-input v-model="ruleForm.ablumName" placeholder="请输入专辑名称"></el-input>
   </el-form-item>
   <el-form-item label="专辑版本" prop="edition">
     <el-select v-model="ruleForm.edition" placeholder="请选择专辑版本">
@@ -20,7 +20,7 @@
     </el-select>
   </el-form-item>
   <el-form-item label="是否vip专属" >
-    <el-select v-model="ruleForm.isvip" placeholder="请选择视频权限">
+    <el-select v-model="ruleForm.isVip" placeholder="请选择视频权限">
       <el-option label="是" value="1"></el-option>
       <el-option label="不是" value="0"></el-option>
     </el-select>
@@ -136,12 +136,14 @@ export default {
       next3: false,
       ablumCate: '',
       ruleForm: {
-        name: '',
+        ablumName: '',
         edition: '',
         language: '',
         style: '',
         desc: '',
-        isvip: ''
+        isVip: '',
+        cover: '',
+        artist: '陈玥玥'
       },
       isMp3: false,
       isImg: false,
@@ -161,7 +163,7 @@ export default {
       posterURL: '',
       coverFile: '', // 记录封面文件
       rules: {
-        name: [
+        ablumName: [
           { required: true, message: '请输入专辑名称', trigger: 'blur' },
           { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
         ],
@@ -206,29 +208,53 @@ export default {
     // Content-Type: application/json表单 Content-Type: multipart/form-data 文件 url 参数 请求头
     uploadAblum () {
       // 每首歌上传之后询问用户是否继续上传
+      let _this = this
       this.$refs.ruleForm.validate((valid) => {
-        let _this = this
         if (valid) {
+          if (!this.coverFile) {
+            this.$message.error('请选择封面!')
+            return false
+          }
           if (confirm('确认提交吗？')) {
             // axios 发送请求获取封面链接 填入表单
-            console.log(this.ablumForm)
+            let ablumCover = this.coverFile
+            let coverForm = new FormData()
+            coverForm.append('coverImage', ablumCover)
             _this.$axios({
               method: 'post',
-              url: _this.upUrls.upAblumUrl,
-              data: _this.ablumForm
-            }).then(res => {
-              if (res.data.code === 1) {
-                _this.nextStep = true
-                _this.active++
-                _this.checked = false
-                console.log(res.data.data.ablumId)
-                _this.ablumForm.albumId = res.data.data.ablumId
-              } else {
-                this.$message.error('提交失败，请稍后再试!')
-              }
-            }).catch(err => {
-              this.$message.error(err)
+              url: 'http://yayoutes.utools.club/setCover',
+              data: coverForm,
+              processData: false
             })
+              .then(res => {
+                console.log(res)
+                if (res.data.code === 1) {
+                  _this.ruleForm.cover = res.data.data
+                  return _this.$axios({
+                    method: 'post',
+                    url: _this.upUrls.upAblumUrl,
+                    data: _this.ruleForm
+                  })
+                } else {
+                  this.$message.error('提交失败，请稍后再试!')
+                  return false
+                }
+              })
+              .then(res => {
+                if (res.data.code === 1) {
+                  _this.nextStep = true
+                  _this.active++
+                  _this.checked = false
+                  console.log(res.data.data.ablumId)
+                  _this.ablumForm.albumId = res.data.data.ablumId
+                  console.log(_this.ruleForm)
+                } else {
+                  this.$message.error('提交失败，请稍后再试!')
+                  return false
+                }
+              }).catch(err => {
+                this.$message.error(err)
+              })
           }
         } else {
           this.$message.error('提交失败!!')
@@ -305,33 +331,38 @@ export default {
               })
               return false
             }
+            let cover = this.coverFile
+            let coverForm = new FormData()
+            coverForm.append('coverImage', cover)
             _this.$axios({
               method: 'post',
-              url: _this.upUrls.upCoverUrl,
-              data: _this.coverFile
-            }).then(res => {
-              if (res.data.code === 1) {
-                // 获取专辑封面
-                _this.ablumForm.cover = res.data.data
-                return _this.$axios({
-                  method: 'post',
-                  url: _this.upUrls.upSongUrl,
-                  data: _this.ablumForm
-                })
-              }
-            }).then(res => {
-              if (res.data.code === 1) {
-                console.log(res)
-                if (confirm('恭喜你完成上传，是否继续上传专辑歌曲？')) {
-                  // 清空部分表单
-                  _this.songName = ''
-                  return false
-                } else {
-                  _this.nextStep = true
-                  _this.active++
-                }
-              }
+              url: 'http://yayoutes.utools.club/setCover',
+              data: coverForm,
+              processData: false
             })
+              .then(res => {
+                if (res.data.code === 1) {
+                  // 获取专辑封面
+                  _this.ablumForm.cover = res.data.data
+                  return _this.$axios({
+                    method: 'post',
+                    url: _this.upUrls.upSongUrl,
+                    data: _this.ablumForm
+                  })
+                }
+              }).then(res => {
+                if (res.data.code === 1) {
+                  console.log(res)
+                  if (confirm('恭喜你完成上传，是否继续上传专辑歌曲？')) {
+                    // 清空部分表单
+                    _this.ablumForm.songName = ''
+                    return false
+                  } else {
+                    _this.nextStep = true
+                    _this.active++
+                  }
+                }
+              })
           }
         } else {
           console.log('提交失败，请重试！')
@@ -373,6 +404,10 @@ export default {
     }
   },
   mounted () {
+    let _this = this
+    _this.$axios.create({
+      withCredentials: true
+    })
     if (this.$route.meta.isNormol) {
       this.ablumCate = '编辑普通专辑信息'
     } else {

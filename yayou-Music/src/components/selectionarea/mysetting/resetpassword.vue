@@ -111,19 +111,19 @@ export default {
               phone: formName.phone,
               changPassword: formName.pass
             })
-            .then(res => {
-              if (res.data.errorCode === '1') {
-              } else {
-                if (res.data.msg) {
-                  this.$message.error(res.data.msg)
+              .then(res => {
+                if (res.data.errorCode === '1') {
                 } else {
-                  this.$message.error('请稍后尝试')
+                  if (res.data.msg) {
+                    this.$message.error(res.data.msg)
+                  } else {
+                    this.$message.error('请稍后尝试')
+                  }
                 }
-              }
-            })
-            .catch(err => {
-              console.log(err)
-            })
+              })
+              .catch(err => {
+                console.log(err)
+              })
           })
         } else {
           console.log('error submit!!')
