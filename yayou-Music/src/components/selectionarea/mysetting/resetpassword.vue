@@ -2,7 +2,7 @@
   <div class="resetpassword" >
     <el-breadcrumb separator-class="el-icon-arrow-right" style="margin:0 0 50px 0px;">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>我的设置</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'resetdefault' }">我的设置</el-breadcrumb-item>
       <el-breadcrumb-item>密码修改</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -11,18 +11,6 @@
       </el-form-item>
       <el-form-item label="确认密码" prop="checkPass" >
         <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" placeholder="再次输入新密码"></el-input>
-      </el-form-item>
-      <el-form-item label="手机号" prop="phone">
-        <el-input v-model.number="ruleForm.phone" placeholder="输入手机号"></el-input>
-      </el-form-item>
-      <el-form-item label="" prop="code">
-        <div class="input-div" v-show="ruleForm.phone">
-        <el-input maxlength="6" name="code" v-model.trim="ruleForm.code" placeholder="输入验证码" style="width:80px;display:inline-block;"></el-input>
-        <el-button @click="getCode(ruleForm.phone)" :disabled="!show" style="display:inline-block;">
-            <span v-show="show">获取验证码</span>
-            <span v-show="!show" class="count">{{count}}s后重新发送</span>
-        </el-button>
-        </div>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -34,23 +22,9 @@
 
 <script>
 import axios from 'axios'
-import qs from 'qs'
-const TIME_COUNT = 60
 /* 重新发送验证码的时间间隔 */
 export default {
   data () {
-    var checkPhone = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('电话号码不能为空'))
-      }
-      setTimeout(() => {
-        if (!(/^1[34578]\d{9}$/.test(value))) {
-          callback(new Error('请输入正确电话号码'))
-        } else {
-          callback()
-        }
-      }, 1000)
-    }
     var validatePass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入密码'))
@@ -71,18 +45,12 @@ export default {
       }
     }
     return {
-      show: true,
-      count: '',
-      timer: null,
       urls: {
-        changPassword: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/userInfo/changePassword',
-        getCode: ''
+        changPassword: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/userInfo/changePassword'
       },
       ruleForm: {
         pass: '',
-        checkPass: '',
-        phone: '',
-        code: ''
+        checkPass: ''
       },
       rules: {
         pass: [
@@ -90,9 +58,6 @@ export default {
         ],
         checkPass: [
           { validator: validatePass2, trigger: 'blur' }
-        ],
-        phone: [
-          { validator: checkPhone, trigger: 'blur' }
         ]
       }
     }
@@ -108,11 +73,11 @@ export default {
               _method: 'put'
             },
             data: JSON.stringify({
-              phone: formName.phone,
               changPassword: formName.pass
             })
               .then(res => {
                 if (res.data.errorCode === '1') {
+                  console.log()
                 } else {
                   if (res.data.msg) {
                     this.$message.error(res.data.msg)
@@ -133,39 +98,13 @@ export default {
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
-    },
-    getCode (phone) {
-      axios.post(this.urls.getCode, qs.stringify(phone))
-        .then(res => {
-          if (res.data.errorCode === '1') {
-          } else {
-            if (res.data.msg) {
-              this.$message.error(res.data.msg)
-            } else {
-              this.$message.error('请稍后尝试')
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-      if (!this.timer) {
-        this.count = TIME_COUNT
-        this.show = false
-        this.timer = setInterval(() => {
-          if (this.count > 0 && this.count <= TIME_COUNT) {
-            this.count--
-          } else {
-            this.show = true
-            clearInterval(this.timer)
-            this.timer = null
-          }
-        }, 1000)
-      }
     }
   }
 }
 </script>
 
-<style  scoped>
+<style lang='scss' scoped>
+.resetpassword{
+  height: 330px;
+}
 </style>

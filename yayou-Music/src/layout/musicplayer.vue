@@ -176,24 +176,30 @@ export default {
     },
     lastsong () {
       this.$refs.aplayer.skipBack()
-    },
-    mounted () {
-      let _this = this
-      // 获取id:this.$route.params.id 进行下一步操作
-      this.$axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/vip/playMusic')
-        .then(function (res) {
-          console.log(res.data.data.audio)
-          _this.songobj.url = res.data.data.audio
-          _this.songobj.name = res.data.data.songName
-          _this.songobj.cover = res.data.data.cover
-          _this.songobj.lrc = res.data.data.lyrText
-          _this.songobj.artist = res.data.data.artist
-          _this.tesobj.push(_this.songobj)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
     }
+  },
+  mounted () {
+    let _this = this
+    // 获取id:this.$route.params.id 进行下一步操作
+    console.log(1)
+    this.$axios({
+      method: 'get',
+      url: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/vip/playMusic',
+      params: {'songId': '1'}
+    })
+      .then(function (res) {
+        console.log(res)
+        _this.songobj.url = res.data.data.audio
+        _this.songobj.name = res.data.data.songName
+        _this.songobj.cover = res.data.data.cover
+        _this.songobj.lrc = res.data.data.lyrText
+        _this.songobj.artist = res.data.data.artist
+        _this.tesobj.push(_this.songobj)
+        console.log(_this.tesobj)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
   }
 
 }

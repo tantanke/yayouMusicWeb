@@ -8,7 +8,7 @@
         <el-step title="提交成功"></el-step>
       </el-steps>
     </div>
-    <div class="stepform" v-if="active == 0">
+    <div class="stepform" v-if="active == 0" element-loading-text="努力上传中，请不要刷新或关闭页面!" element-loading-spinner="el-icon-loading" v-loading="loadingAblum1">
    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
   <el-form-item label="专辑名称" prop="ablumName">
   <el-input v-model="ruleForm.ablumName" placeholder="请输入专辑名称"></el-input>
@@ -58,7 +58,7 @@
 </el-upload>
 </div>
     </div>
-  <div class="upload" v-if="active == 1">
+  <div class="upload" v-if="active == 1" element-loading-text="努力上传中，请不要刷新或关闭页面!" element-loading-spinner="el-icon-loading" v-loading="loadingSong1">
      <span class="title">上传专辑歌曲</span><span class='title2'>(如暂不需要加入歌曲可点击下一步按钮)</span>
      <el-divider class="line"></el-divider>
     <el-button style="margin-left: 35px;" @click="noMusicNext">下一步</el-button>
@@ -201,7 +201,9 @@ export default {
         upAblumUrl: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/newAlbum',
         upSongUrl: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/upSong',
         upCoverUrl: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/setCover'
-      }
+      },
+      loadingAblum: false,
+      loadingSong: false
     }
   },
   methods: {
@@ -217,6 +219,7 @@ export default {
           }
           if (confirm('确认提交吗？')) {
             // axios 发送请求获取封面链接 填入表单
+            this.loadingAblum = true
             let ablumCover = this.coverFile
             let coverForm = new FormData()
             coverForm.append('coverImage', ablumCover)
@@ -236,6 +239,7 @@ export default {
                     data: _this.ruleForm
                   })
                 } else {
+                  this.loadingAblum = false
                   this.$message.error('提交失败，请稍后再试!')
                   return false
                 }
@@ -247,12 +251,15 @@ export default {
                   _this.checked = false
                   console.log(res.data.data.ablumId)
                   _this.ablumForm.albumId = res.data.data.ablumId
+                  this.loadingAblum = false
                   console.log(_this.ruleForm)
                 } else {
+                  this.loadingAblum = false
                   this.$message.error('提交失败，请稍后再试!')
                   return false
                 }
               }).catch(err => {
+                this.loadingAblum = false
                 this.$message.error(err)
               })
           }
@@ -291,10 +298,10 @@ export default {
     },
     beforeUpMp3 (file, fileList) {
       let fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
-      const extension = fileType === 'png' && 'jpg'
+      const extension = fileType === 'mp3' && 'wav'
       if (!extension) {
         this.$message({
-          message: '上传文件只能是mp3格式！请删除后重选！',
+          message: '上传文件只能是mp3,wav格式！请删除后重选！',
           type: 'error'
         })
       } else {
@@ -330,6 +337,8 @@ export default {
                 type: 'error'
               })
               return false
+            } else {
+              this.loadingSong = true
             }
             let cover = this.coverFile
             let coverForm = new FormData()
@@ -352,6 +361,7 @@ export default {
                 }
               }).then(res => {
                 if (res.data.code === 1) {
+                  this.loadingSong = false
                   console.log(res)
                   if (confirm('恭喜你完成上传，是否继续上传专辑歌曲？')) {
                     // 清空部分表单
@@ -365,7 +375,8 @@ export default {
               })
           }
         } else {
-          console.log('提交失败，请重试！')
+          this.loadingSong = false
+          this.$message.error('提交失败，请重试！')
           return false
         }
       })
@@ -401,6 +412,15 @@ export default {
     },
     submitFileNew () { // 上传新建专辑音乐
 
+    }
+  },
+  computed: {
+    // 上传时载入图的管理
+    loadingSong1 () {
+      return this.loadingSong
+    },
+    loadingAblum1 () {
+      return this.loadingAblum
     }
   },
   mounted () {

@@ -37,9 +37,9 @@
                 <i class="el-icon-upload2"></i>
                 <span>播放歌手热门歌曲</span>
               </div>
-              <div class="focus">
-                <i class="el-icon-upload2"></i>
-                <span>导入歌单</span>
+              <div class="focus" @click="focus">
+                <i class="el-icon-plus"></i>
+                <span>关注21.0万</span>
               </div>
             </dd>
           </dl>
@@ -85,6 +85,10 @@
 export default {
   data () {
     return {
+      singerId: '',
+      urls: {
+        focus: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/subscribeSinger'
+      },
       songTableData: [
         {
           order: 1,
@@ -298,6 +302,35 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    focus () {
+      this.$axios.post(this.urls.focus, JSON.stringify({
+        singerId: this.singerId
+      }))
+        .then(res => {
+          console.log(res)
+          if (res.data.code === '1') {
+            this.$message({
+              message: res.data.msg,
+              type: 'success'
+            })
+          } else {
+            if (res.data.msg) {
+              this.$message.error(res.data.msg)
+            } else {
+              this.$message.error('请稍后尝试')
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  },
+  mounted: () => {
+    var _this = this
+    _this.singerId = this.$route.params.singerid
   }
 }
 </script>

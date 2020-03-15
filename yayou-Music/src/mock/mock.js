@@ -34,7 +34,7 @@ const upMusicData = function () {
     data: '图片的链接'}
   return articles
 } */
-const getAllAblumsData = function () {
+/* const getAllAblumsData = function () {
   let articles = {
     code: 1,
     msg: '请求成功',
@@ -53,11 +53,11 @@ const getAllAblumsData = function () {
       }
     ]}
   return articles
-}
+} */
 // 拦截ajax请求，配置mock的数据
 /* Mock.mock('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/upVideo', 'post', produceNewsData)
 Mock.mock('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/subMv', 'post', produceNewsData) */
 Mock.mock('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/newAlbum', 'post', ablumData)
 Mock.mock('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/upSong', 'post', upMusicData)
-Mock.mock('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/getSingerAlbum', 'get', getAllAblumsData)
+/* Mock.mock('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/getSingerAlbum', 'get', getAllAblumsData) */
 /* Mock.mock('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/setCover', 'post', coverUrl) */

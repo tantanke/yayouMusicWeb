@@ -121,7 +121,15 @@ export default {
       method: 'get',
       url: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/getSingerAlbum',
       // 这里的页码默认为一 singerId在路由中拿到
-      data: {singerId: 1, pageNum: 1}
+      params: {'singerId': 1, 'pageNum': 1}
+    }).then(res => {
+      console.log(res)
+    })
+    this.$axios({
+      method: 'get',
+      url: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/getSingerAlbum',
+      // 这里的页码默认为一 singerId在路由中拿到
+      params: {'singerId': 1, 'pageNum': 2}
     }).then(res => {
       console.log(res)
     })

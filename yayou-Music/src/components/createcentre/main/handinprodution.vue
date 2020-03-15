@@ -34,7 +34,7 @@
                 <el-option label="不是" value="0"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="音频文件" :label-width="formLabelWidth">
+            <el-form-item label="音频文件(mp3,wav)" :label-width="formLabelWidth">
               <el-upload
               ref="uploadAblumMusic"
               action="https://jsonplaceholder.typicode.com/posts/"
@@ -44,7 +44,7 @@
               <el-button slot="trigger"  type="primary">选取音频文件</el-button>
               </el-upload>
             </el-form-item>
-            <el-form-item label="歌词文件" :label-width="formLabelWidth">
+            <el-form-item label="歌词文件(lrc)" :label-width="formLabelWidth">
               <el-upload
               ref="uploadAblumWord"
               action="https://jsonplaceholder.typicode.com/posts/"
@@ -94,7 +94,7 @@
                 <el-option label="不是" value="0"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="视频文件" :label-width="formLabelWidth">
+            <el-form-item label="视频文件(mp4)" :label-width="formLabelWidth">
               <el-upload
               ref="uploadVideo"
               action="none"
@@ -184,7 +184,7 @@ export default {
       loadingMusic: false,
       dialogFormDraft: false,
       dialogFormAblum: false,
-      formLabelWidth: '120px',
+      formLabelWidth: '140px',
       // 两个单独上传文件路径
       upProgress: '', // 作为计算属性的载体
       upLoadMusicUrl: '',
@@ -238,8 +238,7 @@ export default {
     },
     checkTypeMusic (file, fileList) {
       let fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
-      const extension = fileType === 'mp3'
-      if (!extension) {
+      if (fileType !== 'mp3' && fileType !== 'wav') {
         this.$message({
           message: '上传文件只能是mp3格式！请删除后重选！',
           type: 'error'

@@ -11,7 +11,7 @@
         <ul>
           <router-link tag="li" class="firstpage" :to="{name:'index'}">首页</router-link>
           <router-link tag="li" class="personalC" :to="{name:'personalinfor'}">个人中心</router-link>
-          <router-link tag="li" class="cquestion" :to="{name:'personalinfor'}">常见问题</router-link>
+          <router-link tag="li" class="cquestion" :to="{name:'index'}">常见问题</router-link>
         </ul>
       </el-col>
       <el-col :span='6' :offset="1" class="rightp">
@@ -22,7 +22,7 @@
           <el-col :span='3' class="singerpic">
             <img src="../../assets/img/homePage/说比阿达.png" alt="">
             <ul>
-            <router-link tag="li" :to="{name:'setting'}"><i class="el-icon-s-custom"></i><span>我的信息</span></router-link>
+            <router-link tag="li" :to="{name:'resetmusician'}"><i class="el-icon-s-custom"></i><span>个人信息修改</span></router-link>
           </ul>
           </el-col>
           <el-col :span='5' class="singername">阿比达</el-col>
