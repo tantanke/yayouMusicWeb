@@ -1,6 +1,6 @@
 <template>
-  <div>
-      <aplayer :audio="musicobj" :lrcType="3" ref="aplayer"/>
+  <div class="musicplayer">
+      <aplayer :audio="tesobj" :lrcType="3" ref="aplayer" :listMaxHeight='750' />
       <div class="lastbtn"><i class="el-icon-d-arrow-left" @click="lastsong"></i></div>
       <div class="nextbtn"><i class="el-icon-d-arrow-right" @click="nextsong"></i></div>
   </div>
@@ -18,156 +18,7 @@ export default {
   data () {
     return {
       tesobj: [],
-      songobj: {},
-      musicobj: [
-        {
-          name: '东西（Cover：林俊呈）',
-          artist: '纳豆',
-          url: 'https://cdn.moefe.org/music/mp3/thing.mp3',
-          cover: 'https://p1.music.126.net/5zs7IvmLv7KahY3BFzUmrg==/109951163635241613.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/thing.lrc'
-        },
-        {
-          name: '响喜乱舞（Cover：MARiA）',
-          artist: '泠鸢yousa',
-          url: 'https://cdn.moefe.org/music/mp3/kyoukiranbu.mp3',
-          cover: 'https://p1.music.126.net/AUGVPQ_rVrngDH9ocQrn3Q==/109951163613037822.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kyoukiranbu.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        },
-        {
-          name: '啵唧',
-          artist: 'Hanser',
-          url: 'https://cdn.moefe.org/music/mp3/kiss.mp3',
-          cover: 'https://p1.music.126.net/K0-IPcIQ9QFvA0jXTBqoWQ==/109951163636756693.jpg?param=300y300', // prettier-ignore
-          lrc: 'https://cdn.moefe.org/music/lrc/kiss.lrc'
-        }
-      ]
+      songobj: {}
     }
   },
   methods: {
@@ -181,25 +32,51 @@ export default {
   mounted () {
     let _this = this
     // 获取id:this.$route.params.id 进行下一步操作
-    console.log(1)
-    this.$axios({
-      method: 'get',
-      url: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/vip/playMusic',
-      params: {'songId': '1'}
-    })
-      .then(function (res) {
-        console.log(res)
-        _this.songobj.url = res.data.data.audio
-        _this.songobj.name = res.data.data.songName
-        _this.songobj.cover = res.data.data.cover
-        _this.songobj.lrc = res.data.data.lyrText
-        _this.songobj.artist = res.data.data.artist
-        _this.tesobj.push(_this.songobj)
-        console.log(_this.tesobj)
+    let songId = _this.$route.songId
+    let isVip = _this.$router.isVip
+    if (isVip) {
+      this.$axios({
+        method: 'get',
+        url: '/api/vip/playMusic',
+        params: {'songId': songId}
       })
-      .catch(function (error) {
-        console.log(error)
+        .then(function (res) {
+          if (res.data.code === 1) {
+            _this.songobj.url = res.data.data.audio
+            _this.songobj.name = res.data.data.songName
+            _this.songobj.cover = res.data.data.cover
+            _this.songobj.lrc = res.data.data.lyrText
+            _this.songobj.artist = res.data.data.artist
+            _this.tesobj.push(_this.songobj)
+          } else {
+            _this.$message.error('系统繁忙，请刷新后重试')
+          }
+        })
+        .catch(() => {
+          _this.$message.error('系统繁忙，请刷新后重试')
+        })
+    } else {
+      this.$axios({
+        method: 'get',
+        url: '/api/playMusic',
+        params: {'songId': songId}
       })
+        .then(function (res) {
+          if (res.data.code === 1) {
+            _this.songobj.url = res.data.data.audio
+            _this.songobj.name = res.data.data.songName
+            _this.songobj.cover = res.data.data.cover
+            _this.songobj.lrc = res.data.data.lyrText
+            _this.songobj.artist = res.data.data.artist
+            _this.tesobj.push(_this.songobj)
+          } else {
+            _this.$message.error('系统繁忙，请刷新后重试')
+          }
+        })
+        .catch(() => {
+          _this.$message.error('系统繁忙，请刷新后重试')
+        })
+    }
   }
 
 }
@@ -207,6 +84,7 @@ export default {
 
 <style lang="scss">
 .aplayer{
+  background-color: #FFFAFA;
   .aplayer-body{
     .aplayer-pic{
       .aplayer-pause{
