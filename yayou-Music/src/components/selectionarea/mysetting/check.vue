@@ -29,9 +29,8 @@ export default {
     }
     return {
       msg: '',
-      username: '',
       urls: {
-        submitUrl: ''
+        submitUrl: '/api/confirmPassword'
       },
       ruleForm: {
         pass: ''
@@ -48,7 +47,6 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$axios.post(this.urls.submitUrl, JSON.stringify({
-            username: this.username,
             password: formName.pass
           }))
             .then(res => {
@@ -82,7 +80,6 @@ export default {
   mounted: function () {
     var _this = this
     _this.msg = this.$route.params.msg
-    _this.username = this.$route.params.username
     console.log(this.msg)
   }
 }

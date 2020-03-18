@@ -110,14 +110,25 @@
 
 <script>
 /* import * as videoplayer from '../../../../static/qiniuvideo' */
+let tAxios = this.$axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = localStorage.getItem('Authorization')
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 export default {
   data () {
     return {
       remarktextarea: '',
       show: true,
       urls: {
-        collection: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/addVideoToCollection',
-        discollection: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/unCollectVideo'
+        collection: '/api/user/addVideoToCollection',
+        discollection: '/api/user/unCollectVideo'
       },
       videoInfo: {
         videoId: '001',
@@ -154,7 +165,7 @@ export default {
     handleCollection (e) {
       e.collectionStyle = !e.collectionStyle
       if (e.collectionStyle) {
-        this.$axios.post(this.urls.collection, JSON.stringify(e.videoId))
+        tAxios.post(this.urls.collection, JSON.stringify(e.videoId))
           .then(res => {
             console.log(res)
             if (res.data.code === '1') {
@@ -174,7 +185,7 @@ export default {
             console.log(err)
           })
       } else {
-        this.$axios({
+        tAxios({
           url: this.urls.discollection,
           method: 'post',
           params: {

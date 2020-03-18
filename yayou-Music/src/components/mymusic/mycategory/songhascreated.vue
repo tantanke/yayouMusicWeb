@@ -15,7 +15,11 @@
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
-                title="点击上传图片">
+                title="点击上传图片"
+                v-loading="loadingCover"
+                element-loading-text="拼命加载中"
+                element-loading-spinner="el-icon-loading"
+                element-loading-background="rgba(0, 0, 0, 0.8)">
                 <img v-if="imageUrl" :src="imageUrl" class="avatar">
                 <div v-else>
                   <i class="el-icon-plus avatar-uploader-icon"></i><span >选择一张本地图片</span>
@@ -78,14 +82,27 @@
 </template>
 
 <script>
+import axios from 'axios'
+let tAxios = axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = localStorage.getItem('Authorization')
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 export default {
   data () {
     return {
+      loadingCover: false,
       imageUrl: '',
       disabled: true,
       urls: {
-        uploadCover: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/setCover',
-        uploadSonglist: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/createSongList'
+        uploadCover: '/api/setCover',
+        uploadSonglist: '/api/user/createSongList'
       },
       form: {
         file: ''
@@ -127,10 +144,11 @@ export default {
   },
   methods: {
     handleAvatarSuccess (res, file) {
+      this.loadingCover = false
       this.imageUrl = URL.createObjectURL(file)
     },
     beforeAvatarUpload (file) {
-      this.imageUrl = URL.createObjectURL(file)
+      this.loadingCover = true
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
       if (!isJPG) {
@@ -143,10 +161,10 @@ export default {
     },
     uploadFile () {
       // this.$refs.upload.submit()
-      this.disabled = false // xiugai
+      this.disabled = false
       let formData = new FormData()
       formData.append('file', this.form.file)
-      this.$axios.post(this.urls.uploadCover,
+      tAxios.post(this.urls.uploadCover,
         formData,
         {'Content-Type': 'multipart/form-data'}
       )
@@ -154,7 +172,11 @@ export default {
           console.log('res')
           console.log(res)
           if (res.data.code === 1) {
+            this.formData.cover = res.data.data
             this.disabled = false
+          } else if (res.data.code === '401') {
+            localStorage.removeItem('Authorization')
+            this.$router.push('/login')
           }
         })
         .catch(err => {
@@ -162,7 +184,7 @@ export default {
         })
     },
     submitSonglist (formData) {
-      this.$axios.post(this.urls.uploadSonglist, JSON.stringify({
+      tAxios.post(this.urls.uploadSonglist, JSON.stringify({
         cover: formData.cover,
         introduce: formData.introduce,
         songListName: formData.name

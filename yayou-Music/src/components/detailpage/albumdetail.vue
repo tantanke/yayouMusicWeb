@@ -98,14 +98,25 @@
 import axios from 'axios'
 import qs from 'qs'
 // axios.defaults.headers.delete['Content-Type'] = 'text/plain'
+let tAxios = axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = localStorage.getItem('Authorization')
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 export default {
   data () {
     return {
       urls: {
-        collectionMusic: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/addMusicToCollection',
-        discollectionMusic: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/unCollectSong',
-        songAgreeUrl: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/likeSong',
-        songDisagreeUrl: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user//cancelLike'
+        collectionMusic: '/api/user/addMusicToCollection',
+        discollectionMusic: '/api/user/unCollectSong',
+        songAgreeUrl: '/api/user/likeSong',
+        songDisagreeUrl: '/api/user//cancelLike'
       },
       playShow: true,
       show: true,
@@ -200,7 +211,7 @@ export default {
     handleCollection (e) {
       e.collectionStyle = !e.collectionStyle
       if (e.agreeStyle) {
-        axios.post(this.urls.collectionMusic, qs.stringify(e.songId))
+        tAxios.post(this.urls.collectionMusic, qs.stringify(e.songId))
           .then(res => {
             console.log(res)
             if (res.data.code === '1') {
@@ -220,7 +231,7 @@ export default {
             console.log(err)
           })
       } else {
-        axios.request({
+        tAxios.request({
           url: this.urls.discollectionMusic,
           method: 'post',
           params: {
@@ -251,7 +262,7 @@ export default {
     handleSongAgree (e) {
       e.agreeStyle = !e.agreeStyle
       if (e.agreeStyle) {
-        axios.post(this.urls.songAgreeUrl, qs.stringify(e.songId))
+        tAxios.post(this.urls.songAgreeUrl, qs.stringify(e.songId))
           .then(res => {
             console.log(res)
             if (res.data.code === '1') {
@@ -272,7 +283,7 @@ export default {
             console.log(err)
           })
       } else {
-        axios.request({
+        tAxios.request({
           url: this.urls.songDisagreeUrl,
           method: 'post',
           params: {

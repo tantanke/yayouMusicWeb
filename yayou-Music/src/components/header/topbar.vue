@@ -52,11 +52,15 @@ export default {
       },
       isnotLogin: false, // 这里后期可以使用导航守卫进行判断是否登陆
       createdRouter: 'registermusician', // 配置创作者中心路由
-      isSinger: true // 判断是否注册音乐人
+      isSinger: false // 判断是否注册音乐人
     }
   },
   methods: {
     judge () {
+      let token = localStorage.getItem('Authorization')
+      if (token === 'null' || token === '') {
+        this.isSinger = false
+      }
       if (this.isnotLogin) {
         this.createdRouter = 'index'
         this.$message.error('未登录')

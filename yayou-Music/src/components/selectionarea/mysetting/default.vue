@@ -5,8 +5,9 @@
       <el-breadcrumb-item >我的设置</el-breadcrumb-item>
     </el-breadcrumb>
     <ul>
-      <router-link :to="{name: 'resetcheck', params:{msg: 'resetpassword',username: this.username}}"><el-button>修改密码</el-button></router-link>
+      <router-link :to="{name: 'resetcheck', params:{msg: 'resetpassword'}}"><el-button>修改密码</el-button></router-link>
       <router-link :to="{name: 'resetcheck', params:{msg: 'resetphone'}}"><el-button>修改电话</el-button></router-link>
+      <router-link :to="{name: 'resetheadimg'}"><el-button>修改头像</el-button></router-link>
     </ul>
   </div>
 </template>
@@ -17,10 +18,6 @@ export default {
     return {
       username: ''
     }
-  },
-  mounted: () => {
-    var _this = this
-    _this.username = this.$route.params.username
   }
 }
 </script>
