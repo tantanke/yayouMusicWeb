@@ -54,9 +54,7 @@ export default {
   },
   methods: {
     putdatain () {
-      if (this.$route.params.input !== ' ') {
-        document.getElementById('p1').value = this.$route.params.input
-      }
+      document.getElementById('p1').value = this.$route.params.input
       Bus.$on('inputVal', (data) => {
         console.log(data)
         document.getElementById('p1').value = data

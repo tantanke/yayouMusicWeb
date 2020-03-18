@@ -9,21 +9,21 @@
       </div>
     </el-row>
     <el-row class="pic">
-      <div class="allSong" v-for="(item,i) in num" :key="i">
+      <div class="allSong" v-for="i in 5" :key="i"> <!--这个循环等接口写好了要好好看看-->
         <div>
           <img src="../../assets/img/homePage/彝族音乐榜.png" alt />
         </div>
-        <ul v-for="(item,i) in allSong" :key="i">
+        <ul>
           <li>
-            <p>1&ensp;{{item.songName}}</p>
-            <span>{{item.singerName}}</span>
-          </li>
-          <li>
-             <p>2&ensp;面朝大海</p>
+            <p>1&ensp;面朝大海</p>
             <span>南瑶乐队</span>
           </li>
           <li>
-             <p>3&ensp;面朝大海</p>
+            <p>2&ensp;面朝大海</p>
+            <span>南瑶乐队</span>
+          </li>
+          <li>
+            <p>3&ensp;面朝大海</p>
             <span>南瑶乐队</span>
           </li>
           <li>
@@ -40,12 +40,7 @@ import axios from 'axios'
 export default {
   data () {
     return {
-      allSong: [],
-      newSong: [],
-      movie: [],
-      search: [],
-      rap: [],
-      num: []
+      allSong: []
     }
   },
   methods: {
@@ -57,8 +52,6 @@ export default {
       res = res.data
       if (res.code === 1) {
         this.allSong = res.data.allSong
-        this.num = res.data.num
-        console.log(this.num)
       }
     }
   },

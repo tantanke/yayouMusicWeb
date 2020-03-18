@@ -14,13 +14,13 @@
         </ul>
       </el-col>
       <el-col :span="6" class="yy-topsearch" id="topsearch"><!--这个id值是用来触发鼠标enter（键值为13）键的 @keyup.enter.native="entersearch" -->
-        <el-input v-model="topInfo.inputValue" placeholder="音乐、电影、商城、音乐人"></el-input>
+        <el-input v-model="topInfo.inputValue" placeholder="音乐、电影、商城、音乐人" @keyup.enter.native="entersearch"></el-input>
         <router-link tag="i" class="el-icon-search" @click.native="firstPageSearch()" :to="{name:'search',params:{val:this.topInfo.inputValue}}"></router-link>
       </el-col>
       <el-col :span="3" class="yy-login">
         <div v-if="isnotLogin">
           <el-dialog title="账号密码登陆" :visible.sync="dialogTableVisible" center :append-to-body='true' :lock-scroll='false' width="20%">
-            <dia-log></dia-log>
+            <dia-log v-bind:isnotLogin = "isnotLogin" v-on:success = "success(res)"></dia-log>
           </el-dialog>
           <span round @click="submitForm()" class='login'>登录</span>
         </div>
@@ -29,7 +29,7 @@
           <ul>
             <router-link tag='li' class="active" :to="{name:'myMusic'}"><i class="el-icon-user"></i><span>个人中心</span></router-link>
             <li><i class="el-icon-chat-dot-round"></i><span>我的消息</span></li>
-            <li><i class="el-icon-s-custom"></i><span>我的设置</span></li>
+            <router-link tag="li" :to="{name:'setting'}"><i class="el-icon-s-custom"></i><span>我的设置</span></router-link>
             <router-link tag='li' :to="{name:'member'}"><i class="el-icon-service"></i><span>VIP会员</span></router-link>
             <li><i class="el-icon-s-order"></i><span>我的收藏</span></li>
             <li><i class="el-icon-lollipop"></i><span>我的歌单</span></li>
@@ -66,10 +66,13 @@ export default {
         navList: ['我的发现', '我的音乐', '视频', '商城', '音乐人', '彝汉切换'],
         inputValue: ''
       },
-      isnotLogin: true // 这里后期可以使用导航守卫进行判断是否登陆
+      isnotLogin: true // 利用父子组件传值
     }
   },
   methods: {
+    success (res) {
+      this.isnotLogin = res
+    },
     changeLangEvent () {
     },
     submitForm () {
@@ -94,16 +97,14 @@ export default {
           }
         })
           .then(this.getSearchResult)
-        if (this.topInfo.inputValue !== ' ') {
-          this.$router.push({name: 'search', params: {input: this.topInfo.inputValue, val: this.topInfo.inputValue, define: '1'}})
-        }
+        this.$router.push({name: 'search', params: {input: this.topInfo.inputValue, val: this.topInfo.inputValue}})
       }
     },
     firstPageSearch () {
       var val = this.topInfo.inputValue
       Bus.$emit('inputVal', val)
       axios({
-        url: 'http://yayoutest.utools.club/search',
+        url: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/search',
         method: 'post',
         params: {
           'value': this.inputValue,

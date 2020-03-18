@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import defaultPage from '@/layout/default.vue'
+import createCentre from '@/layout/createcentre.vue'
+import musicPlayer from '@/layout/musicplayer.vue'
 import Find from '@/page/find.vue'
 import Movie from '@/page/movie.vue'
 import Shop from '@/page/shop.vue'
@@ -8,12 +10,13 @@ import Singer from '@/page/singer.vue'
 import MyMusic from '@/page/mymusic.vue'
 import member from '@/page/member.vue'
 import search from '@/page/search.vue'
+import Mysetting from '@/components/selectionarea/mysetting.vue'
+
 // 一级路由直接加载 之后的子路由全部使用懒加载
 Vue.use(Router)
 export default new Router({
   mode: 'history',
   routes: [{
-
     path: '/',
     name: 'defaultPage',
     component: defaultPage,
@@ -136,6 +139,94 @@ export default new Router({
       path: '/search/:val',
       name: 'search',
       component: search
+    }, {
+      path: '/createcentre',
+      name: 'createCentre',
+      redirect: '/createcentre/firstpage',
+      component: createCentre,
+      children: [{
+        path: '/createcentre/dutycentre',
+        name: 'dutycentre',
+        component: () => import('@/components/createcentre/main/dutycentre.vue')
+      }, {
+        path: '/createcentre/fanscentre',
+        name: 'fanscentre',
+        component: () => import('@/components/createcentre/main/fanscentre.vue')
+      }, {
+        path: '/createcentre/createablum',
+        name: 'createablum',
+        component: () => import('@/components/createcentre/main/createablum.vue'),
+        beforeEnter: (to, from, next) => { // 限制该路由的进入
+          if (from.meta.fromhand) {
+            if (from.meta.isNormol) {
+              to.meta.isNormol = true
+            } else {
+              to.meta.isNormol = false
+            }
+            next()
+          } else {
+            next('/createcentre/handinprodution')
+          }
+        },
+        meta: {isNormol: false}
+      }, {
+        path: '/createcentre/handinprodution',
+        name: 'handinprodution',
+        component: () => import('@/components/createcentre/main/handinprodution.vue'),
+        meta: { isNormol: true,
+          fromhand: true}
+      }, {
+        path: '/createcentre/mymoney',
+        name: 'mymoney',
+        component: () => import('@/components/createcentre/main/mymoney.vue')
+      }, {
+        path: '/createcentre/remark',
+        name: 'remark',
+        component: () => import('@/components/createcentre/main/remark.vue')
+      }, {
+        path: '/createcentre/songnum',
+        name: 'createsongnum',
+        component: () => import('@/components/createcentre/main/songnum.vue')
+      }, {
+        path: '/createcentre/personalinfor',
+        name: 'personalinfor',
+        component: () => import('@/components/createcentre/header/personalinfor.vue')
+      }, {
+        path: '/createcentre/managemusic',
+        name: 'managemusic',
+        component: () => import('@/components/createcentre/main/managemusic.vue')
+      }]
+    }, {
+      /* path: '/musicplayer/:songId', */ // 动态路由歌曲id
+      path: '/musicplayer',
+      name: 'musicplayer',
+      component: musicPlayer
+    }, {
+      path: '/songlistdetail/:songlistid',
+      name: 'songlistdetail',
+      component: () => import('@/components/mymusic/songlistdetail.vue')
+    }, {
+      path: '/songlistdetail/songdetail/:songid',
+      name: 'songdetail', // 测试用的之后要重新更改路由
+      component: () => import('@/components/mymusic/songdetail.vue')
+    }, {
+      path: '/setting',
+      name: 'setting',
+      redirect: '/setting/resetheadimg',
+      component: Mysetting,
+      children: [{
+        path: '/setting/resetphone',
+        name: 'resetphone',
+        component: () => import('@/components/selectionarea/mysetting/resetphone.vue')
+      }, {
+        path: '/setting/resetpassword',
+        name: 'resetpassword',
+        component: () => import('@/components/selectionarea/mysetting/resetpassword.vue')
+      }, {
+        path: '/setting/resetheadimg',
+        name: 'resetheadimg',
+        component: () => import('@/components/selectionarea/mysetting/resetheadimg.vue')
+      }]
     }]
   }]
 })

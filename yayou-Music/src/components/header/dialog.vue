@@ -7,14 +7,8 @@
     </el-form-item>
     <el-form-item prop="checkPass">
       <el-input placeholder="请输入密码" v-model="ruleForm.checkPass" autocomplete="off" type="">
-        <template slot="prepend" ><i class="el-icon-mobile"></i></template>
+        <template slot="prepend" ><i class="el-icon-edit-outline"></i></template>
       </el-input>
-    </el-form-item>
-    <el-form-item style="height: 40px;margin-bottom: 20px;">
-      <el-input class="input" maxlength="8" placeholder="请输入验证码" v-model="ruleForm.input"></el-input>
-      <div class="divIdentifyingCode" @click="getIdentifyingCode(true)">
-        <img id="imgIdentifyingCode" src="" maxlength="4"  style="height:40px; width: 98px; cursor: pointer; padding-left:20px; border-radius:4px;"/>
-      </div>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm('ruleForm')" size="medium" class="login1">登录</el-button>
@@ -28,7 +22,7 @@
     </el-form-item>
     <el-form-item class="others">
       <el-row :gutter="14">
-        <el-col :span="6" class="ic"><el-button type="primary" icon="el-icon-edit" circle class="one grid-content bg-purple"></el-button></el-col>
+        <el-col :span="6" class="ic"><el-button type="primary" icon="el-icon-edit-outline" circle class="one grid-content bg-purple"></el-button></el-col>
         <el-col :span="6" class="ic"><el-button type="primary" icon="el-icon-edit" circle class="one grid-content bg-purple"></el-button></el-col>
         <el-col :span="6" class="ic"><el-button type="primary" icon="el-icon-edit" circle class="one grid-content bg-purple"></el-button></el-col>
       </el-row>
@@ -38,6 +32,7 @@
 <script>
 import axios from 'axios'
 export default {
+  props: ['isnotLogin'],
   name: 'DiaLog',
   data () {
     /** 判断输入手机号的对错和有么有 */
@@ -56,18 +51,10 @@ export default {
         callback()
       }
     }
-    var validatePass1 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入验证码'))
-      } else {
-        callback()
-      }
-    }
     return {
       ruleForm: {
         pass: '',
-        checkPass: '',
-        input: ''
+        checkPass: ''
       },
       rules: {
         pass: [
@@ -75,65 +62,11 @@ export default {
         ],
         checkPass: [
           { validator: validatePass2, trigger: 'blur' }
-        ],
-        input: [
-          { validator: validatePass1, trigger: 'blur' }
         ]
       }
     }
   },
   methods: {
-    /** 登录界面刚被渲染的时候向后端请求的接口 */
-    getHomeInfo () {
-      axios({
-        method: 'get',
-        url: 'http://yayoutest.utools.club/getImageCode',
-        timeout: 5000,
-        responseType: 'blob'
-      }).then((response) => {
-        console.log(response)
-        console.log(response.headers.uuid)
-        if (response.status === 200) {
-          let blob = response.data
-          console.log(blob)
-          var reader = new FileReader()
-          reader.readAsDataURL(blob)
-          reader.onload = (e) => {
-            let objs = document.getElementById('imgIdentifyingCode')
-            objs.src = e.target.result
-          }
-        }
-      })
-      /**
-        axios.get('http://yayoutest.utools.club/getImageCode')
-        .then(function (response) {
-          let uuidCode = response.headers.uuid
-          console.log(response.headers.cookie)
-          var storage = localStorage
-          var d = uuidCode
-          storage.setItem('data', d)
-        })
-      let identifyCodeSrc = ' http://yayoutest.utools.club/getImageCode'
-      let objs = document.getElementById('imgIdentifyingCode')
-      objs.src = identifyCodeSrc */
-    },
-    /** 点击刷新验证码的时候的函数 */
-    getIdentifyingCode: function (bRefresh) {
-      let identifyCodeSrc = ' http://yayoutest.utools.club/getImageCode '
-      if (bRefresh) {
-        identifyCodeSrc = ' http://yayoutest.utools.club/getImageCode? ' + Math.random()
-        axios.get('http://yayoutest.utools.club/getImageCode')
-          .then(function (response) {
-            let uuidCode = response.headers.uuid
-            console.log(response.headers.uuid)
-            var storage = localStorage
-            var d = uuidCode
-            storage.setItem('data', d)
-          })
-      }
-      let objs = document.getElementById('imgIdentifyingCode')
-      objs.src = identifyCodeSrc
-    },
     /**
      * 点击登录的函数
      */
@@ -144,16 +77,18 @@ export default {
         method: 'post',
         params: {
           'phone': this.ruleForm.pass,
-          'password': this.ruleForm.checkPass,
-          'code': this.ruleForm.input
+          'password': this.ruleForm.checkPass
         }
       })
         .then(this.getCodeAndpostData)
     },
     getCodeAndpostData (res) {
+      console.log(res.headers.authorization)
+      localStorage.setItem('Authorization', res.headers.authorization)
       res = res.data
       if (res.code === 1) {
         alert(res.msg)
+        this.$emit('success', false)
       } else if (res.code === 50002) {
         alert(res.msg)
       } else if (res.code === 50001) {
@@ -162,9 +97,6 @@ export default {
         alert('验证码有误，请重新输入')
       }
     }
-  },
-  mounted () {
-    this.getHomeInfo()
   }
 }
 </script>

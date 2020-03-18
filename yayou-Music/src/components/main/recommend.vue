@@ -9,8 +9,8 @@
         </div>
     </el-row>
     <el-row class="box">
-        <img src="https://s2.ax1x.com/2020/02/28/3Dkp5T.jpg" class="img" alt="">
-        <img src="https://s2.ax1x.com/2020/02/28/3Dkp5T.jpg" class="img" alt="">
+        <img src="https://s2.ax1x.com/2020/02/28/3Dkp5T.jpg" class="img1" alt="">
+        <img src="https://s2.ax1x.com/2020/02/28/3Dkp5T.jpg" class="img2" alt="">
     </el-row>
   </div>
 </template>
@@ -43,13 +43,20 @@ export default {
 </script>
 
 <style>
-  .img{
+  .img1{
     width: 580px;
-    height: 230px;
+    height: 260px;
+    border: 1px solid red;
+    padding-right: 60px!important;
+  }
+  .img2{
+    width: 570px;
+    height: 260px;
+    border: 1px solid blue;
   }
   .jc-recommend{
     width: 1300px;
-    height: 280px;
+    height: 320px;
     overflow: hidden;
   }
 </style>

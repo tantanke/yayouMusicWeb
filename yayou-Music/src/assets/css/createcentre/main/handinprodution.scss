@@ -1,0 +1,57 @@
+$choicedColor:#fe4857 !global;
+@mixin ellipsis() {
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.compose-class{
+  margin-top: 50px;
+  .compose-class-header{
+    p{
+      margin-left: 20px;
+      font-size: 18px;
+    }
+  }
+  .compose-class-main{
+    margin-left: 70px;
+    &:after{
+      content: "";
+        display: block;
+        height: 0;
+        clear:both;
+        visibility: hidden;
+    }
+    .common-style-one{
+      cursor: pointer;
+      float: left;
+      border: 1px solid #D9D9D9;
+      width: 620px;
+      margin-right: 80px;
+      height: 400px;
+      img{
+        position: relative;
+        top: 90px;
+        left: 180px;
+      }
+    }
+    .upButtons{
+      padding-top: 450px;
+      padding-bottom: 120px;
+      .el-button{
+        height: 150px;
+        width: 360px;
+        margin-right: 104px;
+        font-size: 22px;
+      }
+    }
+   
+  }
+  .compose-class-footer{
+    width:100%;
+    height:20px;
+    font-size:14px;
+    line-height:20px;
+    text-align: center;
+    color:#999;
+  }
+}
