@@ -13,7 +13,7 @@
       <el-col :span="2" :offset="7">
         <el-upload
           class="avatar-uploader"
-          action="http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/image/setHeadImage"
+          action="/api/image/setHeadImage"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"

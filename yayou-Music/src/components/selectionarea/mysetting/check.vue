@@ -30,7 +30,7 @@ export default {
     return {
       msg: '',
       urls: {
-        submitUrl: ''
+        submitUrl: '/api/confirmPassword'
       },
       ruleForm: {
         pass: ''

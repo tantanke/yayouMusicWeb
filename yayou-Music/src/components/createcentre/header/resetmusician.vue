@@ -110,8 +110,8 @@ export default {
       loadingHeadImg: false,
       active: 0,
       urls: {
-        uploadeForm: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/singer/editSingerInfo',
-        uploadephoto: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/upImg'
+        uploadeForm: '/api/singer/editSingerInfo',
+        uploadephoto: '/api/upImg'
       },
       ruleForm: {
         singerName: '',

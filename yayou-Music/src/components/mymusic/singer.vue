@@ -99,7 +99,7 @@ export default {
     return {
       singerId: '',
       urls: {
-        focus: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/subscribeSinger'
+        focus: '/api/user/subscribeSinger'
       },
       songTableData: [
         {

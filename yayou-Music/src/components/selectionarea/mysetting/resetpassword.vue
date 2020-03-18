@@ -56,7 +56,7 @@ export default {
     }
     return {
       urls: {
-        changPassword: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/userInfo/changePassword'
+        changPassword: '/api/userInfo/changePassword'
       },
       ruleForm: {
         pass: '',

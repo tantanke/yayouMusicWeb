@@ -101,8 +101,8 @@ export default {
       imageUrl: '',
       disabled: true,
       urls: {
-        uploadCover: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/setCover',
-        uploadSonglist: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/createSongList'
+        uploadCover: '/api/setCover',
+        uploadSonglist: '/api/user/createSongList'
       },
       form: {
         file: ''

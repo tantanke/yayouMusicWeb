@@ -56,7 +56,7 @@ export default {
     }
     return {
       urls: {
-        changPhone: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/userInfo/changePhone'
+        changPhone: '/api/userInfo/changePhone'
       },
       ruleForm: {
         username: '',
