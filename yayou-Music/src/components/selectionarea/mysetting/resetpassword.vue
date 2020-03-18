@@ -22,7 +22,17 @@
 
 <script>
 import axios from 'axios'
-/* 重新发送验证码的时间间隔 */
+let tAxios = axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = localStorage.getItem('Authorization')
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 export default {
   data () {
     var validatePass = (rule, value, callback) => {
@@ -66,7 +76,7 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          axios.request({
+          tAxios({
             url: this.urls.changPassword,
             method: 'post',
             params: {
@@ -77,7 +87,14 @@ export default {
             })
               .then(res => {
                 if (res.data.errorCode === '1') {
+                  this.$message({
+                    message: res.data.msg,
+                    type: 'success'
+                  })
                   console.log()
+                } else if (res.data.code === '401') {
+                  localStorage.removeItem('Authorization')
+                  this.$router.push('/login')
                 } else {
                   if (res.data.msg) {
                     this.$message.error(res.data.msg)

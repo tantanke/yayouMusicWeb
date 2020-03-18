@@ -82,6 +82,18 @@
 </template>
 
 <script>
+import axios from 'axios'
+let tAxios = axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = localStorage.getItem('Authorization')
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 export default {
   data () {
     return {
@@ -305,7 +317,7 @@ export default {
   },
   methods: {
     focus () {
-      this.$axios.post(this.urls.focus, JSON.stringify({
+      tAxios.post(this.urls.focus, JSON.stringify({
         singerId: this.singerId
       }))
         .then(res => {
@@ -315,6 +327,9 @@ export default {
               message: res.data.msg,
               type: 'success'
             })
+          } else if (res.data.code === '401') {
+            localStorage.removeItem('Authorization')
+            this.$router.push('/login')
           } else {
             if (res.data.msg) {
               this.$message.error(res.data.msg)

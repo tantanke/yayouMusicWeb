@@ -7,7 +7,7 @@
     </el-breadcrumb>
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
   <el-form-item label="手机号" prop="phone">
-    <el-input v-model.number="ruleForm.phone" placeholder="输入手机号"></el-input>
+    <el-input v-model.number="ruleForm.phone" placeholder="输入新手机号"></el-input>
   </el-form-item>
   <el-form-item label="" prop="code">
     <div class="input-div" v-show="ruleForm.phone">
@@ -28,8 +28,17 @@
 
 <script>
 import axios from 'axios'
-import qs from 'qs'
-const TIME_COUNT = 60
+let tAxios = axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = localStorage.getItem('Authorization')
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 /* 重新发送验证码的时间间隔 */
 export default {
   data () {
@@ -45,46 +54,17 @@ export default {
         }
       }, 1000)
     }
-    var validateUsername = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入账号'))
-      } else {
-        if (this.ruleForm.checkPass !== '') {
-          this.$refs.ruleForm.validateField('checkPass')
-        }
-        callback()
-      }
-    }
-    var validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else {
-        callback()
-      }
-    }
     return {
-      show: true,
-      count: '',
-      timer: null,
       urls: {
-        getCode: '',
         changPhone: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/userInfo/changePhone'
       },
       ruleForm: {
         username: '',
-        checkPass: '',
-        newphone: '',
-        code: ''
+        newphone: ''
       },
       rules: {
-        username: [
-          { validator: validateUsername, trigger: 'blur' }
-        ],
-        checkPass: [
-          { validator: validatePass2, trigger: 'blur' }
-        ],
         phone: [
-          { validator: checkAge, trigger: 'blur' }
+          {validator: checkAge, trigger: 'blur', require: 'true'}
         ]
       }
     }
@@ -94,13 +74,16 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(valid)
-          axios.post(this.urls.changPhone, qs.stringify(formName.newphone))
+          tAxios.post(this.urls.changPhone, JSON.stringify({newphone: formName.newphone}))
             .then(res => {
               if (res.data.errorCode === '1') {
                 this.$message({
                   message: res.data.msg,
                   type: 'success'
                 })
+              } else if (res.data.code === '401') {
+                localStorage.removeItem('Authorization')
+                this.$router.push('/login')
               } else {
                 if (res.data.msg) {
                   this.$message.error(res.data.msg)
@@ -118,34 +101,6 @@ export default {
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
-    },
-    getCode (phone) {
-      axios.post('this.urls.getCode', qs.stringify(phone))
-        .then(res => {
-          if (res.data.errorCode === '0') {
-            console.log('文件上传成功')
-          } else {
-            if (res.data.errorMessage) {
-              console.log(res.data.errorMessage)
-            } else {
-              console.log('文件上传失败')
-            }
-          }
-        })
-        .catch(err => { console.log(err) })
-      if (!this.timer) {
-        this.count = TIME_COUNT
-        this.show = false
-        this.timer = setInterval(() => {
-          if (this.count > 0 && this.count <= TIME_COUNT) {
-            this.count--
-          } else {
-            this.show = true
-            clearInterval(this.timer)
-            this.timer = null
-          }
-        }, 1000)
-      }
     }
   }
 }

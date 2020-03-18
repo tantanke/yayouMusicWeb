@@ -13,10 +13,14 @@
       <el-col :span="2" :offset="7">
         <el-upload
           class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action="http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/image/setHeadImage"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload">
+          :before-upload="beforeAvatarUpload"
+          v-loading="loadingHeadImg"
+          element-loading-text="拼命加载中"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(0, 0, 0, 0.8)">
           <img v-if="imageUrl" :src="imageUrl" class="avatar">
           <div v-else>
             <i class="el-icon-plus avatar-uploader-icon"></i><span class="ti">选择一张本地图片</span>
@@ -24,7 +28,7 @@
         </el-upload>
         <el-row class="sec">
           <el-button type="primary" @click="onSubmit" class="save">保存</el-button>
-          <el-button class="cancel">取消</el-button>
+          <el-button class="cancel" @click="loadingHeadImg = false">取消</el-button>
         </el-row>
       </el-col>
       <el-col :span="8" :offset="2" tag="div" class="img1-div">
@@ -42,31 +46,79 @@
 </template>
 
 <script>
-
+import axios from 'axios'
+axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = localStorage.getItem('Authorization')
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 export default {
   data () {
     return {
+      loadingHeadImg: false,
       imageUrl: '',
-      imgUrl1: require('../../../assets/img/homePage/狂徒(dts版).png'),
-      imgUrl2: require('../../../assets/img/homePage/狂徒(dts版).png')
+      imgUrl1: '',
+      imgUrl2: '',
+      urls: {
+        setHeadImg: ''
+      }
     }
   },
   methods: {
-    handleAvatarSuccess (res, file) {
+    handleAvatarSuccess (resd, file) {
+      this.loadingHeadImg = false
+      console.log(resd)
+      if (resd.data.code === '401') {
+        localStorage.removeItem('Authorization')
+        this.$router.push('/login')
+      }
       this.imgUrl1 = URL.createObjectURL(file.raw)
       this.imgUrl2 = URL.createObjectURL(file.raw)
     },
     beforeAvatarUpload (file) {
+      this.loadingHeadImg = true
       const isJPG = file.type === ('image/jpeg' || 'image/png' || 'image/bmp')
-      const isLt20M = file.size / 1024 / 1024 < 20
+      const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
         this.$message.error('上传头像图片只能是 JPG 格式!')
       }
-      if (!isLt20M) {
+      if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 20MB!')
       }
-      return isJPG && isLt20M
+      return isJPG && isLt2M
+    },
+    onSubmit () {
+      axios.request({
+        url: this.urls.setHeadImg,
+        method: 'post',
+        params: {
+          _method: 'put'
+        },
+        data: JSON.stringify({
+          setHeadImg: this.imageUrl
+        })
+          .then(res => {
+            if (res.data.errorCode === '1') {
+              console.log()
+            } else {
+              if (res.data.msg) {
+                this.$message.error(res.data.msg)
+              } else {
+                this.$message.error('请稍后尝试')
+              }
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      })
     }
   }
 }

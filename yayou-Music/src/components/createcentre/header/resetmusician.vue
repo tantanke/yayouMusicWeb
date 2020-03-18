@@ -92,13 +92,22 @@ let hAxios = axios.create({
     'Content-Type': 'multipart/form-data'
   }
 })
+hAxios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = localStorage.getItem('Authorization')
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 export default {
   data () {
     return {
       loadingPhoto: false,
       loadingHeadImg: false,
-      photoUrl: '',
-      headImgUrl: '',
       active: 0,
       urls: {
         uploadeForm: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/singer/editSingerInfo',
@@ -182,10 +191,13 @@ export default {
             .then(res => {
               if (res.data.code === 1) {
                 this.$message({
-                  message: '',
+                  message: res.data.msg,
                   type: 'success'
                 })
                 console.log(res)
+              } else if (res.data.code === '401') {
+                localStorage.removeItem('Authorization')
+                this.$router.push('/login')
               } else {
                 this.$message.err(res.data.msg)
               }
