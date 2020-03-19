@@ -2,7 +2,7 @@
   <div class="create-firstpage">
     <div class="step">
       <el-steps :active="active" finish-status="success" :space="400" align-center>
-        <el-step :title="ablumCate" ></el-step>
+        <el-step :title="albumCate" ></el-step>
         <el-step title="上传作品" ></el-step>
         <el-step title="确认使用许可" ></el-step>
         <el-step title="提交成功"></el-step>
@@ -10,8 +10,8 @@
     </div>
     <div class="stepform" v-if="active == 0" element-loading-text="努力上传中，请不要刷新或关闭页面!" element-loading-spinner="el-icon-loading" v-loading="loadingAblum1">
    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
-  <el-form-item label="专辑名称" prop="ablumName">
-  <el-input v-model="ruleForm.ablumName" placeholder="请输入专辑名称"></el-input>
+  <el-form-item label="专辑名称" prop="albumName">
+  <el-input v-model="ruleForm.albumName" placeholder="请输入专辑名称"></el-input>
   </el-form-item>
   <el-form-item label="专辑版本" prop="edition">
     <el-select v-model="ruleForm.edition" placeholder="请选择专辑版本">
@@ -62,15 +62,15 @@
      <span class="title">上传专辑歌曲</span><span class='title2'>(如暂不需要加入歌曲可点击下一步按钮)</span>
      <el-divider class="line"></el-divider>
     <el-button style="margin-left: 35px;" @click="noMusicNext">下一步</el-button>
-     <el-form :model='ablumForm' :rules='songRules' ref="songForm">
+     <el-form :model='albumForm' :rules='songRules' ref="songForm">
        <el-form-item label="歌曲名" :label-width="formLabelWidth" prop='songName'>
-              <el-input v-model="ablumForm.songName" autocomplete="off"></el-input>
+              <el-input v-model="albumForm.songName" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="作者名" :label-width="formLabelWidth" prop='artist'>
-              <el-input v-model="ablumForm.artist" autocomplete="off"></el-input>
+              <el-input v-model="albumForm.artist" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="是否vip专属" :label-width="formLabelWidth" prop='isvip'>
-              <el-select v-model="ablumForm.isvip" placeholder="请选择视频权限">
+              <el-select v-model="albumForm.isvip" placeholder="请选择视频权限">
                 <el-option label="是" value="1"></el-option>
                 <el-option label="不是" value="0"></el-option>
               </el-select>
@@ -88,7 +88,7 @@
             <el-form-item label="歌词文件" :label-width="formLabelWidth">
               <el-upload
               ref="uploadAblumWord"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="none"
               :on-change='beforeUpLrc'
               :auto-upload="false"
               :limit='1'>
@@ -98,7 +98,7 @@
             <el-form-item label="封面文件" :label-width="formLabelWidth">
               <el-upload
               ref="uploadAblumCover"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="none"
               :on-change='beforeUpImg'
               :auto-upload="false"
               :limit='1'>
@@ -134,9 +134,9 @@ export default {
       checked: '',
       next2: false,
       next3: false,
-      ablumCate: '',
+      albumCate: '',
       ruleForm: {
-        ablumName: '',
+        albumName: '',
         edition: '',
         language: '',
         style: '',
@@ -150,8 +150,8 @@ export default {
       isLrc: false,
       // 上传作品表单 每次填完立刻上传
       formLabelWidth: '150px',
-      ablumForms: [],
-      ablumForm: {
+      albumForms: [],
+      albumForm: {
         'songName': '',
         'artist': '',
         'cover': '', // 用户上传音乐封面 点击确定后 发送请求拿到url 把url设置进入表单后一起发送
@@ -163,7 +163,7 @@ export default {
       posterURL: '',
       coverFile: '', // 记录封面文件
       rules: {
-        ablumName: [
+        albumName: [
           { required: true, message: '请输入专辑名称', trigger: 'blur' },
           { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
         ],
@@ -198,9 +198,9 @@ export default {
         ]
       },
       upUrls: {
-        upAblumUrl: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/newAlbum',
-        upSongUrl: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/upSong',
-        upCoverUrl: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/setCover'
+        upAlbumUrl: '/api/singer/newAlbum',
+        upSongUrl: '/api/singer/upSong',
+        upCoverUrl: '/api/setCover'
       },
       loadingAblum: false,
       loadingSong: false
@@ -220,12 +220,12 @@ export default {
           if (confirm('确认提交吗？')) {
             // axios 发送请求获取封面链接 填入表单
             this.loadingAblum = true
-            let ablumCover = this.coverFile
+            let albumCover = this.coverFile
             let coverForm = new FormData()
-            coverForm.append('coverImage', ablumCover)
+            coverForm.append('coverImage', albumCover)
             _this.$axios({
               method: 'post',
-              url: 'http://yayoutes.utools.club/setCover',
+              url: _this.upUrls.upCoverUrl,
               data: coverForm,
               processData: false
             })
@@ -235,7 +235,7 @@ export default {
                   _this.ruleForm.cover = res.data.data
                   return _this.$axios({
                     method: 'post',
-                    url: _this.upUrls.upAblumUrl,
+                    url: _this.upUrls.upCoverUrl,
                     data: _this.ruleForm
                   })
                 } else {
@@ -249,8 +249,8 @@ export default {
                   _this.nextStep = true
                   _this.active++
                   _this.checked = false
-                  console.log(res.data.data.ablumId)
-                  _this.ablumForm.albumId = res.data.data.ablumId
+                  console.log(res.data.data.albumId)
+                  _this.albumForm.albumId = res.data.data.albumId
                   this.loadingAblum = false
                   console.log(_this.ruleForm)
                 } else {
@@ -282,7 +282,7 @@ export default {
       } else {
         this.isLrc = true
       }
-      this.ablumForm.lyrics = file.raw
+      this.albumForm.lyrics = file.raw
     },
     beforeUpImg (file, fileList) {
       let fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
@@ -307,7 +307,7 @@ export default {
       } else {
         this.isMp3 = true
       }
-      this.ablumForm.file = file.raw
+      this.albumForm.file = file.raw
     },
     // 文件预览图
     imgPreview (file, fileList) {
@@ -345,18 +345,18 @@ export default {
             coverForm.append('coverImage', cover)
             _this.$axios({
               method: 'post',
-              url: 'http://yayoutes.utools.club/setCover',
+              url: '/api/setCover',
               data: coverForm,
               processData: false
             })
               .then(res => {
                 if (res.data.code === 1) {
                   // 获取专辑封面
-                  _this.ablumForm.cover = res.data.data
+                  _this.albumForm.cover = res.data.data
                   return _this.$axios({
                     method: 'post',
-                    url: _this.upUrls.upSongUrl,
-                    data: _this.ablumForm
+                    url: '/api/singer/upSong',
+                    data: _this.albumForm
                   })
                 }
               }).then(res => {
@@ -365,7 +365,7 @@ export default {
                   console.log(res)
                   if (confirm('恭喜你完成上传，是否继续上传专辑歌曲？')) {
                     // 清空部分表单
-                    _this.ablumForm.songName = ''
+                    _this.albumForm.songName = ''
                     return false
                   } else {
                     _this.nextStep = true
@@ -425,13 +425,24 @@ export default {
   },
   mounted () {
     let _this = this
+    _this.$axios.interceptors.request.use(
+      config => {
+        if (localStorage.getItem('Authorization')) {
+          config.headers.Authorization = localStorage.getItem('Authorization')
+        }
+        return config
+      },
+      error => {
+        return Promise.reject(error)
+      }
+    )
     _this.$axios.create({
       withCredentials: true
     })
     if (this.$route.meta.isNormol) {
-      this.ablumCate = '编辑普通专辑信息'
+      this.albumCate = '编辑普通专辑信息'
     } else {
-      this.ablumCate = '编辑数字专辑信息'
+      this.albumCate = '编辑数字专辑信息'
     }
   }
 }
