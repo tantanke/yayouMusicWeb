@@ -32,31 +32,13 @@ export default {
   mounted () {
     let _this = this
     // 获取id:this.$route.params.id 进行下一步操作
-<<<<<<< HEAD
-    console.log(1)
-    this.$axios({
-      method: 'get',
-      url: '/api/vip/playMusic',
-      params: {'songId': '1'}
-    })
-      .then(function (res) {
-        console.log(res)
-        _this.songobj.url = res.data.data.audio
-        _this.songobj.name = res.data.data.songName
-        _this.songobj.cover = res.data.data.cover
-        _this.songobj.lrc = res.data.data.lyrText
-        _this.songobj.artist = res.data.data.artist
-        _this.tesobj.push(_this.songobj)
-        console.log(_this.tesobj)
-=======
     let songId = _this.$route.songId
     let isVip = _this.$router.isVip
     if (isVip) {
       this.$axios({
         method: 'get',
-        url: '/api/vip/playMusic',
+        url: '/vip/playMusic',
         params: {'songId': songId}
->>>>>>> 355b378267325135223838cce58bbb1c02d84747
       })
         .then(function (res) {
           if (res.data.code === 1) {
