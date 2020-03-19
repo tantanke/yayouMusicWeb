@@ -110,8 +110,8 @@ export default {
       loadingHeadImg: false,
       active: 0,
       urls: {
-        uploadeForm: '/api/singer/editSingerInfo',
-        uploadephoto: '/api/upImg'
+        uploadeForm: '/singer/editSingerInfo',
+        uploadephoto: '/upImg'
       },
       ruleForm: {
         singerName: '',

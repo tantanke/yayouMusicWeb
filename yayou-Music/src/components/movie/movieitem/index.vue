@@ -127,8 +127,8 @@ export default {
       remarktextarea: '',
       show: true,
       urls: {
-        collection: '/api/user/addVideoToCollection',
-        discollection: '/api/user/unCollectVideo'
+        collection: '/user/addVideoToCollection',
+        discollection: '/user/unCollectVideo'
       },
       videoInfo: {
         videoId: '001',
@@ -165,7 +165,7 @@ export default {
     handleCollection (e) {
       e.collectionStyle = !e.collectionStyle
       if (e.collectionStyle) {
-        tAxios.post(this.urls.collection, JSON.stringify(e.videoId))
+        tAxios.post(this.urls.collection, JSON.stringify({videoId: e.videoId}))
           .then(res => {
             console.log(res)
             if (res.data.code === '1') {

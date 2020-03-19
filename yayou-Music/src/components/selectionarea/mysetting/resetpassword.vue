@@ -56,7 +56,7 @@ export default {
     }
     return {
       urls: {
-        changPassword: '/api/userInfo/changePassword'
+        changPassword: '/userInfo/changePassword'
       },
       ruleForm: {
         pass: '',

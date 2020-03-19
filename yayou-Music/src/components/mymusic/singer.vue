@@ -99,7 +99,7 @@ export default {
     return {
       singerId: '',
       urls: {
-        focus: '/api/user/subscribeSinger'
+        focus: '/user/subscribeSinger'
       },
       songTableData: [
         {

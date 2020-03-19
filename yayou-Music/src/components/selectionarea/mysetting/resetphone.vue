@@ -56,7 +56,7 @@ export default {
     }
     return {
       urls: {
-        changPhone: '/api/userInfo/changePhone'
+        changPhone: '/userInfo/changePhone'
       },
       ruleForm: {
         username: '',
