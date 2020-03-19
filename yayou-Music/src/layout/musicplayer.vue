@@ -176,22 +176,54 @@ export default {
     },
     lastsong () {
       this.$refs.aplayer.skipBack()
-    },
-    mounted () {
-      let _this = this
-      // 获取id:this.$route.params.id 进行下一步操作
-      this.$axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/vip/playMusic')
+    }
+  },
+  mounted () {
+    let _this = this
+    // 获取id:this.$route.params.id 进行下一步操作
+    let songId = _this.$route.songId
+    let isVip = _this.$router.isVip
+    if (isVip) {
+      this.$axios({
+        method: 'get',
+        url: '/api/vip/playMusic',
+        params: {'songId': songId}
+      })
         .then(function (res) {
-          console.log(res.data.data.audio)
-          _this.songobj.url = res.data.data.audio
-          _this.songobj.name = res.data.data.songName
-          _this.songobj.cover = res.data.data.cover
-          _this.songobj.lrc = res.data.data.lyrText
-          _this.songobj.artist = res.data.data.artist
-          _this.tesobj.push(_this.songobj)
+          if (res.data.code === 1) {
+            _this.songobj.url = res.data.data.audio
+            _this.songobj.name = res.data.data.songName
+            _this.songobj.cover = res.data.data.cover
+            _this.songobj.lrc = res.data.data.lyrText
+            _this.songobj.artist = res.data.data.artist
+            _this.tesobj.push(_this.songobj)
+          } else {
+            _this.$message.error('系统繁忙，请刷新后重试')
+          }
         })
-        .catch(function (error) {
-          console.log(error)
+        .catch(() => {
+          _this.$message.error('系统繁忙，请刷新后重试')
+        })
+    } else {
+      this.$axios({
+        method: 'get',
+        url: '/api/playMusic',
+        params: {'songId': songId}
+      })
+        .then(function (res) {
+          if (res.data.code === 1) {
+            _this.songobj.url = res.data.data.audio
+            _this.songobj.name = res.data.data.songName
+            _this.songobj.cover = res.data.data.cover
+            _this.songobj.lrc = res.data.data.lyrText
+            _this.songobj.artist = res.data.data.artist
+            _this.tesobj.push(_this.songobj)
+          } else {
+            _this.$message.error('系统繁忙，请刷新后重试')
+          }
+        })
+        .catch(() => {
+          _this.$message.error('系统繁忙，请刷新后重试')
         })
     }
   }
@@ -201,6 +233,7 @@ export default {
 
 <style lang="scss">
 .aplayer{
+  background-color: #FFFAFA;
   .aplayer-body{
     .aplayer-pic{
       .aplayer-pause{

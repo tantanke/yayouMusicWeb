@@ -16,23 +16,29 @@
                 clear: both;
             }
             .user{
-                position: absolute;
-                left: 765px;
+                display: block;
                 height: 300px;
-                top: 70px;
                 width: 350px;
+                margin: 0 auto;
+                margin-top: 72px;
+                padding-right: 10px;
                 img{
                     display: block;
                     width: 160px;
                     height: 160px;
                     margin-left: 95px;
+                    margin-bottom: 8px;
                 }
                 .user-info{
-                    margin-left: 58px;
+                    margin-left: 40px;
                     li{
                         list-style: none;
                         float: left;
-                        margin-right: 25px;
+                        margin-right: 32px;
+                        font-size: 14px;
+                        font-weight: 600;
+                        line-height: 27px;
+                        color: #fcfcfc;
                         div{
                             text-align: center;
                         }
@@ -47,6 +53,7 @@
                    color: #ffffff;
                    margin-top: 5px;
                    margin-bottom: 25px;
+                   font-weight: 600;
                    i{
                        font-size: 32px;
                        color: #FBC901;

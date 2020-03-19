@@ -20,7 +20,7 @@
               <el-col :span="4" class="videobuttons">
                 <span><i class="el-icon-share"></i></span>
                 <span><i class="el-icon-edit-outline"></i></span>
-                <span><i class="el-icon-star-off"></i></span>
+                <span class="df"><i :class="{'el-icon-star-off':show,'collection-style':videoInfo.collectionStyle}" title="收藏" @click="handleCollection(videoInfo)"></i></span>
               </el-col>
             </el-row>
         </el-row>
@@ -110,10 +110,30 @@
 
 <script>
 /* import * as videoplayer from '../../../../static/qiniuvideo' */
+let tAxios = this.$axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = localStorage.getItem('Authorization')
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 export default {
   data () {
     return {
-      remarktextarea: ''
+      remarktextarea: '',
+      show: true,
+      urls: {
+        collection: '/user/addVideoToCollection',
+        discollection: '/user/unCollectVideo'
+      },
+      videoInfo: {
+        videoId: '001',
+        collectionStyle: false
+      }
     }
   },
   mounted () {
@@ -140,11 +160,67 @@ export default {
         height: '500px'
       })
       console.log(myPlayer)
+    },
+    // 收藏视频
+    handleCollection (e) {
+      e.collectionStyle = !e.collectionStyle
+      if (e.collectionStyle) {
+        tAxios.post(this.urls.collection, JSON.stringify({videoId: e.videoId}))
+          .then(res => {
+            console.log(res)
+            if (res.data.code === '1') {
+              this.$message({
+                message: res.data.msg,
+                type: 'success'
+              })
+            } else {
+              if (res.data.msg) {
+                this.$message.error(res.data.msg)
+              } else {
+                this.$message.error('请稍后尝试')
+              }
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      } else {
+        tAxios({
+          url: this.urls.discollection,
+          method: 'post',
+          params: {
+            _method: 'delete'
+          },
+          videoId: e.videoId
+        })
+          .then(res => {
+            console.log(res)
+            if (res.data.code === '1') {
+              this.$message({
+                message: res.data.msg,
+                type: 'success'
+              })
+            } else {
+              if (res.data.msg) {
+                this.$message.error(res.data.msg)
+              } else {
+                this.$message.error('请稍后尝试')
+              }
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
     }
   }
 }
 </script>
 
-<style>
-
+<style lang="scss">
+ .collection-style::before{
+    font-size: 28px;
+    line-height: 28px;
+    color: #FF4752;
+  }
 </style>

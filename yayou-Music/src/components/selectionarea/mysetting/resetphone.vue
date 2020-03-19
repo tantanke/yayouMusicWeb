@@ -14,6 +14,15 @@
   </el-form-item>
   <el-form-item label="手机号" prop="phone">
     <el-input v-model.number="ruleForm.phone" placeholder="输入手机号"></el-input>
+  <div class="resetphone" >
+    <el-breadcrumb separator-class="el-icon-arrow-right" style="margin:0 0 50px 0px;">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'resetdefault' }">我的设置</el-breadcrumb-item>
+      <el-breadcrumb-item>手机号修改</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+  <el-form-item label="手机号" prop="phone">
+    <el-input v-model.number="ruleForm.phone" placeholder="输入新手机号"></el-input>
   </el-form-item>
   <el-form-item label="" prop="code">
     <div class="input-div" v-show="ruleForm.phone">
@@ -34,23 +43,46 @@
 
 <script>
 import axios from 'axios'
+<<<<<<< HEAD
 import qs from 'qs'
 const TIME_COUNT = 60
+=======
+let tAxios = axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = localStorage.getItem('Authorization')
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
+>>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
 /* 重新发送验证码的时间间隔 */
 export default {
   data () {
     var checkAge = (rule, value, callback) => {
+<<<<<<< HEAD
       if (!value) {
         return callback(new Error('电话不能为空'))
       }
       setTimeout(() => {
         if (!Number.isInteger(value)) {
+=======
+      if (value === '') {
+        return callback(new Error('电话不能为空'))
+      }
+      setTimeout(() => {
+        if (!(/^1[34578]\d{9}$/.test(value))) {
+>>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
           callback(new Error('请输入正确电话号码'))
         } else {
           callback()
         }
       }, 1000)
     }
+<<<<<<< HEAD
     var validateUsername = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入账号'))
@@ -91,6 +123,19 @@ export default {
         ],
         phone: [
           { validator: checkAge, trigger: 'blur' }
+=======
+    return {
+      urls: {
+        changPhone: '/userInfo/changePhone'
+      },
+      ruleForm: {
+        username: '',
+        newphone: ''
+      },
+      rules: {
+        phone: [
+          {validator: checkAge, trigger: 'blur', require: 'true'}
+>>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
         ]
       }
     }
@@ -100,13 +145,23 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(valid)
+<<<<<<< HEAD
           axios.post(this.urls.changPhone, qs.stringify(formName.newphone))
+=======
+          tAxios.post(this.urls.changPhone, JSON.stringify({newphone: formName.newphone}))
+>>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
             .then(res => {
               if (res.data.errorCode === '1') {
                 this.$message({
                   message: res.data.msg,
                   type: 'success'
                 })
+<<<<<<< HEAD
+=======
+              } else if (res.data.code === '401') {
+                localStorage.removeItem('Authorization')
+                this.$router.push('/login')
+>>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
               } else {
                 if (res.data.msg) {
                   this.$message.error(res.data.msg)
@@ -124,6 +179,7 @@ export default {
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
+<<<<<<< HEAD
     },
     getCode (phone) {
       axios.post('this.urls.getCode', qs.stringify(phone))
@@ -152,10 +208,19 @@ export default {
           }
         }, 1000)
       }
+=======
+>>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
     }
   }
 }
 </script>
 
+<<<<<<< HEAD
 <style  scoped>
+=======
+<style lang='scss' scoped>
+.resetphone{
+  height: 330px;
+}
+>>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
 </style>

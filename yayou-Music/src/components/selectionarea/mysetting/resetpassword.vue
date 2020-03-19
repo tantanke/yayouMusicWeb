@@ -2,7 +2,7 @@
   <div class="resetpassword" >
     <el-breadcrumb separator-class="el-icon-arrow-right" style="margin:0 0 50px 0px;">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>我的设置</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'resetdefault' }">我的设置</el-breadcrumb-item>
       <el-breadcrumb-item>密码修改</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -34,23 +34,19 @@
 
 <script>
 import axios from 'axios'
-import qs from 'qs'
-const TIME_COUNT = 60
-/* 重新发送验证码的时间间隔 */
+let tAxios = axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = localStorage.getItem('Authorization')
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 export default {
   data () {
-    var checkPhone = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('电话号码不能为空'))
-      }
-      setTimeout(() => {
-        if (!(/^1[34578]\d{9}$/.test(value))) {
-          callback(new Error('请输入正确电话号码'))
-        } else {
-          callback()
-        }
-      }, 1000)
-    }
     var validatePass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入密码'))
@@ -167,5 +163,8 @@ export default {
 }
 </script>
 
-<style  scoped>
+<style lang='scss' scoped>
+.resetpassword{
+  height: 330px;
+}
 </style>

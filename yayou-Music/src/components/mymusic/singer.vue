@@ -37,9 +37,9 @@
                 <i class="el-icon-upload2"></i>
                 <span>播放歌手热门歌曲</span>
               </div>
-              <div class="focus">
-                <i class="el-icon-upload2"></i>
-                <span>导入歌单</span>
+              <div class="focus" @click="focus">
+                <i class="el-icon-plus"></i>
+                <span>关注21.0万</span>
               </div>
             </dd>
           </dl>
@@ -82,9 +82,25 @@
 </template>
 
 <script>
+import axios from 'axios'
+let tAxios = axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = localStorage.getItem('Authorization')
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 export default {
   data () {
     return {
+      singerId: '',
+      urls: {
+        focus: '/user/subscribeSinger'
+      },
       songTableData: [
         {
           order: 1,
@@ -298,6 +314,38 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    focus () {
+      tAxios.post(this.urls.focus, JSON.stringify({
+        singerId: this.singerId
+      }))
+        .then(res => {
+          console.log(res)
+          if (res.data.code === '1') {
+            this.$message({
+              message: res.data.msg,
+              type: 'success'
+            })
+          } else if (res.data.code === '401') {
+            localStorage.removeItem('Authorization')
+            this.$router.push('/login')
+          } else {
+            if (res.data.msg) {
+              this.$message.error(res.data.msg)
+            } else {
+              this.$message.error('请稍后尝试')
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  },
+  mounted: () => {
+    var _this = this
+    _this.singerId = this.$route.params.singerid
   }
 }
 </script>

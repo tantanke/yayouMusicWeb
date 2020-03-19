@@ -64,17 +64,54 @@ export default {
   methods: {},
   mounted () {
     let _this = this
-    this.$axios.all([
-      this.$axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/s/getYesterdayPlayNum'),
-      this.$axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/s/getTotalPlay'),
-      this.$axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/s/getYesterdayLikes'),
-      this.$axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/s/getYesterdayCollect')
+    let singerID = '1'
+    let storage = window.localStorage
+    _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000'
+    storage['Authorization'] = 12345
+    _this.$axios.interceptors.request.use(
+      config => {
+        if (localStorage.getItem('Authorization')) {
+          config.headers.Authorization = localStorage.getItem('Authorization')
+          console.log(localStorage.getItem('Authorization'))
+        } else {
+          console.log('未登陆')
+        }
+        return config
+      },
+      error => {
+        return Promise.reject(error)
+      }
+    )
+    _this.$axios.all([
+      _this.$axios({
+        method: 'get',
+        params: {singerID: singerID},
+        url: '/singer/s/getYesterdayPlayNum'
+      }),
+      _this.$axios({
+        method: 'get',
+        params: {singerID: singerID},
+        url: '/singer/s/getTotalPlay'
+      }),
+      _this.$axios({
+        method: 'get',
+        params: {singerID: singerID},
+        url: '/singer/s/getYesterdayLikes'
+      }),
+      _this.$axios({
+        method: 'get',
+        params: {singerID: singerID},
+        url: '/singer/s/getYesterdayCollect'
+      })
     ]).then(this.$axios.spread((res1, res2, res3, res4) => {
-      _this.yesData = res1.data.data.昨日播放量
+      /* _this.yesData = res1.data.data.昨日播放量
       _this.totalPlay = res2.data.data.累计播放量
       _this.yesLikes = res3.data.data.昨日点赞数
-      _this.yesCollect = res4.data.data.收藏数
-    }))
+      _this.yesCollect = res4.data.data.收藏数 */
+      console.log(res1, res2, res3, res4)
+    })).catch(err => {
+      console.log(err)
+    })
   },
   computed: {}
 }

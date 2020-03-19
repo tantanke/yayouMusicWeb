@@ -43,6 +43,7 @@ export default {
 </script>
 
 <style>
+<<<<<<< HEAD
   .img1{
     width: 580px;
     height: 260px;
@@ -59,4 +60,7 @@ export default {
     height: 320px;
     overflow: hidden;
   }
+=======
+
+>>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
 </style>

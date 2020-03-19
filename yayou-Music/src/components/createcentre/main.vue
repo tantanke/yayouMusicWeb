@@ -6,7 +6,7 @@
       </router-link>
       <div class="allfactor">
         <div>
-          <img src="" alt="">
+          <img src="../.././assets/img/homePage/c1.png" alt="">
             <span class="title">综合</span>
         </div>
         <ul>
@@ -20,7 +20,7 @@
       </div>
       <div class="music">
         <div>
-           <img src="" alt="">
+           <img src="../.././assets/img/homePage/c2.png" alt="">
             <span class="title">音乐</span>
         </div>
         <ul>

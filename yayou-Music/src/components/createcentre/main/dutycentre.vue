@@ -13,7 +13,7 @@
       <div class="header">任务中心 <span class="iconfont">&#xe62c;</span></div>
       <div class="desc">做任务、领任务、享特权</div>
       <div>
-        <img src="" alt="">
+        <img src="./../../../assets/img/image/发布作品.jpg" alt="">
         <div class="task-area">
           <div class="task-condition">
             <div class="number">13</div>
