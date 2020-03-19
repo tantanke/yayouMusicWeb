@@ -44,6 +44,7 @@ export default new Router({
           console.log(111)
           next()
         } */
+        /** 这个路由里面要添加videoid isvip的值，参考search里面的val传参 */
         children: [{
           path: '/movie/movieList/:movieid',
           name: 'movieListItem',

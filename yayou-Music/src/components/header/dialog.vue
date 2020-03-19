@@ -72,7 +72,7 @@ export default {
      */
     submitForm (formName) {
       axios({
-        url: 'http://yayoutest.utools.club/login',
+        url: 'http://175.24.83.13:8000/login',
         withCredentials: true,
         method: 'post',
         params: {
@@ -83,10 +83,12 @@ export default {
         .then(this.getCodeAndpostData)
     },
     getCodeAndpostData (res) {
+      console.log(res)
       console.log(res.headers.authorization)
       localStorage.setItem('Authorization', res.headers.authorization)
       res = res.data
       if (res.code === 1) {
+        localStorage.setItem('Role', res.data)
         alert(res.msg)
         this.$emit('success', false)
       } else if (res.code === 50002) {

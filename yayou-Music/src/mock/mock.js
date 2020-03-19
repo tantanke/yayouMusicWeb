@@ -1,8 +1,8 @@
 // 引入mockjs
-const Mock = require('mockjs')
+// const Mock = require('mockjs')
 // 获取 mock.Random 对象
 // mock一组数据
-const produceNewsData = function () {
+/** const produceNewsData = function () {
   let articles = {
     code: 1,
     msg: '成功',
@@ -60,4 +60,4 @@ Mock.mock('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/sin
 Mock.mock('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/newAlbum', 'post', ablumData)
 Mock.mock('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/upSong', 'post', upMusicData)
 Mock.mock('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/getSingerAlbum', 'get', getAllAblumsData)
-Mock.mock('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/setCover', 'post', coverUrl)
+Mock.mock('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/setCover', 'post', coverUrl) */

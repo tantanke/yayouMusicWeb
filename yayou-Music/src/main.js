@@ -15,7 +15,7 @@ import Qs from 'qs'
 import Vuex from 'vuex'
 import VueCookies from 'vue-cookies'
 axios.defaults.withCredentials = true
-process.env.Mock && require('./mock/mock.js')
+/** process.env.Mock && require('./mock/mock.js') */
 
 Vue.use(Vuex)
 Vue.prototype.$axios = axios
