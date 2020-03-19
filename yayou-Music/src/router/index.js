@@ -19,6 +19,7 @@ export default new Router({
   routes: [{
     path: '/',
     name: 'defaultPage',
+    redirect: '/find',
     component: defaultPage,
     children: [{
       path: '/find',
@@ -141,63 +142,6 @@ export default new Router({
       name: 'search',
       component: search
     }, {
-      path: '/createcentre',
-      name: 'createCentre',
-      redirect: '/createcentre/firstpage',
-      component: createCentre,
-      children: [{
-        path: '/createcentre/dutycentre',
-        name: 'dutycentre',
-        component: () => import('@/components/createcentre/main/dutycentre.vue')
-      }, {
-        path: '/createcentre/fanscentre',
-        name: 'fanscentre',
-        component: () => import('@/components/createcentre/main/fanscentre.vue')
-      }, {
-        path: '/createcentre/createablum',
-        name: 'createablum',
-        component: () => import('@/components/createcentre/main/createablum.vue'),
-        beforeEnter: (to, from, next) => { // 限制该路由的进入
-          if (from.meta.fromhand) {
-            if (from.meta.isNormol) {
-              to.meta.isNormol = true
-            } else {
-              to.meta.isNormol = false
-            }
-            next()
-          } else {
-            next('/createcentre/handinprodution')
-          }
-        },
-        meta: {isNormol: false}
-      }, {
-        path: '/createcentre/handinprodution',
-        name: 'handinprodution',
-        component: () => import('@/components/createcentre/main/handinprodution.vue'),
-        meta: { isNormol: true,
-          fromhand: true}
-      }, {
-        path: '/createcentre/mymoney',
-        name: 'mymoney',
-        component: () => import('@/components/createcentre/main/mymoney.vue')
-      }, {
-        path: '/createcentre/remark',
-        name: 'remark',
-        component: () => import('@/components/createcentre/main/remark.vue')
-      }, {
-        path: '/createcentre/songnum',
-        name: 'createsongnum',
-        component: () => import('@/components/createcentre/main/songnum.vue')
-      }, {
-        path: '/createcentre/personalinfor',
-        name: 'personalinfor',
-        component: () => import('@/components/createcentre/header/personalinfor.vue')
-      }, {
-        path: '/createcentre/managemusic',
-        name: 'managemusic',
-        component: () => import('@/components/createcentre/main/managemusic.vue')
-      }]
-    }, {
       /* path: '/musicplayer/:songId', */ // 动态路由歌曲id
       path: '/musicplayer',
       name: 'musicplayer',
@@ -228,6 +172,63 @@ export default new Router({
         name: 'resetheadimg',
         component: () => import('@/components/selectionarea/mysetting/resetheadimg.vue')
       }]
+    }]
+  }, {
+    path: '/createcentre',
+    name: 'createCentre',
+    redirect: '/createcentre/firstpage',
+    component: createCentre,
+    children: [{
+      path: '/createcentre/dutycentre',
+      name: 'dutycentre',
+      component: () => import('@/components/createcentre/main/dutycentre.vue')
+    }, {
+      path: '/createcentre/fanscentre',
+      name: 'fanscentre',
+      component: () => import('@/components/createcentre/main/fanscentre.vue')
+    }, {
+      path: '/createcentre/createablum',
+      name: 'createablum',
+      component: () => import('@/components/createcentre/main/createablum.vue'),
+      beforeEnter: (to, from, next) => { // 限制该路由的进入
+        if (from.meta.fromhand) {
+          if (from.meta.isNormol) {
+            to.meta.isNormol = true
+          } else {
+            to.meta.isNormol = false
+          }
+          next()
+        } else {
+          next('/createcentre/handinprodution')
+        }
+      },
+      meta: {isNormol: false}
+    }, {
+      path: '/createcentre/handinprodution',
+      name: 'handinprodution',
+      component: () => import('@/components/createcentre/main/handinprodution.vue'),
+      meta: { isNormol: true,
+        fromhand: true}
+    }, {
+      path: '/createcentre/mymoney',
+      name: 'mymoney',
+      component: () => import('@/components/createcentre/main/mymoney.vue')
+    }, {
+      path: '/createcentre/remark',
+      name: 'remark',
+      component: () => import('@/components/createcentre/main/remark.vue')
+    }, {
+      path: '/createcentre/songnum',
+      name: 'createsongnum',
+      component: () => import('@/components/createcentre/main/songnum.vue')
+    }, {
+      path: '/createcentre/personalinfor',
+      name: 'personalinfor',
+      component: () => import('@/components/createcentre/header/personalinfor.vue')
+    }, {
+      path: '/createcentre/managemusic',
+      name: 'managemusic',
+      component: () => import('@/components/createcentre/main/managemusic.vue')
     }]
   }]
 })

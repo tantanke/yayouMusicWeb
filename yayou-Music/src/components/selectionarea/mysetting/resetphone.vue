@@ -14,6 +14,8 @@
   </el-form-item>
   <el-form-item label="手机号" prop="phone">
     <el-input v-model.number="ruleForm.phone" placeholder="输入手机号"></el-input>
+    </el-form-item>
+    </el-form>
   <div class="resetphone" >
     <el-breadcrumb separator-class="el-icon-arrow-right" style="margin:0 0 50px 0px;">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
@@ -39,14 +41,11 @@
   </el-form-item>
 </el-form>
   </div>
+  </div>
 </template>
 
 <script>
 import axios from 'axios'
-<<<<<<< HEAD
-import qs from 'qs'
-const TIME_COUNT = 60
-=======
 let tAxios = axios.interceptors.request.use(
   config => {
     if (localStorage.getItem('Authorization')) {
@@ -58,72 +57,21 @@ let tAxios = axios.interceptors.request.use(
     return Promise.reject(error)
   }
 )
->>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
 /* 重新发送验证码的时间间隔 */
 export default {
   data () {
     var checkAge = (rule, value, callback) => {
-<<<<<<< HEAD
-      if (!value) {
-        return callback(new Error('电话不能为空'))
-      }
-      setTimeout(() => {
-        if (!Number.isInteger(value)) {
-=======
       if (value === '') {
         return callback(new Error('电话不能为空'))
       }
       setTimeout(() => {
         if (!(/^1[34578]\d{9}$/.test(value))) {
->>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
           callback(new Error('请输入正确电话号码'))
         } else {
           callback()
         }
       }, 1000)
     }
-<<<<<<< HEAD
-    var validateUsername = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入账号'))
-      } else {
-        if (this.ruleForm.checkPass !== '') {
-          this.$refs.ruleForm.validateField('checkPass')
-        }
-        callback()
-      }
-    }
-    var validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else {
-        callback()
-      }
-    }
-    return {
-      show: true,
-      count: '',
-      timer: null,
-      urls: {
-        getCode: '',
-        changPhone: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/userInfo/changePhone'
-      },
-      ruleForm: {
-        username: '',
-        checkPass: '',
-        newphone: '',
-        code: ''
-      },
-      rules: {
-        username: [
-          { validator: validateUsername, trigger: 'blur' }
-        ],
-        checkPass: [
-          { validator: validatePass2, trigger: 'blur' }
-        ],
-        phone: [
-          { validator: checkAge, trigger: 'blur' }
-=======
     return {
       urls: {
         changPhone: '/userInfo/changePhone'
@@ -135,7 +83,6 @@ export default {
       rules: {
         phone: [
           {validator: checkAge, trigger: 'blur', require: 'true'}
->>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
         ]
       }
     }
@@ -145,23 +92,16 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(valid)
-<<<<<<< HEAD
-          axios.post(this.urls.changPhone, qs.stringify(formName.newphone))
-=======
           tAxios.post(this.urls.changPhone, JSON.stringify({newphone: formName.newphone}))
->>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
             .then(res => {
               if (res.data.errorCode === '1') {
                 this.$message({
                   message: res.data.msg,
                   type: 'success'
                 })
-<<<<<<< HEAD
-=======
               } else if (res.data.code === '401') {
                 localStorage.removeItem('Authorization')
                 this.$router.push('/login')
->>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
               } else {
                 if (res.data.msg) {
                   this.$message.error(res.data.msg)
@@ -179,48 +119,13 @@ export default {
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
-<<<<<<< HEAD
-    },
-    getCode (phone) {
-      axios.post('this.urls.getCode', qs.stringify(phone))
-        .then(res => {
-          if (res.data.errorCode === '0') {
-            console.log('文件上传成功')
-          } else {
-            if (res.data.errorMessage) {
-              console.log(res.data.errorMessage)
-            } else {
-              console.log('文件上传失败')
-            }
-          }
-        })
-        .catch(err => { console.log(err) })
-      if (!this.timer) {
-        this.count = TIME_COUNT
-        this.show = false
-        this.timer = setInterval(() => {
-          if (this.count > 0 && this.count <= TIME_COUNT) {
-            this.count--
-          } else {
-            this.show = true
-            clearInterval(this.timer)
-            this.timer = null
-          }
-        }, 1000)
-      }
-=======
->>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
     }
   }
 }
 </script>
 
-<<<<<<< HEAD
-<style  scoped>
-=======
 <style lang='scss' scoped>
 .resetphone{
   height: 330px;
 }
->>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
 </style>

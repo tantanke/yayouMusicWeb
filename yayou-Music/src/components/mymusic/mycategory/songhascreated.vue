@@ -205,10 +205,6 @@ export default {
 }
 </script>
 
-<<<<<<< HEAD
-<style>
-=======
 <style lang="scss" scoped>
 @import "@/assets/css/mymusic/mycategory/songhascreated.scss";
->>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
 </style>

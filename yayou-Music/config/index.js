@@ -11,9 +11,9 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/': {
+      /* '/': {
         target: 'http://175.24.83.13:8000'
-      }
+      } */
     },
 
     // Various Dev Server settings
@@ -54,11 +54,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-<<<<<<< HEAD
-    assetsPublicPath: '/',
-=======
     assetsPublicPath: '/dist',
->>>>>>> 9b376405bb9b66528a252fee1054892d4d80514a
 
     /**
      * Source Maps
