@@ -189,11 +189,11 @@ export default {
       upProgress: '', // 作为计算属性的载体
       upLoadMusicUrl: '',
       getCoverUrl: '',
-      getVideoUrl: '/api/inger/upVideo',
-      uploadVideoUrl: '/api/singer/subMv',
-      uploadCoverUrl: '/api/setCover',
-      getAlbumUrl: '/api/getSingerAlbum',
-      upSongUrl: '/api/singer/upSong'
+      getVideoUrl: '/singer/upVideo',
+      uploadVideoUrl: '/singer/subMv',
+      uploadCoverUrl: '/setCover',
+      getAlbumUrl: '/getSingerAlbum',
+      upSongUrl: '/singer/upSong'
     }
   },
   methods: {
@@ -457,6 +457,7 @@ export default {
     // 拿到该歌手的全部专辑信息 方便上传歌曲到已有专辑
     // this.$axios.post(this.getVideoUrl, this.getAlbumUrl)
     let _this = this
+    _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000'
     _this.$axios.interceptors.request.use(
       config => {
         if (localStorage.getItem('Authorization')) {
@@ -485,7 +486,7 @@ export default {
       })
       console.log(_this.allAblums)
     }).catch(err => {
-      this.$message.error(err)
+      console.log(err)
     })
   }
 }

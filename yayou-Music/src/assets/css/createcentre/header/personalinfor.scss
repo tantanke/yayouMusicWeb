@@ -12,10 +12,6 @@
   .main{
     padding: 0 0 100px 50px;
     .demo-ruleForm{
-      .avatar {
-        width: 100%;
-        display: block;
-      }
       .avatar-uploader-icon{
         position: relative;
         display: block;
@@ -39,6 +35,20 @@
 }
 .avatar-uploader .el-upload:hover {
   border-color: #409EFF;
+}
+.avatar::before{
+  content: "更换头像";
+  position: absolute;
+  display: block;
+  width: 178px;
+  height: 30px;
+  bottom: 0;
+  left: 0;
+  font-size: 16px;
+  line-height: 30px;
+  color: #000000;
+  background-color: #f9f9f9;
+  z-index: 1000;
 }
 .avatar-uploader-icon {
   font-size: 28px;

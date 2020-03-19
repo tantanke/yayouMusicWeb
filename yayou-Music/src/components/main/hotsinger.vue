@@ -8,39 +8,40 @@
            <i class="el-icon-zoom-in imore"></i>
         </div>
      </el-row>
-     <ul class="singer-list">
+     <ul class="singer-list" v-for="(item, i) in hotSinger" :key="i">
        <li>
-         <img src="../../assets/img/homePage/山鹰组合.png" alt="">
-         <span>山鹰组合</span>
-       </li>
-       <li>
-         <img src="../../assets/img/homePage/说比阿达.png" alt="">
-         <span>说比阿达</span>
-       </li>
-       <li>
-         <img src="../../assets/img/homePage/阿四龙组合.png" alt="">
-         <span>阿四龙组合</span>
-        </li>
-       <li>
-         <img src="../../assets/img/homePage/阿鲁阿卓.png" alt="">
-         <span>阿鲁阿卓</span>
-        </li>
-       <li>
-         <img src="../../assets/img/homePage/彝人制造.png" alt="">
-         <span>彝人制造</span>
-        </li>
-       <li>
-         <img src="../../assets/img/homePage/sliderPic.png" alt="">
-         <span>吉克隽逸</span>
+         <img src="../../assets/img/homePage/山鹰组合.png" alt=""><!--等后端给了图片的链接的时候改变-->
+         <span>{{item.singerName}}</span>
        </li>
      </ul>
      <el-row>
      </el-row>
   </div>
 </template>
-
 <script>
+import axios from 'axios'
 export default {
+  data () {
+    return {
+      hotSinger: []
+    }
+  },
+  methods: {
+    getHomeInfo () {
+      axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/hotSinger')
+        .then(this.getHomeInfoSucc)
+    },
+    getHomeInfoSucc (res) {
+      res = res.data
+      if (res.code === 1) {
+        this.hotSinger = res.data
+        console.log(this.hotSinger)
+      }
+    }
+  },
+  mounted () {
+    this.getHomeInfo()
+  }
 }
 </script>
 

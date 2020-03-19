@@ -2,7 +2,7 @@
   <div class="allmovie" >
     <div class="allmoviepage" ref="allmovie" >
     <el-row class="moviepic" >
-      <routerLink  tag="div" :to="{name:'movieListItem',params:{movieid:10086}} " class="moviecard" v-for="(index) in 30" :key="index"  >
+      <routerLink  tag="div" :to="{name:'movieListItem',params:{movieid:12,isvip:this.role}} " class="moviecard" v-for="(index) in 30" :key="index"  >
         <img    @click="linkTo()" src="../../assets/img/homePage/狂徒(dts版).png" alt />
         <p>狂徒(dts版)</p>
         <p>
@@ -27,6 +27,7 @@
 export default {
   data () {
     return {
+      role: localStorage.getItem('Role')
     }
   },
   methods: {

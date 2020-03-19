@@ -12,14 +12,14 @@
       <div class="block">
         <el-carousel trigger="click" height="150px">
           <el-carousel-item v-for="item in 4" :key="item">
-            <el-col :span="4" v-for="o in 6" :key="o">
+            <el-col :span="4" v-for="(item,i) in newSong" :key="i">
               <el-card :body-style="{ padding: '0px' }" shadow="never">
-                <img src="../../assets/img/homePage/吉克杰拉.png" />
+                <img src="../../assets/img/homePage/吉克杰拉.png" /><!--这个地方后面也需要请求后端的图片链接的接口 名字是cover-->
                 <div class="song-info">
                   <div>
-                    <p>他们都去了远方</p>
+                    <p>{{item.songName}}</p>
                   </div>
-                  <span>吉克吉拉</span>
+                  <span>{{item.artist}}</span>
                 </div>
               </el-card>
             </el-col>
@@ -29,9 +29,31 @@
     </el-row>
   </div>
 </template>
-
 <script>
-export default {}
+import axios from 'axios'
+export default {
+  data () {
+    return {
+      newSong: []
+    }
+  },
+  methods: {
+    getHomeInfo () {
+      axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/newSongs')
+        .then(this.getHomeInfoSucc)
+    },
+    getHomeInfoSucc (res) {
+      res = res.data
+      if (res.code === 1) {
+        this.newSong = res.data
+        console.log(res)
+      }
+    }
+  },
+  mounted () {
+    this.getHomeInfo()
+  }
+}
 </script>
 
 <style>

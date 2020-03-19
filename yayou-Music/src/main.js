@@ -10,14 +10,21 @@ import '@/assets/styles/iconfont.css'
 import Video from 'video.js'
 import 'video.js/dist/video-js.css'
 import axios from 'axios'
+import VueResource from 'vue-resource'
+import Qs from 'qs'
 import Vuex from 'vuex'
-process.env.Mock && require('./mock/mock.js')
+import VueCookies from 'vue-cookies'
+axios.defaults.withCredentials = true
+/** process.env.Mock && require('./mock/mock.js') */
 
 Vue.use(Vuex)
 Vue.prototype.$axios = axios
+Vue.prototype.qs = Qs
+Vue.use(VueResource)
 Vue.use(ElementUI)
 Vue.prototype.$video = Video
 Vue.config.productionTip = false
+Vue.use(VueCookies)
 
 /* eslint-disable no-new */
 new Vue({

@@ -9,7 +9,7 @@
       </div>
     </el-row>
     <el-row class="pic">
-      <div class="allSong">
+      <div class="allSong" v-for="i in 5" :key="i"> <!--这个循环等接口写好了要好好看看-->
         <div>
           <img src="../../assets/img/homePage/彝族音乐榜.png" alt />
         </div>
@@ -19,91 +19,11 @@
             <span>南瑶乐队</span>
           </li>
           <li>
-             <p>2&ensp;面朝大海</p>
+            <p>2&ensp;面朝大海</p>
             <span>南瑶乐队</span>
           </li>
           <li>
-             <p>3&ensp;面朝大海</p>
-            <span>南瑶乐队</span>
-          </li>
-          <li>
-            彝族音乐榜
-          </li>
-        </ul>
-      </div>
-      <div class="newSong">
-        <img src="../../assets/img/homePage/新歌榜.png" alt />
-        <ul>
-          <li>
-            <p>1&ensp;他们都去了远方</p>
-            <span>南瑶乐队</span>
-          </li>
-          <li>
-             <p>2&ensp;面朝大海</p>
-            <span>南瑶乐队</span>
-          </li>
-          <li>
-             <p>3&ensp;面朝大海</p>
-            <span>南瑶乐队</span>
-          </li>
-          <li>
-            彝族音乐榜
-          </li>
-        </ul>
-      </div>
-      <div class="movie">
-        <img src="../../assets/img/homePage/彝族电影榜.png" alt />
-        <ul>
-          <li>
-            <p>1&ensp;无妄之灾</p>
-            <span>南瑶乐队</span>
-          </li>
-          <li>
-             <p>2&ensp;面朝大海</p>
-            <span>南瑶乐队</span>
-          </li>
-          <li>
-             <p>1&ensp;面朝大海</p>
-            <span>南瑶乐队</span>
-          </li>
-          <li>
-            彝族音乐榜
-          </li>
-        </ul>
-      </div>
-      <div class="search">
-        <img src="../../assets/img/homePage/热搜榜.png" alt />
-        <ul>
-          <li>
-            <p>1&ensp;彩色的黑</p>
-            <span>南瑶乐队</span>
-          </li>
-          <li>
-             <p>2&ensp;面朝大海</p>
-            <span>南瑶乐队</span>
-          </li>
-          <li>
-             <p>3&ensp;面朝大海</p>
-            <span>南瑶乐队</span>
-          </li>
-          <li>
-            彝族音乐榜
-          </li>
-        </ul>
-      </div>
-      <div class="rap">
-        <img src="../../assets/img/homePage/说唱榜.png" alt />
-        <ul>
-          <li>
-            <p>1&ensp;面朝大海</p>
-            <span>南瑶乐队</span>
-          </li>
-          <li>
-             <p>2&ensp;面朝大海</p>
-            <span>南瑶乐队</span>
-          </li>
-          <li>
-             <p>3&ensp;面朝大海</p>
+            <p>3&ensp;面朝大海</p>
             <span>南瑶乐队</span>
           </li>
           <li>
@@ -116,7 +36,28 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
+  data () {
+    return {
+      allSong: []
+    }
+  },
+  methods: {
+    getHomeInfo () {
+      axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=musicRank')
+        .then(this.getHomeInfoSucc)
+    },
+    getHomeInfoSucc (res) {
+      res = res.data
+      if (res.code === 1) {
+        this.allSong = res.data.allSong
+      }
+    }
+  },
+  mounted () {
+    this.getHomeInfo()
+  }
 }
 </script>
 

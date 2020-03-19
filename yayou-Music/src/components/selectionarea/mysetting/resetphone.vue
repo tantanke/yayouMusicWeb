@@ -1,4 +1,21 @@
 <template>
+  <div class="resetpassword" >
+    <el-breadcrumb separator-class="el-icon-arrow-right" style="margin:0 0 50px 0px;">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>我的设置</el-breadcrumb-item>
+      <el-breadcrumb-item>手机号修改</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+  <el-form-item label="账号" prop="username">
+    <el-input type="username" v-model="ruleForm.username" autocomplete="off" placeholder="输入用户名"></el-input>
+  </el-form-item>
+  <el-form-item label="密码" prop="checkPass" >
+    <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" placeholder="输入密码"></el-input>
+  </el-form-item>
+  <el-form-item label="手机号" prop="phone">
+    <el-input v-model.number="ruleForm.phone" placeholder="输入手机号"></el-input>
+    </el-form-item>
+    </el-form>
   <div class="resetphone" >
     <el-breadcrumb separator-class="el-icon-arrow-right" style="margin:0 0 50px 0px;">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
@@ -23,6 +40,7 @@
     <el-button @click="resetForm('ruleForm')">重置</el-button>
   </el-form-item>
 </el-form>
+  </div>
   </div>
 </template>
 

@@ -2,14 +2,16 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import defaultPage from '@/layout/default.vue'
 import createCentre from '@/layout/createcentre.vue'
-import Index from '@/page/index.vue'
+import musicPlayer from '@/layout/musicplayer.vue'
+import Find from '@/page/find.vue'
 import Movie from '@/page/movie.vue'
 import Shop from '@/page/shop.vue'
-import ChangeLanguage from '@/page/changeLanguage.vue'
 import Singer from '@/page/singer.vue'
 import MyMusic from '@/page/mymusic.vue'
-import musicPlayer from '@/layout/musicplayer.vue'
+import member from '@/page/member.vue'
+import search from '@/page/search.vue'
 import Mysetting from '@/components/selectionarea/mysetting.vue'
+
 // 一级路由直接加载 之后的子路由全部使用懒加载
 Vue.use(Router)
 export default new Router({
@@ -17,12 +19,16 @@ export default new Router({
   routes: [{
     path: '/',
     name: 'defaultPage',
-    redirect: '/index',
+    redirect: '/find',
     component: defaultPage,
     children: [{
-      path: '/index',
-      name: 'index',
-      component: Index
+      path: '/find',
+      name: 'find',
+      component: Find
+    }, {
+      path: '/find/ranklist/ranklistDetail',
+      name: 'ranklistdetail',
+      component: () => import('@/components/main/ranklistDetail/index.vue')
     }, {
       path: '/movie',
       name: 'movie',
@@ -39,6 +45,7 @@ export default new Router({
           console.log(111)
           next()
         } */
+        /** 这个路由里面要添加videoid isvip的值，参考search里面的val传参 */
         children: [{
           path: '/movie/movieList/:movieid',
           name: 'movieListItem',
@@ -49,48 +56,6 @@ export default new Router({
       path: '/shop',
       name: 'shop',
       component: Shop
-    }, {
-      path: '/songlistdetail/:songlistid',
-      name: 'songlistdetail',
-      component: () => import('@/components/detailpage/songlistdetail.vue')
-    }, {
-      path: '/songlistdetail/songdetail/:songid',
-      name: 'songdetail', // 测试用的之后要重新更改路由
-      component: () => import('@/components/mymusic/songdetail.vue')
-    }, {
-      path: '/registermusician',
-      name: 'registermusician', // 注册音乐人路由
-      component: () => import('@/components/header/registermusician.vue')
-    }, {
-      path: '/setting',
-      name: 'setting',
-      redirect: '/setting/default',
-      component: Mysetting,
-      children: [{
-        path: '/setting/default',
-        name: 'resetdefault',
-        component: () => import('@/components/selectionarea/mysetting/default.vue')
-      }, {
-        path: '/setting/check',
-        name: 'resetcheck',
-        component: () => import('@/components/selectionarea/mysetting/check.vue')
-      }, {
-        path: '/setting/resetphone',
-        name: 'resetphone',
-        component: () => import('@/components/selectionarea/mysetting/resetphone.vue')
-      }, {
-        path: '/setting/resetpassword',
-        name: 'resetpassword',
-        component: () => import('@/components/selectionarea/mysetting/resetpassword.vue')
-      }, {
-        path: '/setting/resetheadimg',
-        name: 'resetheadimg',
-        component: () => import('@/components/selectionarea/mysetting/resetheadimg.vue')
-      }]
-    }, {
-      path: '/changelanguage',
-      name: 'changeLanguage',
-      component: ChangeLanguage
     }, {
       path: '/mymusic',
       name: 'myMusic',
@@ -159,6 +124,54 @@ export default new Router({
         name: 'musiccate',
         component: () => import('@/components/singer/musiccate.vue')
       }]
+    }, {
+      path: '/member',
+      name: 'member',
+      component: member,
+      children: [{
+        path: '/member/memberself',
+        name: 'memberself',
+        component: () => import('@/components/member/memberself.vue')
+      }, {
+        path: '/member/membervipmoney',
+        name: 'membervipmoney',
+        component: () => import('@/components/member/membervipmoney.vue')
+      }]
+    }, {
+      path: '/search/:val',
+      name: 'search',
+      component: search
+    }, {
+      /* path: '/musicplayer/:songId', */ // 动态路由歌曲id
+      path: '/musicplayer',
+      name: 'musicplayer',
+      component: musicPlayer
+    }, {
+      path: '/songlistdetail/:songlistid',
+      name: 'songlistdetail',
+      component: () => import('@/components/mymusic/songlistdetail.vue')
+    }, {
+      path: '/songlistdetail/songdetail/:songid',
+      name: 'songdetail', // 测试用的之后要重新更改路由
+      component: () => import('@/components/mymusic/songdetail.vue')
+    }, {
+      path: '/setting',
+      name: 'setting',
+      redirect: '/setting/resetheadimg',
+      component: Mysetting,
+      children: [{
+        path: '/setting/resetphone',
+        name: 'resetphone',
+        component: () => import('@/components/selectionarea/mysetting/resetphone.vue')
+      }, {
+        path: '/setting/resetpassword',
+        name: 'resetpassword',
+        component: () => import('@/components/selectionarea/mysetting/resetpassword.vue')
+      }, {
+        path: '/setting/resetheadimg',
+        name: 'resetheadimg',
+        component: () => import('@/components/selectionarea/mysetting/resetheadimg.vue')
+      }]
     }]
   }, {
     path: '/createcentre',
@@ -174,9 +187,9 @@ export default new Router({
       name: 'fanscentre',
       component: () => import('@/components/createcentre/main/fanscentre.vue')
     }, {
-      path: '/createcentre/createalbum',
-      name: 'createalbum',
-      component: () => import('@/components/createcentre/main/createalbum.vue'),
+      path: '/createcentre/createablum',
+      name: 'createablum',
+      component: () => import('@/components/createcentre/main/createablum.vue'),
       beforeEnter: (to, from, next) => { // 限制该路由的进入
         if (from.meta.fromhand) {
           if (from.meta.isNormol) {
@@ -213,19 +226,9 @@ export default new Router({
       name: 'personalinfor',
       component: () => import('@/components/createcentre/header/personalinfor.vue')
     }, {
-      path: '/createcentre/resetmusician',
-      name: 'resetmusician', // 修改音乐人信息路由
-      component: () => import('@/components/createcentre/header/resetmusician.vue')
-    }, {
       path: '/createcentre/managemusic',
       name: 'managemusic',
       component: () => import('@/components/createcentre/main/managemusic.vue')
     }]
-  },
-  {
-    /* path: '/musicplayer/:songId', */ // 动态路由歌曲id
-    path: '/musicplayer',
-    name: 'musicplayer',
-    component: musicPlayer
   }]
 })

@@ -9,9 +9,9 @@
       </el-col>
       <el-col :span='9' :offset="4" class="mainp">
         <ul>
-          <router-link tag="li" class="firstpage" :to="{name:'index'}">首页</router-link>
+          <router-link tag="li" class="firstpage" :to="{name:'find'}">首页</router-link>
           <router-link tag="li" class="personalC" :to="{name:'personalinfor'}">个人中心</router-link>
-          <router-link tag="li" class="cquestion" :to="{name:'index'}">常见问题</router-link>
+          <router-link tag="li" class="cquestion" :to="{name:'find'}">常见问题</router-link>
         </ul>
       </el-col>
       <el-col :span='6' :offset="1" class="rightp">

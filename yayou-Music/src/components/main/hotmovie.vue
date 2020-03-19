@@ -12,19 +12,19 @@
       <div class="block">
         <el-carousel trigger="click" height="150px">
           <el-carousel-item v-for="item in 4" :key="item">
-            <el-col :span="8" v-for="(o,index) in imgList" :key="index">
+            <el-col :span="8" v-for="(item,i) in hotMovie" :key="i">
               <el-card :body-style="{ padding: '0px' }" shadow="never">
                 <div class="imgBox">
                   <img src="../../assets/img/homePage/themoonandthewell.png" />
                 </div>
                 <div class="line">
-                  <p>the moon and the well</p>
+                  <p>{{item.videoName}}</p>
                   <p>
-                    <span>山鹰组合</span>
+                    <span>{{item.artist}}</span>
                   </p>
                   <p>
                     <i class="el-icon-video-camera">
-                      <span class="number">102万</span>
+                      <span class="number">{{item.watch}}</span>
                     </i>
                   </p>
                   <div class="bottom clearfix"></div>
@@ -39,9 +39,11 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data () {
     return {
+      hotMovie: [],
       imgList: [
         {
           name: '111',
@@ -57,6 +59,22 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    getHomeInfo () {
+      axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/hotMv')
+        .then(this.getHomeInfoSucc)
+    },
+    getHomeInfoSucc (res) {
+      res = res.data
+      if (res.code === 1) {
+        this.hotMovie = res.data
+        console.log(res)
+      }
+    }
+  },
+  mounted () {
+    this.getHomeInfo()
   }
 }
 </script>

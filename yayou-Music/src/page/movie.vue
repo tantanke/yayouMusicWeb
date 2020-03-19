@@ -17,7 +17,7 @@
       <el-col :span="23">
         <ul class="movieCate">
           <li tag='li' to=" ">祖国</li>
-          <router-link  tag='li' :to="{name:'movieList'}">电影</router-link>
+          <router-link  tag='li' :to="{name:'movielist'}">电影</router-link>
           <li tag='li' to=" ">科普</li>
           <li tag='li' to=" ">电视剧</li>
           <li tag='li' to=" ">体育</li>

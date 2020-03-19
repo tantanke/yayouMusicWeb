@@ -8,7 +8,7 @@
           <router-link tag='li' :to="{name:'likesinger',params:{singerid:10086}}"><span>歌手</span></router-link><!--动态路由 -->
       </ul>
       <el-row>
-               <router-view></router-view>
+              <router-view></router-view>
       </el-row>
   </div>
 </template>
@@ -19,6 +19,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import '@/assets/css/mymusic/index.scss';
 </style>

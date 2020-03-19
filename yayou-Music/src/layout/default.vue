@@ -16,10 +16,22 @@
 <script>
 import myHeader from '@/components/header/index.vue'
 import myFooter from '@/components/footer/index.vue'
+import axios from 'axios'
 export default {
   components: {
     myHeader,
     myFooter
+  },
+  methods: {
+    getHomeInfo () {
+      axios.get('/api/defaultOther.json').then(this.getHomeInfoSucc)
+    },
+    getHomeInfoSucc (res) {
+      console.log(res)
+    }
+  },
+  mounted () {
+    this.getHomeInfo()
   }
 }
 </script>
