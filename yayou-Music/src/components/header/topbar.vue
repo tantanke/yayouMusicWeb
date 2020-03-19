@@ -56,6 +56,12 @@ export default {
     }
   },
   methods: {
+    // login () {
+    //   this.$axios({url: 'login', method: 'post', params: {password: '123456', phone: '19981479010'}})
+    //     .then(res => {
+    //       console.log(res)
+    //     })
+    // },
     judge () {
       let token = localStorage.getItem('Authorization')
       if (token === 'null' || token === '') {

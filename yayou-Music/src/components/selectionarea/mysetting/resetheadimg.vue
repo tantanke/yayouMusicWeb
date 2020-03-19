@@ -13,7 +13,7 @@
       <el-col :span="2" :offset="7">
         <el-upload
           class="avatar-uploader"
-          action="/api/image/setHeadImage"
+          action="/image/setHeadImage"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"

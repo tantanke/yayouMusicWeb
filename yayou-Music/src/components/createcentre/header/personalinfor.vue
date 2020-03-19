@@ -73,7 +73,7 @@ export default {
       imageUrl: '',
       active: 0,
       urls: {
-        info: '/api/'
+        info: ''
       },
       ruleForm: {
         singerName: '',

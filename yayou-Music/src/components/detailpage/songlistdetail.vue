@@ -96,9 +96,8 @@
 
 <script>
 import axios from 'axios'
-import qs from 'qs'
 // axios.defaults.headers.delete['Content-Type'] = 'text/plain'
-let tAxios = axios.interceptors.request.use(
+axios.interceptors.request.use(
   config => {
     if (localStorage.getItem('Authorization')) {
       config.headers.Authorization = localStorage.getItem('Authorization')
@@ -113,10 +112,10 @@ export default {
   data () {
     return {
       urls: {
-        collectionMusic: '/api/user/addMusicToCollection',
-        discollectionMusic: '/api/user/unCollectSong',
-        songAgreeUrl: '/api/user/likeSong',
-        songDisagreeUrl: '/api/user//cancelLike'
+        collectionMusic: '/user/addMusicToCollection',
+        discollectionMusic: '/user/unCollectSong',
+        songAgreeUrl: '/user/likeSong',
+        songDisagreeUrl: '/user//cancelLike'
       },
       playShow: true,
       show: true,
@@ -211,7 +210,7 @@ export default {
     handleCollection (e) {
       e.collectionStyle = !e.collectionStyle
       if (e.collectionStyle) {
-        tAxios.post(this.urls.collectionMusic, qs.stringify(e.songId))
+        axios.post(this.urls.collectionMusic, JSON.stringify({songId: e.songId}))
           .then(res => {
             console.log(res)
             if (res.data.code === '1') {
@@ -231,13 +230,16 @@ export default {
             console.log(err)
           })
       } else {
-        tAxios.request({
+        axios.request({
           url: this.urls.discollectionMusic,
           method: 'post',
           params: {
             _method: 'delete'
           },
-          songId: qs.stringify(e.songId)})
+          data: JSON.stringify({
+            songId: e.songId
+          })
+        })
           .then(res => {
             console.log(res)
             if (res.data.code === '1') {
@@ -261,7 +263,7 @@ export default {
     handleSongAgree (e) {
       e.agreeStyle = !e.agreeStyle
       if (e.agreeStyle) {
-        tAxios.post(this.urls.songAgreeUrl, qs.stringify(e.songId))
+        axios.post(this.urls.songAgreeUrl, JSON.stringify({songId: e.songId}))
           .then(res => {
             console.log(res)
             if (res.data.code === '1') {
@@ -282,13 +284,16 @@ export default {
             console.log(err)
           })
       } else {
-        tAxios.request({
+        axios.request({
           url: this.urls.songDisagreeUrl,
           method: 'post',
           params: {
             _method: 'delete'
           },
-          songId: qs.stringify(e.songId)})
+          data: JSON.stringify({
+            songId: e.songId
+          })
+        })
           .then(res => {
             console.log(res)
             if (res.data.code === '1') {

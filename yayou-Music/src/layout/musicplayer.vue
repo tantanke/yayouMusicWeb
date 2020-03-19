@@ -184,7 +184,7 @@ export default {
     console.log(1)
     this.$axios({
       method: 'get',
-      url: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/vip/playMusic',
+      url: '/api/vip/playMusic',
       params: {'songId': '1'}
     })
       .then(function (res) {

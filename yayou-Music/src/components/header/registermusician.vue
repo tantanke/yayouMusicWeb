@@ -56,6 +56,17 @@
 
 <script>
 import axios from 'axios'
+let tAxios = axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = localStorage.getItem('Authorization')
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 export default {
   data () {
     return {
@@ -63,8 +74,8 @@ export default {
       loadingBack: false,
       active: 0,
       urls: {
-        uploadeForm: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/registerAsSinger',
-        uploadephoto: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/upImg'
+        uploadeForm: '/registerAsSinger',
+        uploadephoto: '/upImg'
       },
       ruleForm: {
         singerName: '',
@@ -139,7 +150,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           alert('submit!')
-          axios.post(this.urls.uploadeForm, formName)
+          tAxios.post(this.urls.uploadeForm, formName)
             .then(res => {
               if (res.data.code === 1) {
                 this.$router.push({name: 'resetmusician'})
