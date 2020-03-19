@@ -198,9 +198,9 @@ export default {
         ]
       },
       upUrls: {
-        upAlbumUrl: '/api/singer/newAlbum',
-        upSongUrl: '/api/singer/upSong',
-        upCoverUrl: '/api/setCover'
+        upAlbumUrl: '/singer/newAlbum',
+        upSongUrl: '/singer/upSong',
+        upCoverUrl: '/setCover'
       },
       loadingAblum: false,
       loadingSong: false
@@ -425,6 +425,7 @@ export default {
   },
   mounted () {
     let _this = this
+    _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000'
     _this.$axios.interceptors.request.use(
       config => {
         if (localStorage.getItem('Authorization')) {
