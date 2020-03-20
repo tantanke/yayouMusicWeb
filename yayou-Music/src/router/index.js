@@ -15,6 +15,7 @@ import Mysetting from '@/components/selectionarea/mysetting.vue'
 // 一级路由直接加载 之后的子路由全部使用懒加载
 Vue.use(Router)
 export default new Router({
+  mode: 'hash',
   routes: [{
     path: '/',
     name: 'defaultPage',
@@ -58,6 +59,13 @@ export default new Router({
       name: 'myMusic',
       component: MyMusic,
       redirect: '/mymusic/personalcenter',
+      beforeEnter: (to, from, next) => { // 限制该路由的进入
+        if (localStorage.getItem('Authorization')) {
+          next()
+        } else {
+          next('/mymusic/personalcenter')
+        }
+      },
       children: [{
         path: '/mymusic/personalcenter',
         name: 'personalCenter',
@@ -152,7 +160,7 @@ export default new Router({
     }, {
       path: '/songlistdetail/:songlistid',
       name: 'songlistdetail',
-      component: () => import('@/components/mymusic/songlistdetail.vue')
+      component: () => import('@/components/detailpage/songlistdetail.vue')
     }, {
       path: '/songdetail/:songid',
       name: 'songdetail', // 测试用的之后要重新更改路由

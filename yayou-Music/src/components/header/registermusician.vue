@@ -1,25 +1,27 @@
 <template>
-  <div class="composer" style="width:800px;height:600px;">
+  <div class="composer" style="width:900px;height:600px;">
     <el-row tag="div" class="head">
       <el-col :span="16">艺人注册</el-col>
     </el-row>
     <el-row tag="div" class="main">
-      <el-col :span="16" >
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
+      <el-col :span="16" :offset="2">
+      <el-form :model="ruleForm" :label-position="left" :rules="rules" ref="ruleForm" label-width="130px" class="demo-ruleForm">
         <el-form-item label="真实姓名：" prop="singerName">
-          <el-input v-model="ruleForm.singerName" placeholder=""></el-input>
+          <el-input v-model="ruleForm.singerName" placeholder="" maxlength="6"></el-input>
         </el-form-item>
         <el-form-item label="身份证号：" prop="idCardNum">
-          <el-input v-model="ruleForm.idCardNum" placeholder=""></el-input>
+          <el-input v-model="ruleForm.idCardNum" placeholder="" maxlength="18"></el-input>
         </el-form-item>
         <el-form-item label="身份证照正面：" prop="idCardPhotoFont">
           <el-upload
             class="avatar-uploader"
-            :action="urls.uploadephoto"
+            action="#"
             :limit="1"
             :show-file-list="false"
+            :headers="myHeader"
             :on-success="handleAvatarSuccessPhotoFont"
             :before-upload="beforeAvatarUploadFont"
+            list-type="picture"
             v-loading="loadingFont"
             element-loading-text="拼命加载中"
             element-loading-spinner="el-icon-loading"
@@ -31,8 +33,9 @@
         <el-form-item label="身份证照反面：" prop="idCardPhotoBack">
           <el-upload
             class="avatar-uploader"
-            :action="urls.uploadephoto"
+            action="#"
             :limit="1"
+            list-type="picture"
             :show-file-list="false"
             :on-success="handleAvatarSuccessPhoto"
             :before-upload="beforeAvatarUpload"
@@ -59,7 +62,7 @@ import axios from 'axios'
 axios.interceptors.request.use(
   config => {
     if (localStorage.getItem('Authorization')) {
-      config.headers.Authorization = localStorage.getItem('Authorization')
+      config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
     }
     return config
   },
@@ -75,7 +78,7 @@ export default {
       active: 0,
       urls: {
         uploadeForm: '/registerAsSinger',
-        uploadephoto: '/upImg'
+        uploadephoto: 'http://175.24.83.13:8000/upImg'
       },
       ruleForm: {
         singerName: '',
@@ -84,11 +87,11 @@ export default {
         idCardPhotoBack: ''
       },
       rules: {
-        trueName: [
+        singerName: [
           { required: true, message: '请输入名字', trigger: 'blur' },
           { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
-        ID: [
+        idCardNum: [
           { required: true, message: '请输入身份证号', trigger: 'change' },
           {
             required: true,
@@ -106,22 +109,22 @@ export default {
       }
     }
   },
+  computed: {
+    myHeader () {
+      if (localStorage.getItem('Authorization')) {
+        return {'Authorization': localStorage.getItem('Authorization')}
+      }
+    }
+  },
   methods: {
     handleAvatarSuccessPhotoFont (res, file) {
-      this.loadingFont = false
       console.log(res)
-      console.log(file)
-      this.ruleForm.idCardPhotoFont = URL.createObjectURL(file.raw)
-      console.log(this.ruleForm.idCardPhotoFont)
     },
     handleAvatarSuccessPhotoBack (res, file) {
-      this.loadingBack = false
       console.log(res)
-      console.log(file)
-      this.ruleForm.idCardPhotoFont = URL.createObjectURL(file.raw)
-      console.log(this.ruleForm.idCardPhotoFont)
     },
     beforeAvatarUploadFont (file) {
+      console.log(file)
       this.loadingFont = true
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -131,9 +134,31 @@ export default {
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
+      if (isJPG && isLt2M) {
+        let fd = JSON.stringify({'img': file})
+        this.$axios.post(this.urls.uploadephoto, fd)
+          .then(res => {
+            console.log(res.data)
+            let data = res.data
+            if (data.code === 1) {
+              this.$message({
+                message: '身份证正面上传成功',
+                type: 'success'
+              })
+              this.ruleForm.idCardPhotoFont = URL.createObjectURL(file.raw)
+            } else {
+              this.$message.error(data.msg)
+            }
+            this.loadingFont = false
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
       return isJPG && isLt2M
     },
     beforeAvatarUploadBack (file) {
+      console.log(file)
       this.loadingBack = true
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -143,13 +168,33 @@ export default {
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
+      if (isJPG && isLt2M) {
+        let fd = JSON.stringify({'img': file})
+        this.$axios.post(this.urls.uploadephoto, fd)
+          .then(res => {
+            console.log(res.data)
+            let data = res.data
+            if (data.code === 1) {
+              this.$message({
+                message: '身份证正面上传成功',
+                type: 'success'
+              })
+              this.ruleForm.idCardPhotoBack = URL.createObjectURL(file.raw)
+            } else {
+              this.$message.error(data.msg)
+            }
+            this.loadingBack = false
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
       return isJPG && isLt2M
     },
     submitForm (formName) {
       console.log(formName)
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
           axios.post(this.urls.uploadeForm, formName)
             .then(res => {
               if (res.data.code === 1) {

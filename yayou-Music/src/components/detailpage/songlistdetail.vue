@@ -96,11 +96,12 @@
 
 <script>
 import axios from 'axios'
-// axios.defaults.headers.delete['Content-Type'] = 'text/plain'
+axios.defaults.headers.delete['Content-Type'] = 'text/plain'
 axios.interceptors.request.use(
   config => {
+    console.log('user:' + localStorage.getItem('Authorization'))
     if (localStorage.getItem('Authorization')) {
-      config.headers.Authorization = localStorage.getItem('Authorization')
+      config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
     }
     return config
   },
@@ -208,12 +209,17 @@ export default {
       this.playShow = !this.playShow
     },
     handleCollection (e) {
-      e.collectionStyle = !e.collectionStyle
-      if (e.collectionStyle) {
-        axios.post(this.urls.collectionMusic, JSON.stringify({songId: e.songId}))
+      if (!e.collectionStyle) {
+        axios({
+          url: this.urls.collectionMusic,
+          method: 'post',
+          headers: {'Content-Type': 'application/json'},
+          params: JSON.stringify({'songId': e.songId})
+        })
           .then(res => {
             console.log(res)
             if (res.data.code === '1') {
+              e.collectionStyle = !e.collectionStyle
               this.$message({
                 message: res.data.msg,
                 type: 'success'
@@ -243,6 +249,7 @@ export default {
           .then(res => {
             console.log(res)
             if (res.data.code === '1') {
+              e.collectionStyle = !e.collectionStyle
               this.$message({
                 message: res.data.msg,
                 type: 'success'
@@ -261,9 +268,13 @@ export default {
       }
     },
     handleSongAgree (e) {
-      e.agreeStyle = !e.agreeStyle
-      if (e.agreeStyle) {
-        axios.post(this.urls.songAgreeUrl, JSON.stringify({songId: e.songId}))
+      if (!e.agreeStyle) {
+        axios({
+          url: this.urls.songAgreeUrl,
+          method: 'post',
+          headers: {'Content-Type': 'application/json;charset=UTF-8'},
+          params: JSON.stringify({'songId': e.songId})
+        })
           .then(res => {
             console.log(res)
             if (res.data.code === '1') {
@@ -271,6 +282,7 @@ export default {
                 message: res.data.msg,
                 type: 'success'
               })
+              e.agreeStyle = !e.agreeStyle
               e.agreeNum++
             } else {
               if (res.data.msg) {
@@ -287,11 +299,9 @@ export default {
         axios.request({
           url: this.urls.songDisagreeUrl,
           method: 'post',
-          params: {
-            _method: 'delete'
-          },
-          data: JSON.stringify({
-            songId: e.songId
+          params: JSON.stringify({
+            _method: 'delete',
+            'songId': e.songId
           })
         })
           .then(res => {
@@ -301,6 +311,7 @@ export default {
                 message: res.data.msg,
                 type: 'success'
               })
+              e.agreeStyle = !e.agreeStyle
               e.agreeNum--
             } else {
               if (res.data.msg) {

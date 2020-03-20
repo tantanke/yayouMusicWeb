@@ -71,7 +71,7 @@ export default {
     var checkPhoneNumber = (rule, value, callback) => {
       console.log('外面')
       axios({
-        url: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/findUserExist',
+        url: 'http://175.24.83.13:8000/findUserExist',
         method: 'post',
         params: {
           'userPhone': this.phone
