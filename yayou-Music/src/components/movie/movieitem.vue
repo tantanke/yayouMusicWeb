@@ -7,7 +7,7 @@
         class="video-js"
         >
         <source
-            src="http://q3zu4kbb9.bkt.clouddn.com/5-2 买家商品-service~1-1578923685075.mp4"
+            src=""
             type="video/mp4"
         >
         </video>
@@ -30,7 +30,7 @@
           <p>大部分人爱看</p>
           <el-row class="likecards" >
             <div class="likecard" v-for="index in 5" :key="index">
-              <img src="../../../assets/img/homePage/themoonandthewell.png" alt="">
+              <img src="./../../assets/img/homePage/themoonandthewell.png" alt="">
               <p>The moon on the wall</p>
               <span>山鹰组合</span>
               <span><i class="el-icon-video-camera"></i>102万</span><i></i>
@@ -68,7 +68,7 @@
             </el-row>
             <el-row class="remarkcard" v-for="index in 10" :key="index" >
               <el-col :span="1" class="userImg">
-                <img src="../../../assets/img/homePage/彝人制造.png" alt="">
+                <img src="./../../assets/img/homePage/彝人制造.png" alt="">
               </el-col>
               <el-col :span="23" class='info'>
                 <p>悲伤那麽大</p>
@@ -110,17 +110,6 @@
 
 <script>
 /* import * as videoplayer from '../../../../static/qiniuvideo' */
-let tAxios = this.$axios.interceptors.request.use(
-  config => {
-    if (localStorage.getItem('Authorization')) {
-      config.headers.Authorization = localStorage.getItem('Authorization')
-    }
-    return config
-  },
-  error => {
-    return Promise.reject(error)
-  }
-)
 export default {
   data () {
     return {
@@ -165,7 +154,7 @@ export default {
     handleCollection (e) {
       e.collectionStyle = !e.collectionStyle
       if (e.collectionStyle) {
-        tAxios.post(this.urls.collection, JSON.stringify({videoId: e.videoId}))
+        this.$axios.post(this.urls.collection, JSON.stringify({videoId: e.videoId}))
           .then(res => {
             console.log(res)
             if (res.data.code === '1') {
@@ -185,7 +174,7 @@ export default {
             console.log(err)
           })
       } else {
-        tAxios({
+        this.$axios({
           url: this.urls.discollection,
           method: 'post',
           params: {
@@ -212,6 +201,19 @@ export default {
             console.log(err)
           })
       }
+    },
+    mounted () {
+      this.$axios.interceptors.request.use(
+        config => {
+          if (localStorage.getItem('Authorization')) {
+            config.headers.Authorization = localStorage.getItem('Authorization')
+          }
+          return config
+        },
+        error => {
+          return Promise.reject(error)
+        }
+      )
     }
   }
 }

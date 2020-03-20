@@ -2,8 +2,8 @@
   <div class="allmovie" >
     <div class="allmoviepage" ref="allmovie" >
     <el-row class="moviepic" >
-      <routerLink  tag="div" :to="{name:'movieListItem',params:{movieid:12,isvip:this.role}} " class="moviecard" v-for="(index) in 30" :key="index"  >
-        <img    @click="linkTo()" src="../../assets/img/homePage/狂徒(dts版).png" alt />
+      <routerLink  tag="div" :to="{name:'movieListItem', params:{movieid:12}}" class="moviecard" v-for="(index) in 30" :key="index"  >
+        <img  src="../../assets/img/homePage/狂徒(dts版).png" alt />
         <p>狂徒(dts版)</p>
         <p>
           <span>贾巴阿叄</span>
@@ -31,12 +31,6 @@ export default {
     }
   },
   methods: {
-    linkTo () {
-      this.$refs.allmovie.style.display = 'none' // 实现跳转 我是真的想不到别的方法了QAQ
-    },
-    mounted () {
-      console.log(this)
-    }
   }
 }
 </script>
