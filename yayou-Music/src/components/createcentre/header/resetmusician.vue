@@ -95,7 +95,7 @@ axios.create({
 axios.interceptors.request.use(
   config => {
     if (localStorage.getItem('Authorization')) {
-      config.headers.Authorization = localStorage.getItem('Authorization')
+      config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
     }
     return config
   },
@@ -157,6 +157,7 @@ export default {
       this.ruleForm.headImg = URL.createObjectURL(file.raw)
     },
     beforeAvatarUploadHeadImg (file) {
+      console.log(file)
       this.loadingHeadImg = true
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -170,6 +171,7 @@ export default {
       return isJPG && isLt2M
     },
     beforeAvatarUploadPhoto (file) {
+      console.log(file)
       this.loadingPhoto = true
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -186,7 +188,6 @@ export default {
       console.log(formName)
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
           axios.post(this.urls.uploadeForm, formName)
             .then(res => {
               if (res.data.code === 1) {

@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+  <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="0" class="demo-ruleForm">
     <el-form-item prop="pass">
       <el-input placeholder="手机号" v-model="ruleForm.pass" autocomplete="off" type="">
         <template slot="prepend" ><i class="el-icon-mobile-phone"></i></template>
@@ -102,7 +102,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   .el-form-item__content{
     margin: 0 auto!important
   }
@@ -115,14 +115,14 @@ export default {
   .text1{
     display: inline-block;
     font-size: 12px;
-    margin-top: -88px;
-    margin-left: 4px;
+    margin-top: -50px;
+    margin-left: 80px;
   }
   .text2{
     display: inline-block;
     font-size: 12px;
-    margin-top: -88px;
-    margin-left: 200px;
+    margin-top: -50px;
+    margin-left: 150px;
   }
   .text3{
     display: block;
