@@ -196,9 +196,9 @@ export default {
         ]
       },
       upUrls: {
-        upAblumUrl: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/newAlbum',
-        upSongUrl: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/singer/upSong',
-        upCoverUrl: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/setCover'
+        upAblumUrl: 'http://175.24.83.13:8000/singer/newAlbum',
+        upSongUrl: 'http://175.24.83.13:8000/singer/upSong',
+        upCoverUrl: 'http://175.24.83.13:8000/setCover'
       }
     }
   },
@@ -262,6 +262,8 @@ export default {
         this.isImg = true
       }
       this.coverFile = file.raw
+      console.log('1213=' + file)
+      console.log('25' + file.raw)
     },
     beforeUpMp3 (file, fileList) {
       let fileType = file.name.substring(file.name.lastIndexOf('.') + 1)

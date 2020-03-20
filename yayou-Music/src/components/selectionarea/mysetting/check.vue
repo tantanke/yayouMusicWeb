@@ -18,6 +18,18 @@
 </template>
 
 <script>
+import axios from 'axios'
+axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 export default {
   data () {
     var validatePass = (rule, value, callback) => {
@@ -46,9 +58,14 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$axios.post(this.urls.submitUrl, JSON.stringify({
-            password: formName.pass
-          }))
+          axios({
+            url: this.urls.submitUrl,
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            params: JSON.stringify({
+              password: this.ruleForm.pass
+            })
+          })
             .then(res => {
               if (res.data.errorCode === '1') {
                 if (this.msg === 'resetpassword') {

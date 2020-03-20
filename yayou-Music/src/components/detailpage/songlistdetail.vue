@@ -116,7 +116,7 @@ export default {
         collectionMusic: '/user/addMusicToCollection',
         discollectionMusic: '/user/unCollectSong',
         songAgreeUrl: '/user/likeSong',
-        songDisagreeUrl: '/user//cancelLike'
+        songDisagreeUrl: '/user/cancelLike'
       },
       playShow: true,
       show: true,

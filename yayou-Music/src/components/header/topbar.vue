@@ -122,7 +122,8 @@ export default {
       console.log(res)
     },
     clickR () {
-      if (this.isSinger === false) {
+      let role = localStorage.getItem('Role')
+      if (role !== 'Singer') {
         this.routercreatecentre = 'registermusician'
         this.$router.push({name: 'registermusician'})
       } else {

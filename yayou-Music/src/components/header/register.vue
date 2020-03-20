@@ -1,5 +1,5 @@
 <template>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm">
         <el-upload
             action="https://jsonplaceholder.typicode.com/posts/"
             list-type="picture-card"

@@ -5,7 +5,7 @@
     </el-row>
     <el-row tag="div" class="main">
       <el-col :span="16" :offset="2">
-      <el-form :model="ruleForm" :label-position="left" :rules="rules" ref="ruleForm" label-width="130px" class="demo-ruleForm">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="130px" class="demo-ruleForm">
         <el-form-item label="真实姓名：" prop="singerName">
           <el-input v-model="ruleForm.singerName" placeholder="" maxlength="6"></el-input>
         </el-form-item>
@@ -18,7 +18,6 @@
             action="#"
             :limit="1"
             :show-file-list="false"
-            :headers="myHeader"
             :on-success="handleAvatarSuccessPhotoFont"
             :before-upload="beforeAvatarUploadFont"
             list-type="picture"
@@ -37,8 +36,8 @@
             :limit="1"
             list-type="picture"
             :show-file-list="false"
-            :on-success="handleAvatarSuccessPhoto"
-            :before-upload="beforeAvatarUpload"
+            :on-success="handleAvatarSuccessPhotoBack"
+            :before-upload="beforeAvatarUploadBack"
             v-loading="loadingBack"
             element-loading-text="拼命加载中"
             element-loading-spinner="el-icon-loading"
@@ -78,7 +77,7 @@ export default {
       active: 0,
       urls: {
         uploadeForm: '/registerAsSinger',
-        uploadephoto: 'http://175.24.83.13:8000/upImg'
+        uploadephoto: '/upImg'
       },
       ruleForm: {
         singerName: '',
@@ -109,13 +108,6 @@ export default {
       }
     }
   },
-  computed: {
-    myHeader () {
-      if (localStorage.getItem('Authorization')) {
-        return {'Authorization': localStorage.getItem('Authorization')}
-      }
-    }
-  },
   methods: {
     handleAvatarSuccessPhotoFont (res, file) {
       console.log(res)
@@ -135,8 +127,16 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       if (isJPG && isLt2M) {
-        let fd = JSON.stringify({'img': file})
-        this.$axios.post(this.urls.uploadephoto, fd)
+        let df = new FormData()
+        df.append('img', file, file.name)
+        console.log(df.get('img'))
+        axios({
+          url: this.urls.uploadephoto,
+          method: 'post',
+          headers: {'Content-Type': 'multipart/form-data'},
+          data: df,
+          processData: false
+        })
           .then(res => {
             console.log(res.data)
             let data = res.data
@@ -145,16 +145,16 @@ export default {
                 message: '身份证正面上传成功',
                 type: 'success'
               })
-              this.ruleForm.idCardPhotoFont = URL.createObjectURL(file.raw)
+              this.ruleForm.idCardPhotoFont = data.url
             } else {
               this.$message.error(data.msg)
             }
-            this.loadingFont = false
           })
           .catch(error => {
             console.log(error)
           })
       }
+      this.loadingFont = false
       return isJPG && isLt2M
     },
     beforeAvatarUploadBack (file) {
@@ -169,26 +169,34 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       if (isJPG && isLt2M) {
-        let fd = JSON.stringify({'img': file})
-        this.$axios.post(this.urls.uploadephoto, fd)
+        let df = new FormData()
+        df.append('img', file)
+        console.log(df.get('img'))
+        axios({
+          url: this.urls.uploadephoto,
+          method: 'post',
+          headers: {'Content-Type': 'multipart/form-data'},
+          data: df,
+          processData: false
+        })
           .then(res => {
             console.log(res.data)
             let data = res.data
             if (data.code === 1) {
               this.$message({
-                message: '身份证正面上传成功',
+                message: '身份证反面上传成功',
                 type: 'success'
               })
-              this.ruleForm.idCardPhotoBack = URL.createObjectURL(file.raw)
+              this.ruleForm.idCardPhotoBack = data.url
             } else {
               this.$message.error(data.msg)
             }
-            this.loadingBack = false
           })
           .catch(error => {
             console.log(error)
           })
       }
+      this.loadingFont = false
       return isJPG && isLt2M
     },
     submitForm (formName) {
