@@ -35,6 +35,7 @@
             <li><i class="el-icon-lollipop"></i><span>我的歌单</span></li>
             <li><i class="el-icon-wind-power"></i><span>我的下载</span></li>
             <li><i class="el-icon-time"></i><span>最近播放</span></li>
+            <router-link tag='li' :to="{name:routercreatecentre}" @click.native="clickR"><i class="el-icon-service"></i><span></span></router-link>
           </ul>
         </div>
         <el-divider direction="vertical"></el-divider>
@@ -59,6 +60,7 @@ export default {
   name: 'MyFind',
   data () {
     return {
+      routercreatecentre: 'createCentre', // 创作中心进入口
       dialogTableVisible: false,
       isnotShow: false,
       topInfo: {
@@ -66,7 +68,8 @@ export default {
         navList: ['我的发现', '我的音乐', '视频', '商城', '音乐人', '彝汉切换'],
         inputValue: ''
       },
-      isnotLogin: true // 利用父子组件传值
+      isnotLogin: true, // 利用父子组件传值
+      isSinger: false // 是否已经成为注册音乐人
     }
   },
   methods: {
@@ -88,7 +91,7 @@ export default {
       var keyCode = window.event ? event.keyCode : event.which
       if (keyCode === 13) {
         axios({
-          url: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/search',
+          url: '/search',
           method: 'post',
           params: {
             'value': this.inputValue,
@@ -104,7 +107,7 @@ export default {
       var val = this.topInfo.inputValue
       Bus.$emit('inputVal', val)
       axios({
-        url: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/search',
+        url: '/search',
         method: 'post',
         params: {
           'value': this.inputValue,
@@ -117,6 +120,15 @@ export default {
     getSearchResult (res) {
       res = res.data
       console.log(res)
+    },
+    clickR () {
+      if (this.isSinger === false) {
+        this.routercreatecentre = 'registermusician'
+        this.$router.push({name: 'registermusician'})
+      } else {
+        this.routercreatecentre = 'createCentre'
+        this.$router.push({name: 'createCentre'})
+      }
     }
   }
 }

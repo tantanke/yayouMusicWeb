@@ -46,7 +46,7 @@
 
 <script>
 import axios from 'axios'
-let tAxios = axios.interceptors.request.use(
+axios.interceptors.request.use(
   config => {
     if (localStorage.getItem('Authorization')) {
       config.headers.Authorization = localStorage.getItem('Authorization')
@@ -92,7 +92,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(valid)
-          tAxios.post(this.urls.changPhone, JSON.stringify({newphone: formName.newphone}))
+          axios.post(this.urls.changPhone, JSON.stringify({newphone: formName.newphone}))
             .then(res => {
               if (res.data.errorCode === '1') {
                 this.$message({

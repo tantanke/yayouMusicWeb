@@ -87,12 +87,12 @@
 
 <script>
 import axios from 'axios'
-let hAxios = axios.create({
+axios.create({
   headers: {
     'Content-Type': 'multipart/form-data'
   }
 })
-hAxios.interceptors.request.use(
+axios.interceptors.request.use(
   config => {
     if (localStorage.getItem('Authorization')) {
       config.headers.Authorization = localStorage.getItem('Authorization')
@@ -187,7 +187,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           alert('submit!')
-          hAxios.post(this.urls.uploadeForm, formName)
+          axios.post(this.urls.uploadeForm, formName)
             .then(res => {
               if (res.data.code === 1) {
                 this.$message({

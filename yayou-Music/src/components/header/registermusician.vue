@@ -56,7 +56,7 @@
 
 <script>
 import axios from 'axios'
-let tAxios = axios.interceptors.request.use(
+axios.interceptors.request.use(
   config => {
     if (localStorage.getItem('Authorization')) {
       config.headers.Authorization = localStorage.getItem('Authorization')
@@ -150,7 +150,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           alert('submit!')
-          tAxios.post(this.urls.uploadeForm, formName)
+          axios.post(this.urls.uploadeForm, formName)
             .then(res => {
               if (res.data.code === 1) {
                 this.$router.push({name: 'resetmusician'})

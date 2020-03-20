@@ -83,7 +83,7 @@
 
 <script>
 import axios from 'axios'
-let tAxios = axios.interceptors.request.use(
+axios.interceptors.request.use(
   config => {
     if (localStorage.getItem('Authorization')) {
       config.headers.Authorization = localStorage.getItem('Authorization')
@@ -164,7 +164,7 @@ export default {
       this.disabled = false
       let formData = new FormData()
       formData.append('file', this.form.file)
-      tAxios.post(this.urls.uploadCover,
+      axios.post(this.urls.uploadCover,
         formData,
         {'Content-Type': 'multipart/form-data'}
       )
@@ -184,7 +184,7 @@ export default {
         })
     },
     submitSonglist (formData) {
-      tAxios.post(this.urls.uploadSonglist, JSON.stringify({
+      axios.post(this.urls.uploadSonglist, JSON.stringify({
         cover: formData.cover,
         introduce: formData.introduce,
         songListName: formData.name

@@ -151,15 +151,27 @@ export default new Router({
       name: 'songlistdetail',
       component: () => import('@/components/mymusic/songlistdetail.vue')
     }, {
-      path: '/songlistdetail/songdetail/:songid',
+      path: '/songdetail/:songid',
       name: 'songdetail', // 测试用的之后要重新更改路由
       component: () => import('@/components/mymusic/songdetail.vue')
     }, {
+      path: '/registermusician',
+      name: 'registermusician',
+      component: () => import('@/components/header/registermusician.vue')
+    }, {
       path: '/setting',
       name: 'setting',
-      redirect: '/setting/resetheadimg',
+      redirect: '/setting/default',
       component: Mysetting,
       children: [{
+        path: '/setting/default',
+        name: 'default',
+        component: () => import('@/components/selectionarea/mysetting/default.vue')
+      }, {
+        path: '/setting/check',
+        name: 'check',
+        component: () => import('@/components/selectionarea/mysetting/check.vue')
+      }, {
         path: '/setting/resetphone',
         name: 'resetphone',
         component: () => import('@/components/selectionarea/mysetting/resetphone.vue')
@@ -179,6 +191,10 @@ export default new Router({
     redirect: '/createcentre/firstpage',
     component: createCentre,
     children: [{
+      path: '/createcentre/resetmusician',
+      name: 'resetmusician',
+      component: () => import('@/components/createcentre/header/resetmusician.vue')
+    }, {
       path: '/createcentre/dutycentre',
       name: 'dutycentre',
       component: () => import('@/components/createcentre/main/dutycentre.vue')

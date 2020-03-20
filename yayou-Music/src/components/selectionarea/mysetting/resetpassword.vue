@@ -22,7 +22,7 @@
 
 <script>
 import axios from 'axios'
-let tAxios = axios.interceptors.request.use(
+axios.interceptors.request.use(
   config => {
     if (localStorage.getItem('Authorization')) {
       config.headers.Authorization = localStorage.getItem('Authorization')
@@ -76,7 +76,7 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          tAxios({
+          axios({
             url: this.urls.changPassword,
             method: 'post',
             params: {

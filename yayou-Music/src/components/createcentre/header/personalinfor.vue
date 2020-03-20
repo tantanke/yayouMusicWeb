@@ -92,7 +92,7 @@ export default {
   },
   mounted: () => {
     var _this = this
-    this.axios.post(this.urls.info)
+    this.$axios.post(this.urls.info)
       .then(res => {
         console.log(res)
         if (res.data.code === 1) {
