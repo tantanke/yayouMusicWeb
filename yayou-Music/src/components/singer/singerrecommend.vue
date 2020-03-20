@@ -1,5 +1,6 @@
 <template>
-  <div class="singer-recommend">
+<div>
+<div class="singer-recommend"  v-if="click">
     <el-row class='singerCategory'>
        <ul>
          <li class="all active"><span>全部</span></li>
@@ -14,8 +15,8 @@
         <li v-for="(item,index) in nameList" :key="index"><span>{{ item }}</span></li>
       </ul>
     </el-row>
-    <el-row class='singerCard' ><!-- 动态路由-->
-      <routerLink v-for='(index) in 36' :key="index" tag='div' :to="{name:'likesinger',params:{singerid:10086}}">
+    <el-row class='singerCard' @click.native="isClickSinger"><!-- 动态路由-->
+      <routerLink v-for='(index) in 36' :key="index" tag='div' :to="{name:'singerDetail', params:{singerid:10086}}">
       <img src="../../assets/img/homePage/说比阿达.png" alt="">
       <span>说比阿达</span>
       </routerLink>
@@ -23,15 +24,32 @@
     <el-row><!--这里的分页采用后端分页 数据较多 -->
       <el-pagination :page-size="36" :pager-count="6" layout="prev, pager, next" :total="720"></el-pagination>
       </el-row>
+      <router-view></router-view>
   </div>
+  <router-view></router-view>
+</div>
 </template>
 
 <script>
 export default {
   data () {
     return {
-      nameList: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+      nameList: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
+      click: true
     }
+  },
+  computed: {
+    isClick () {
+      return this.click
+    }
+  },
+  methods: {
+    isClickSinger () {
+      this.click = false
+    }
+  },
+  mounted () {
+    this.click = true
   }
 }
 </script>

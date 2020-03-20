@@ -2,7 +2,7 @@
   <div class="yy-topbar">
     <el-row>
       <el-col :span="1" class="yy-logo"></el-col>
-      <el-col :span="3" class="yy-title"><router-link tag='span' :to="{path:'/index'}">涯悠数据</router-link></el-col>
+      <el-col :span="3" class="yy-title"><router-link tag='span' :to="{name:'find'}">涯悠数据</router-link></el-col>
       <el-col :span="11" class="yy-toplist">
         <ul class="nav" >
           <router-link tag='li'  :to="{name:'find'}"><div>我的发现</div></router-link>
@@ -10,7 +10,7 @@
           <router-link tag='li'  :to="{name:'movie'}"><div>视频</div></router-link>
           <router-link tag='li'  :to="{name:'shop'}"><div>商城</div></router-link>
           <router-link tag='li'  :to="{name:'singer'}"><div>音乐人</div></router-link>
-          <router-link tag='li' @click="changeLangEvent" :to="{name:'singer'}"><div>彝汉切换</div></router-link>
+          <li @click="changeLangEvent"><div>彝汉切换</div></li>
         </ul>
       </el-col>
       <el-col :span="6" class="yy-topsearch" id="topsearch"><!--这个id值是用来触发鼠标enter（键值为13）键的 @keyup.enter.native="entersearch" -->
@@ -18,7 +18,7 @@
         <router-link tag="i" class="el-icon-search" @click.native="firstPageSearch()" :to="{name:'search',params:{val:this.topInfo.inputValue}}"></router-link>
       </el-col>
       <el-col :span="3" class="yy-login">
-        <div v-if="isnotLogin">
+        <div v-if="notLogin">
           <el-dialog title="账号密码登陆" :visible.sync="dialogTableVisible" center :append-to-body='true' :lock-scroll='false' width="20%">
             <dia-log v-bind:isnotLogin = "isnotLogin" v-on:success = "success(res)"></dia-log>
           </el-dialog>
@@ -35,7 +35,8 @@
             <li><i class="el-icon-lollipop"></i><span>我的歌单</span></li>
             <li><i class="el-icon-wind-power"></i><span>我的下载</span></li>
             <li><i class="el-icon-time"></i><span>最近播放</span></li>
-            <router-link tag='li' :to="{name:routercreatecentre}" @click.native="clickR"><i class="el-icon-service"></i><span></span></router-link>
+            <router-link tag='li' :to="{name:routercreatecentre}" @click.native="clickR"><i class="el-icon-service"></i><span  v-if="!isSinger">艺人注册</span><span>创作中心</span></router-link>
+            <li @click="loginOut"><i class="el-icon-delete" ></i><span>退出登陆</span></li>
           </ul>
         </div>
         <el-divider direction="vertical"></el-divider>
@@ -72,6 +73,11 @@ export default {
       isSinger: false // 是否已经成为注册音乐人
     }
   },
+  computed: {
+    notLogin () {
+      return this.isnotLogin
+    }
+  },
   methods: {
     success (res) {
       this.isnotLogin = res
@@ -83,6 +89,30 @@ export default {
     },
     register () {
       this.isnotShow = true
+    },
+    /**
+     * 退出函数
+    */
+    loginOut () {
+      if (confirm('确认退出吗？')) {
+        /* this.$axios({
+          method: 'post',
+          data: {},
+          url: ''
+        }).then()
+          .catch() */
+        window.localStorage.removeItem('Authorization')
+        window.localStorage.removeItem('role')
+        this.$message.success('退出成功！')
+        this.isnotLogin = true
+        this.dialogTableVisible = false
+        this.$router.push({
+          // 你要跳转的地址
+          path: '/find'
+        })
+      } else {
+        this.isnotLogin = false
+      }
     },
     /**
      *回车函数
@@ -129,6 +159,14 @@ export default {
         this.routercreatecentre = 'createCentre'
         this.$router.push({name: 'createCentre'})
       }
+    }
+  },
+  mounted () {
+    if (window.localStorage.getItem('Authorization')) {
+      this.isnotLogin = false
+    }
+    if (window.localStorage.getItem('Role')) {
+      this.isSinger = true
     }
   }
 }

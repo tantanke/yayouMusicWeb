@@ -49,7 +49,7 @@
     <el-row class="singersonglist">
       <el-row class="title">
         <ul>
-          <li class="active" tag='li' :to="{name:'singerInfo',params:{singerid:1}}">单曲</li>
+          <li>单曲</li>
           <li>MV</li>
           <li>简介</li>
         </ul>

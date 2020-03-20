@@ -15,7 +15,6 @@ import Mysetting from '@/components/selectionarea/mysetting.vue'
 // 一级路由直接加载 之后的子路由全部使用懒加载
 Vue.use(Router)
 export default new Router({
-  mode: 'history',
   routes: [{
     path: '/',
     name: 'defaultPage',
@@ -33,23 +32,21 @@ export default new Router({
       path: '/movie',
       name: 'movie',
       component: Movie,
-      redirect: '/movie/movieList',
+      redirect: '/movie/allMovie/movieList',
       children: [{
-        path: '/movie/movieList',
-        name: 'movieList',
-        component: () => import('@/components/movie/movieList.vue'),
-        /* beforeEnter (to, from, next) {
-          // 在渲染该组件的对应路由被 confirm 前调用
-          // 不！能！获取组件实例 `this`
-          // 因为当守卫执行前，组件实例还没被创建
-          console.log(111)
-          next()
-        } */
+        path: '/movie/allMovie',
+        name: 'allMovie',
+        redirect: '/movie/allMovie/movieList',
+        component: () => import('@/components/movie/moviemiddle.vue'),
         /** 这个路由里面要添加videoid isvip的值，参考search里面的val传参 */
         children: [{
-          path: '/movie/movieList/:movieid',
+          path: '/movie/allMovie/movieList',
+          name: 'movieList',
+          component: () => import('@/components/movie/movieList.vue')
+        }, {
+          path: '/movie/allMovie/movieItem/:movieid',
           name: 'movieListItem',
-          component: () => import('@/components/movie/movieitem/index.vue')
+          component: () => import('@/components/movie/movieitem.vue')
         }]
       }]
     }, {
@@ -105,20 +102,26 @@ export default new Router({
           name: 'iHasVideo',
           component: () => import('@/components/mymusic/mycategory/videohasdone.vue')
         }]
-      }, {
-        path: '/mymusic/singer/:singerid',
-        name: 'likesinger',
-        component: () => import('@/components/mymusic/singer.vue')
       }]
     }, {
       path: '/singer',
       name: 'singer',
       component: Singer,
-      redirect: '/singer/singerList',
+      redirect: 'singer/allSinger/singerList',
       children: [{
-        path: '/singer/singerList',
-        name: 'singerList',
-        component: () => import('@/components/singer/singerrecommend.vue')
+        path: '/singer/allSinger',
+        name: 'allSinger',
+        redirect: '/singer/allSinger/singerList',
+        component: () => import('@/components/singer/singermiddle.vue'),
+        children: [{
+          path: '/singer/allSinger/singerList',
+          name: 'singerList',
+          component: () => import('@/components/singer/singerrecommend.vue')
+        }, {
+          path: '/singer/allSinger/singerDetail/:singerid',
+          name: 'singerDetail',
+          component: () => import('@/components/mymusic/singer.vue')
+        }]
       }, {
         path: '/singer/musiccate',
         name: 'musiccate',
@@ -188,7 +191,7 @@ export default new Router({
   }, {
     path: '/createcentre',
     name: 'createCentre',
-    redirect: '/createcentre/firstpage',
+    redirect: '/createcentre/handinprodution',
     component: createCentre,
     children: [{
       path: '/createcentre/resetmusician',
