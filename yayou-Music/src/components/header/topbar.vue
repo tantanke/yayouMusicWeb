@@ -39,9 +39,15 @@
           </ul>
         </div>
         <el-divider direction="vertical"></el-divider>
+<<<<<<< HEAD
+        <span v-if="notLogin" @click="register()">注册</span>
+        <span v-if="!notLogin" @click="loginOut" class="loginout">注销</span>
+        <el-dialog title="注册" :visible.sync="isnotShow" center :append-to-body='true' :lock-scroll='false' width="30%">
+=======
         <span @click="register()" v-if="notLogin">注册</span>
         <span @click="loginOut" v-else>注销</span>
         <el-dialog title="注册" :visible.sync="isnotShow" center :append-to-body='true' :lock-scroll='false' width="400px">
+>>>>>>> 49e483b3f7b820d1fc34a80e6e7946649d7e7a0a
           <register></register>
         </el-dialog>
       </el-col>
@@ -174,4 +180,7 @@ export default {
 </script>
 <style lang="scss">
 @import "@/assets/css/public/header/topBar.scss";
+.loginout{
+  cursor: pointer;
+}
 </style>

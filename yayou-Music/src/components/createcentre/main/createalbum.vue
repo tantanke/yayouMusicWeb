@@ -222,46 +222,46 @@ export default {
             this.loadingAblum = true
             let albumCover = this.coverFile
             let coverForm = new FormData()
-            coverForm.append('coverImage', albumCover)
-            _this.$axios({
-              method: 'post',
+            console.log(typeof (albumCover))
+            coverForm.append('coverImg', albumCover)
+            this.$axios({
+              post: 'get',
               url: _this.upUrls.upCoverUrl,
               data: coverForm,
-              processData: false
+              processData: false,
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
             })
               .then(res => {
                 console.log(res)
                 if (res.data.code === 1) {
-                  _this.ruleForm.cover = res.data.data
+                  this.ruleForm.cover = res.data.data
                   return _this.$axios({
                     method: 'post',
                     url: _this.upUrls.upCoverUrl,
                     data: _this.ruleForm
                   })
-                } else {
-                  this.loadingAblum = false
-                  this.$message.error('提交失败，请稍后再试!')
-                  return false
                 }
               })
-              .then(res => {
+              .catch(() => {
+                /* this.loadingAblum = false
+                this.$message.error(err) */
+              })
+              /* .then(res => {
+                console.log(res)
                 if (res.data.code === 1) {
-                  _this.nextStep = true
+                  this.nextStep = true
                   _this.active++
                   _this.checked = false
-                  console.log(res.data.data.albumId)
                   _this.albumForm.albumId = res.data.data.albumId
                   this.loadingAblum = false
-                  console.log(_this.ruleForm)
                 } else {
                   this.loadingAblum = false
-                  this.$message.error('提交失败，请稍后再试!')
+                  alert('提交失败，请稍后再试!')
                   return false
                 }
-              }).catch(err => {
-                this.loadingAblum = false
-                this.$message.error(err)
-              })
+              }) */
           }
         } else {
           this.$message.error('提交失败!!')
@@ -424,22 +424,19 @@ export default {
     }
   },
   mounted () {
-    let _this = this
-    _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000'
-    _this.$axios.interceptors.request.use(
+    /* let _this = this */
+    /* this.$axios.defaults.baseURL = 'http://175.24.83.13:8000' */
+    /* _this.$axios.interceptors.request.use(
       config => {
         if (localStorage.getItem('Authorization')) {
-          config.headers.Authorization = localStorage.getItem('Authorization')
+          config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
         }
         return config
       },
       error => {
         return Promise.reject(error)
       }
-    )
-    _this.$axios.create({
-      withCredentials: true
-    })
+    ) */
     if (this.$route.meta.isNormol) {
       this.albumCate = '编辑普通专辑信息'
     } else {
