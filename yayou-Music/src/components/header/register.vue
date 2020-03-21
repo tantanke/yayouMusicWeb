@@ -1,6 +1,7 @@
 <template>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" label-position="left">
         <el-upload
+            class="upload"
             action="https://jsonplaceholder.typicode.com/posts/"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
@@ -10,23 +11,23 @@
         <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt="">
         </el-dialog>
-        <el-form-item prop="name">
-            <el-input placeholder="用户名" v-model="ruleForm.name">
+        <el-form-item prop="name" label-width="0">
+            <el-input placeholder="用户名" v-model="ruleForm.name" >
                 <template slot="prepend" ><i class="el-icon-mobile-phone"></i></template>
             </el-input>
         </el-form-item>
-        <el-form-item prop="phone">
+        <el-form-item prop="phone" label-width="0">
           <el-input placeholder="电话号码" v-model="ruleForm.phone">
               <template slot="prepend" ><i class="el-icon-mobile-phone"></i></template>
           </el-input>
         </el-form-item>
-        <el-form-item prop="cipher">
+        <el-form-item prop="cipher" label-width="0">
             <el-input placeholder="密码" v-model="ruleForm.cipher">
                 <template slot="prepend" ><i class="el-icon-mobile-phone"></i></template>
             </el-input>
         </el-form-item>
         <el-form-item label="家族" class="familyId" prop="value">
-          <el-select v-model="ruleForm.value" clearable placeholder="请选择" class="familyidBox">
+          <el-select v-model="ruleForm.value" clearable placeholder="请选择" class="familyidBox" style="width: 160px;">
             <el-option-group
               v-for="group in options"
               :key="group.label"
@@ -40,15 +41,10 @@
             </el-option-group>
           </el-select>
         </el-form-item>
-        <el-form-item prop="email">
-            <el-input placeholder="验证码" v-model="ruleForm.email">
-                <template slot="append"><el-button @click="getEmail(), ajust()">发送验证码</el-button></template>
-            </el-input>
-        </el-form-item>
         <el-form-item label="出生日期" required class="birthday">
             <el-col :span="11">
                 <el-form-item prop="date1">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
+                    <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 160px;"></el-date-picker>
                 </el-form-item>
             </el-col>
         </el-form-item>
@@ -58,7 +54,12 @@
                 <el-radio label="女"></el-radio>
             </el-radio-group>
         </el-form-item>
-        <el-form-item class="bottom-re">
+        <el-form-item prop="email" label-width="0px">
+            <el-input placeholder="验证码" v-model="ruleForm.email" style="width:300px">
+                <template slot="append"><el-button @click="getEmail(), ajust()">发送验证码</el-button></template>
+            </el-input>
+        </el-form-item>
+        <el-form-item class="bottom-re" label-width="0">
             <el-button type="primary" @click="submitForm('ruleForm')">立即注册</el-button>
             <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
@@ -567,24 +568,20 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .el-form-item__content{
     margin-left: 0px!important;
 }
 .bottom-re{
-    margin-left: 80px;
+    width: 200px;
+    margin: 50px auto;
 }
-.el-upload{
-    margin-left: 182px;
-    margin-bottom: 20px;
+.upload{
+    width: 148px;
+    margin: 20px auto;
 }
 .familyId{
-  position: relative;
-  margin-left: -50px;
+  margin-left: 0;
   font-weight: 400
-}
-.familyidBox{
-  display: inline-block;
-  width: 460px;
 }
 </style>

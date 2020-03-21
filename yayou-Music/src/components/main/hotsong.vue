@@ -11,22 +11,21 @@
             <i class="el-icon-zoom-in imore"></i>
           </div>
         </el-row>
-        <el-row class="sContent">
+        <el-row class="sContent" v-for="i in 2" :key="i">
           <!--这下面的数据都是循环获得的 -->
           <el-col class="card-box" :span="6" v-for="(item,i) in array" :key="i">
            <el-card class="hot-card" shadow="never">
              <div class="imgBox">
                <!--这个地方需要动态的从后端获取数据 -->
-                <img src="../../assets/img/homePage/图层28.png" class="image">
+                <img src="../../assets/img/homePage/themoonandthewell.png" class="image">
              </div>
             <div class="word-box">
-              <p class="word">{{item.songSlogan}}</p>
+              <p class="word">{{item.songListName}}</p>
               <p class="bofang">播放量：{{item.songNum}}</p>
-              <div class="bottom clearfix">
-             </div>
+              <div class="bottom clearfix"></div>
             </div>
-        </el-card>
-        </el-col>
+           </el-card>
+          </el-col>
         </el-row>
       </el-col>
       <el-col :span='6' class="jz-hot">
@@ -74,12 +73,12 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/hotSongList')
+      axios.get('/hotSongList')
         .then(this.getHomeInfoSucc)
     },
     getHomeInfoSucc (res) {
       res = res.data
-      this.array = res.aaa
+      this.array = res.data
       console.log(res)
     }
   },

@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/familyRank')
+      axios.get('/familyRank')
         .then(this.getHomeInfoSucc)
     },
     getHomeInfoSucc (res) {

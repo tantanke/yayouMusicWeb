@@ -19,8 +19,8 @@
       </el-col>
       <el-col :span="3" class="yy-login">
         <div v-if="notLogin">
-          <el-dialog title="账号密码登陆" :visible.sync="dialogTableVisible" center :append-to-body='true' :lock-scroll='false' width="20%">
-            <dia-log v-bind:isnotLogin = "isnotLogin" v-on:success = "success(res)"></dia-log>
+          <el-dialog title="账号密码登陆" :visible.sync="dialogTableVisible" center :append-to-body='true' :lock-scroll='false' width="380px">
+            <dia-log v-bind:isnotLogin = "isnotLogin" v-on:success = "success(res)" class="loginarea"></dia-log>
           </el-dialog>
           <span round @click="submitForm()" class='login'>登录</span>
         </div>
@@ -36,12 +36,12 @@
             <li><i class="el-icon-wind-power"></i><span>我的下载</span></li>
             <li><i class="el-icon-time"></i><span>最近播放</span></li>
             <router-link tag='li' :to="{name:routercreatecentre}" @click.native="clickR"><i class="el-icon-service"></i><span  v-if="!isSinger">艺人注册</span><span>创作中心</span></router-link>
-            <li @click="loginOut"><i class="el-icon-delete" ></i><span>退出登陆</span></li>
           </ul>
         </div>
         <el-divider direction="vertical"></el-divider>
-        <span @click="register()">注册</span>
-        <el-dialog title="注册" :visible.sync="isnotShow" center :append-to-body='true' :lock-scroll='false' width="30%">
+        <span @click="register()" v-if="notLogin">注册</span>
+        <span @click="loginOut" v-else>注销</span>
+        <el-dialog title="注册" :visible.sync="isnotShow" center :append-to-body='true' :lock-scroll='false' width="400px">
           <register></register>
         </el-dialog>
       </el-col>
@@ -102,7 +102,7 @@ export default {
         }).then()
           .catch() */
         window.localStorage.removeItem('Authorization')
-        window.localStorage.removeItem('role')
+        window.localStorage.removeItem('Role')
         this.$message.success('退出成功！')
         this.isnotLogin = true
         this.dialogTableVisible = false

@@ -14,151 +14,7 @@
           <h3><span class="f-ff2 d-flag">家族人气榜</span></h3>
         </div>
         <ul class="m-cvrlst f-cb" id="m-pl-container">
-          <li>
-            <div class="u-cover u-cover-1">
-            <img class="j-flag" src="http://p2.music.126.net/m15gigzeDx_E_Tka7nQXfw==/109951164738447161.jpg?param=140y140">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="msk"></a>
-            <div class="bottom">
-            <a class="icon-play f-fr" title="播放" href="javascript:;" data-res-type="13" data-res-id="4879847497" data-res-action="play"></a>
-            <span class="icon-headset"></span>
-            <span class="nb">99626</span>
-            </div>
-            </div>
-            <p class="dec">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="tit f-thide s-fc0">致向阳而生的你：穿越黑暗，来日可期</a>
-            </p>
-            <p><span class="s-fc4">by</span> <a title="蜜糖男孩" href="/user/home?id=1650191296" class="nm nm-icn f-thide s-fc3">蜜糖男孩</a> <sup class="u-icn u-icn-84 "></sup>
-            </p>
-          </li>
-          <li>
-            <div class="u-cover u-cover-1">
-            <img class="j-flag" src="http://p2.music.126.net/m15gigzeDx_E_Tka7nQXfw==/109951164738447161.jpg?param=140y140">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="msk"></a>
-            <div class="bottom">
-            <a class="icon-play f-fr" title="播放" href="javascript:;" data-res-type="13" data-res-id="4879847497" data-res-action="play"></a>
-            <span class="icon-headset"></span>
-            <span class="nb">99626</span>
-            </div>
-            </div>
-            <p class="dec">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="tit f-thide s-fc0">致向阳而生的你：穿越黑暗，来日可期</a>
-            </p>
-            <p><span class="s-fc4">by</span> <a title="蜜糖男孩" href="/user/home?id=1650191296" class="nm nm-icn f-thide s-fc3">蜜糖男孩</a> <sup class="u-icn u-icn-84 "></sup>
-            </p>
-          </li>
-          <li>
-            <div class="u-cover u-cover-1">
-            <img class="j-flag" src="http://p2.music.126.net/m15gigzeDx_E_Tka7nQXfw==/109951164738447161.jpg?param=140y140">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="msk"></a>
-            <div class="bottom">
-            <a class="icon-play f-fr" title="播放" href="javascript:;" data-res-type="13" data-res-id="4879847497" data-res-action="play"></a>
-            <span class="icon-headset"></span>
-            <span class="nb">99626</span>
-            </div>
-            </div>
-            <p class="dec">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="tit f-thide s-fc0">致向阳而生的你：穿越黑暗，来日可期</a>
-            </p>
-            <p><span class="s-fc4">by</span> <a title="蜜糖男孩" href="/user/home?id=1650191296" class="nm nm-icn f-thide s-fc3">蜜糖男孩</a> <sup class="u-icn u-icn-84 "></sup>
-            </p>
-          </li>
-          <li>
-            <div class="u-cover u-cover-1">
-            <img class="j-flag" src="http://p2.music.126.net/m15gigzeDx_E_Tka7nQXfw==/109951164738447161.jpg?param=140y140">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="msk"></a>
-            <div class="bottom">
-            <a class="icon-play f-fr" title="播放" href="javascript:;" data-res-type="13" data-res-id="4879847497" data-res-action="play"></a>
-            <span class="icon-headset"></span>
-            <span class="nb">99626</span>
-            </div>
-            </div>
-            <p class="dec">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="tit f-thide s-fc0">致向阳而生的你：穿越黑暗，来日可期</a>
-            </p>
-            <p><span class="s-fc4">by</span> <a title="蜜糖男孩" href="/user/home?id=1650191296" class="nm nm-icn f-thide s-fc3">蜜糖男孩</a> <sup class="u-icn u-icn-84 "></sup>
-            </p>
-          </li>
-          <li>
-            <div class="u-cover u-cover-1">
-            <img class="j-flag" src="http://p2.music.126.net/m15gigzeDx_E_Tka7nQXfw==/109951164738447161.jpg?param=140y140">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="msk"></a>
-            <div class="bottom">
-            <a class="icon-play f-fr" title="播放" href="javascript:;" data-res-type="13" data-res-id="4879847497" data-res-action="play"></a>
-            <span class="icon-headset"></span>
-            <span class="nb">99626</span>
-            </div>
-            </div>
-            <p class="dec">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="tit f-thide s-fc0">致向阳而生的你：穿越黑暗，来日可期</a>
-            </p>
-            <p><span class="s-fc4">by</span> <a title="蜜糖男孩" href="/user/home?id=1650191296" class="nm nm-icn f-thide s-fc3">蜜糖男孩</a> <sup class="u-icn u-icn-84 "></sup>
-            </p>
-          </li>
-          <li>
-            <div class="u-cover u-cover-1">
-            <img class="j-flag" src="http://p2.music.126.net/m15gigzeDx_E_Tka7nQXfw==/109951164738447161.jpg?param=140y140">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="msk"></a>
-            <div class="bottom">
-            <a class="icon-play f-fr" title="播放" href="javascript:;" data-res-type="13" data-res-id="4879847497" data-res-action="play"></a>
-            <span class="icon-headset"></span>
-            <span class="nb">99626</span>
-            </div>
-            </div>
-            <p class="dec">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="tit f-thide s-fc0">致向阳而生的你：穿越黑暗，来日可期</a>
-            </p>
-            <p><span class="s-fc4">by</span> <a title="蜜糖男孩" href="/user/home?id=1650191296" class="nm nm-icn f-thide s-fc3">蜜糖男孩</a> <sup class="u-icn u-icn-84 "></sup>
-            </p>
-          </li>
-          <li>
-            <div class="u-cover u-cover-1">
-            <img class="j-flag" src="http://p2.music.126.net/m15gigzeDx_E_Tka7nQXfw==/109951164738447161.jpg?param=140y140">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="msk"></a>
-            <div class="bottom">
-            <a class="icon-play f-fr" title="播放" href="javascript:;" data-res-type="13" data-res-id="4879847497" data-res-action="play"></a>
-            <span class="icon-headset"></span>
-            <span class="nb">99626</span>
-            </div>
-            </div>
-            <p class="dec">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="tit f-thide s-fc0">致向阳而生的你：穿越黑暗，来日可期</a>
-            </p>
-            <p><span class="s-fc4">by</span> <a title="蜜糖男孩" href="/user/home?id=1650191296" class="nm nm-icn f-thide s-fc3">蜜糖男孩</a> <sup class="u-icn u-icn-84 "></sup>
-            </p>
-          </li>
-          <li>
-            <div class="u-cover u-cover-1">
-            <img class="j-flag" src="http://p2.music.126.net/m15gigzeDx_E_Tka7nQXfw==/109951164738447161.jpg?param=140y140">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="msk"></a>
-            <div class="bottom">
-            <a class="icon-play f-fr" title="播放" href="javascript:;" data-res-type="13" data-res-id="4879847497" data-res-action="play"></a>
-            <span class="icon-headset"></span>
-            <span class="nb">99626</span>
-            </div>
-            </div>
-            <p class="dec">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="tit f-thide s-fc0">致向阳而生的你：穿越黑暗，来日可期</a>
-            </p>
-            <p><span class="s-fc4">by</span> <a title="蜜糖男孩" href="/user/home?id=1650191296" class="nm nm-icn f-thide s-fc3">蜜糖男孩</a> <sup class="u-icn u-icn-84 "></sup>
-            </p>
-          </li>
-          <li>
-            <div class="u-cover u-cover-1">
-            <img class="j-flag" src="http://p2.music.126.net/m15gigzeDx_E_Tka7nQXfw==/109951164738447161.jpg?param=140y140">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="msk"></a>
-            <div class="bottom">
-            <a class="icon-play f-fr" title="播放" href="javascript:;" data-res-type="13" data-res-id="4879847497" data-res-action="play"></a>
-            <span class="icon-headset"></span>
-            <span class="nb">99626</span>
-            </div>
-            </div>
-            <p class="dec">
-            <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="tit f-thide s-fc0">致向阳而生的你：穿越黑暗，来日可期</a>
-            </p>
-            <p><span class="s-fc4">by</span> <a title="蜜糖男孩" href="/user/home?id=1650191296" class="nm nm-icn f-thide s-fc3">蜜糖男孩</a> <sup class="u-icn u-icn-84 "></sup>
-            </p>
-          </li>
-          <li>
+          <li v-for="item in list" :key="item">
             <div class="u-cover u-cover-1">
             <img class="j-flag" src="http://p2.music.126.net/m15gigzeDx_E_Tka7nQXfw==/109951164738447161.jpg?param=140y140">
             <a title="致向阳而生的你：穿越黑暗，来日可期" href="/playlist?id=4879847497" class="msk"></a>
@@ -175,11 +31,36 @@
             </p>
           </li>
         </ul>
+        <el-row class="pagination">
+          <el-col :span="6" :offset="10"><el-pagination background layout="prev, pager, next" :total="40"></el-pagination></el-col>
+        </el-row>
       </div>
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
+  data () {
+    return {
+      list: []
+    }
+  },
+  methods: {
+    getHomeInfo () {
+      axios.get('/familyRank/all')
+        .then(this.getHomeInfoSucc)
+    },
+    getHomeInfoSucc (res) {
+      res = res.data
+      if (res.code === 1) {
+        this.list = res.data
+      }
+      console.log(res)
+    }
+  },
+  mounted () {
+    this.getHomeInfo()
+  }
 }
 </script>
 

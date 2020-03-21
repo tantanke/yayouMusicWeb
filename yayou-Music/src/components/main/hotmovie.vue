@@ -10,10 +10,10 @@
     </el-row>
     <el-row>
       <div class="block">
-        <el-carousel trigger="click" height="150px">
-          <el-carousel-item v-for="item in 4" :key="item">
-            <el-col :span="8" v-for="(item,i) in hotMovie" :key="i">
-              <el-card :body-style="{ padding: '0px' }" shadow="never">
+        <el-carousel trigger="click">
+          <el-carousel-item v-for="(Item,index) in hotMovie" :key="index" >
+            <el-col :span="8" v-for="item in Item" :key="item.videoId">
+              <el-card :body-style="{ padding: '0px',margin: '0px' }" shadow="never">
                 <div class="imgBox">
                   <img src="../../assets/img/homePage/themoonandthewell.png" />
                 </div>
@@ -47,7 +47,7 @@ export default {
       imgList: [
         {
           name: '111',
-          src: '../../assets/img/homePage/themoonandthewell.png'
+          src: '/../assets/img/homePage/themoonandthewell.png'
         },
         {
           name: '111',
@@ -62,14 +62,25 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/hotMv')
+      axios.get('/hotMv')
         .then(this.getHomeInfoSucc)
     },
     getHomeInfoSucc (res) {
       res = res.data
       if (res.code === 1) {
-        this.hotMovie = res.data
+        var k = 0
         console.log(res)
+        for (var e = 0; e <= (res.data.length / 3); e++) {
+          let arr = {}
+          for (var i = 0; i < 3; i++) {
+            arr[i] = res.data[k++]
+            if (k === res.data.length) {
+              break
+            }
+          }
+          this.hotMovie[e] = arr
+        }
+        console.log(this.hotMovie)
       }
     }
   },
