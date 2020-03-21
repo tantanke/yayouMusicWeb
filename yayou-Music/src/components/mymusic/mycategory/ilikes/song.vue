@@ -30,7 +30,7 @@
         <el-table-column prop="order" label="序号" width="70"></el-table-column>
         <el-table-column prop="song" label="歌曲" width="320">
           <template slot-scope="scope">
-            <span>{{ scope.row.song }}</span>
+            <router-link tag="span" :to="{name: 'musicplayer',params: {songId: scope.row.order}}" style="cursor:pointer">{{ scope.row.song }}</router-link>
             <span class="vip">vip</span>
             <span class='dujia'>独家</span>
             <span class="movie">MV</span>

@@ -46,7 +46,7 @@
             label="曲目标题"
             width="300">
             <template slot-scope="scope" >
-              <router-link :to="{name:'songdetail', params:{songid: scope.row.songId}}" tag="span" >
+              <router-link :to="{name:'musicplayer', params:{songId: scope.row.songId}}" tag="span" style="cursor:pointer" >
                 {{scope.row.title}}
               </router-link>
               <i class="el-icon-video-play" title="播放"></i>

@@ -1,5 +1,6 @@
 <template>
   <div class="songlist">
+    <!-- 此页面已经废弃 -->
     <el-row>
       <el-col :span="10" offset="5">
         <el-row>
@@ -153,10 +154,11 @@ import qs from 'qs'
 export default {
   data () {
     return {
+      // <!-- 此页面已经废弃新页面见detailpage文件夹下 -->
       urls: {
-        songAgreeUrl: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user/likeSong',
+        songAgreeUrl: '/user/likeSong',
         commentAgreeUrl: '',
-        songDisagreeUrl: 'http://47.104.101.193:80/eolinker_os/Mock/mock?projectID=1&uri=/user//cancelLike',
+        songDisagreeUrl: '/user//cancelLike',
         commentDisagreeUrl: ''
       },
       playShow: true,
