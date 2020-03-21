@@ -198,9 +198,9 @@ export default {
         ]
       },
       upUrls: {
-        upAlbumUrl: '/singer/newAlbum',
-        upSongUrl: '/singer/upSong',
-        upCoverUrl: '/setCover'
+        upAlbumUrl: 'http://175.24.83.13:8000/singer/newAlbum',
+        upSongUrl: 'http://175.24.83.13:8000/singer/upSong',
+        upCoverUrl: 'http://175.24.83.13:8000/setCover'
       },
       loadingAblum: false,
       loadingSong: false

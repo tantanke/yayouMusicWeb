@@ -83,7 +83,7 @@ export default {
               _method: 'put'
             },
             data: JSON.stringify({
-              changPassword: formName.pass
+              changPassword: this.ruleForm.pass
             })
               .then(res => {
                 if (res.data.errorCode === '1') {

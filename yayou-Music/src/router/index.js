@@ -173,15 +173,15 @@ export default new Router({
     }, {
       path: '/setting',
       name: 'setting',
-      redirect: '/setting/default',
+      redirect: '/setting/resetdefault',
       component: Mysetting,
       children: [{
-        path: '/setting/default',
-        name: 'default',
+        path: '/setting/resetdefault',
+        name: 'resetdefault',
         component: () => import('@/components/selectionarea/mysetting/default.vue')
       }, {
-        path: '/setting/check',
-        name: 'check',
+        path: '/setting/resetcheck',
+        name: 'resetcheck',
         component: () => import('@/components/selectionarea/mysetting/check.vue')
       }, {
         path: '/setting/resetphone',

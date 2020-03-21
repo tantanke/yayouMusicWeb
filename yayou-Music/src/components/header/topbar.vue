@@ -19,8 +19,8 @@
       </el-col>
       <el-col :span="3" class="yy-login">
         <div v-if="notLogin">
-          <el-dialog title="账号密码登陆" :visible.sync="dialogTableVisible" center :append-to-body='true' :lock-scroll='false' width="20%">
-            <dia-log v-bind:isnotLogin = "isnotLogin" v-on:success = "success(res)"></dia-log>
+          <el-dialog title="账号密码登陆" :visible.sync="dialogTableVisible" center :append-to-body='true' :lock-scroll='false' width="380px">
+            <dia-log v-bind:isnotLogin = "isnotLogin" v-on:success = "success(res)" class="loginarea"></dia-log>
           </el-dialog>
           <span round @click="submitForm()" class='login'>登录</span>
         </div>
@@ -39,9 +39,15 @@
           </ul>
         </div>
         <el-divider direction="vertical"></el-divider>
+<<<<<<< HEAD
         <span v-if="notLogin" @click="register()">注册</span>
         <span v-if="!notLogin" @click="loginOut" class="loginout">注销</span>
         <el-dialog title="注册" :visible.sync="isnotShow" center :append-to-body='true' :lock-scroll='false' width="30%">
+=======
+        <span @click="register()" v-if="notLogin">注册</span>
+        <span @click="loginOut" v-else>注销</span>
+        <el-dialog title="注册" :visible.sync="isnotShow" center :append-to-body='true' :lock-scroll='false' width="400px">
+>>>>>>> 49e483b3f7b820d1fc34a80e6e7946649d7e7a0a
           <register></register>
         </el-dialog>
       </el-col>
@@ -102,7 +108,7 @@ export default {
         }).then()
           .catch() */
         window.localStorage.removeItem('Authorization')
-        window.localStorage.removeItem('role')
+        window.localStorage.removeItem('Role')
         this.$message.success('退出成功！')
         this.isnotLogin = true
         this.dialogTableVisible = false
@@ -152,7 +158,8 @@ export default {
       console.log(res)
     },
     clickR () {
-      if (this.isSinger === false) {
+      let role = localStorage.getItem('Role')
+      if (role !== 'Singer') {
         this.routercreatecentre = 'registermusician'
         this.$router.push({name: 'registermusician'})
       } else {

@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/hotSinger')
+      axios.get('/hotSinger')
         .then(this.getHomeInfoSucc)
     },
     getHomeInfoSucc (res) {

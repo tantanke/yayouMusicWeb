@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=musicRank')
+      axios.get('http://175.24.83.13:8000musicRank')
         .then(this.getHomeInfoSucc)
     },
     getHomeInfoSucc (res) {

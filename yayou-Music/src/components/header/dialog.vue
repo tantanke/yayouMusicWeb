@@ -1,4 +1,4 @@
-<template>
+<template class="login">
   <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="0" class="demo-ruleForm">
     <el-form-item prop="pass">
       <el-input placeholder="手机号" v-model="ruleForm.pass" autocomplete="off" type="">
@@ -116,13 +116,13 @@ export default {
     display: inline-block;
     font-size: 12px;
     margin-top: -50px;
-    margin-left: 80px;
+    margin-left: 60px;
   }
   .text2{
     display: inline-block;
     font-size: 12px;
     margin-top: -50px;
-    margin-left: 150px;
+    margin-left: 100px;
   }
   .text3{
     display: block;

@@ -10,9 +10,9 @@
     </el-row>
     <el-row>
       <div class="block">
-        <el-carousel trigger="click" height="150px">
-          <el-carousel-item v-for="item in 4" :key="item">
-            <el-col :span="4" v-for="(item,i) in newSong" :key="i">
+        <el-carousel trigger="click">
+          <el-carousel-item v-for="(Item,index) in newSong" :key="index" style="height:200px">
+            <el-col :span="4" v-for="item in Item" :key="item.songId">
               <el-card :body-style="{ padding: '0px' }" shadow="never">
                 <img src="../../assets/img/homePage/吉克杰拉.png" /><!--这个地方后面也需要请求后端的图片链接的接口 名字是cover-->
                 <div class="song-info">
@@ -39,13 +39,25 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      axios.get('http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/newSongs')
+      axios.get('/newSongs')
         .then(this.getHomeInfoSucc)
     },
     getHomeInfoSucc (res) {
       res = res.data
       if (res.code === 1) {
-        this.newSong = res.data
+        var k = 0
+        console.log(res)
+        for (var e = 0; e <= (res.data.length / 6); e++) {
+          let arr = {}
+          for (var i = 0; i < 6; i++) {
+            arr[i] = res.data[k++]
+            if (k === res.data.length) {
+              break
+            }
+          }
+          this.newSong[e] = arr
+        }
+        console.log(this.newSong)
         console.log(res)
       }
     }

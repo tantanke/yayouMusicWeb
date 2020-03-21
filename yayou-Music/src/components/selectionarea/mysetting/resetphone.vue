@@ -2,7 +2,7 @@
   <div class="resetpassword" >
     <el-breadcrumb separator-class="el-icon-arrow-right" style="margin:0 0 50px 0px;">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>我的设置</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'resetdefault' }">我的设置</el-breadcrumb-item>
       <el-breadcrumb-item>手机号修改</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -91,15 +91,14 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(valid)
-          axios.post(this.urls.changPhone, JSON.stringify({newphone: formName.newphone}))
+          axios.post(this.urls.changPhone, JSON.stringify({newphone: this.ruleForm.newphone}))
             .then(res => {
               if (res.data.errorCode === '1') {
                 this.$message({
                   message: res.data.msg,
                   type: 'success'
                 })
-              } else if (res.data.code === '401') {
+              } else if (res.data.code === '4001') {
                 localStorage.removeItem('Authorization')
                 this.$router.push('/login')
               } else {

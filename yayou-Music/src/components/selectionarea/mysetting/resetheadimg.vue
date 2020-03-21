@@ -2,18 +2,18 @@
   <div class="mysetting">
     <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-left:510px;">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>我的设置</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'resetdefault' }">我的设置</el-breadcrumb-item>
       <el-breadcrumb-item>头像设置</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row tag="div" class="top-area">
       <el-col :span="1" :offset="7" class="submit" @click="Submit"><span>上传头像</span></el-col>
-      <el-col :span="5" :offset="1" tag="div" class="title">支持JPG、PNG、BMP格式的图片，且文件小于20M</el-col>
+      <el-col :span="5" :offset="1" tag="div" class="title">支持JPG、PNG、BMP格式的图片，且文件小于2M</el-col>
     </el-row>
     <el-row>
       <el-col :span="2" :offset="7">
         <el-upload
           class="avatar-uploader"
-          action="/image/setHeadImage"
+          action="uploadephoto"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
@@ -66,7 +66,8 @@ export default {
       imgUrl1: '',
       imgUrl2: '',
       urls: {
-        setHeadImg: ''
+        setHeadImg: '/user/setHeadImg',
+        uploadephoto: '/upImg'
       }
     }
   },
@@ -78,31 +79,61 @@ export default {
         localStorage.removeItem('Authorization')
         this.$router.push('/login')
       }
-      this.imgUrl1 = URL.createObjectURL(file.raw)
-      this.imgUrl2 = URL.createObjectURL(file.raw)
     },
     beforeAvatarUpload (file) {
       this.loadingHeadImg = true
       const isJPG = file.type === ('image/jpeg' || 'image/png' || 'image/bmp')
       const isLt2M = file.size / 1024 / 1024 < 2
-
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
+        this.$message.error('上传头像图片只能是 JPG/PNG格式!')
       }
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 20MB!')
       }
+      if (isJPG && isLt2M) {
+        let df = new FormData()
+        df.append('img', file)
+        console.log(df.get('img'))
+        axios({
+          url: this.urls.setHeadImg,
+          method: 'post',
+          headers: {'Content-Type': 'multipart/form-data'},
+          data: df,
+          processData: false
+        })
+          .then(res => {
+            console.log(res.data)
+            let data = res.data
+            if (data.code === 1) {
+              this.$message({
+                message: 'success',
+                type: 'success'
+              })
+              this.imageUrl = data.url
+              this.imgUrl1 = data.url
+              this.imgUrl2 = data.url
+            } else {
+              this.$message.error(data.msg)
+            }
+            this.loadingHeadImg = false
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+      this.loadingHeadImg = false
       return isJPG && isLt2M
     },
     onSubmit () {
-      axios.request({
+      axios({
         url: this.urls.setHeadImg,
         method: 'post',
+        headers: {'Content-Type': 'application/json'},
         params: {
           _method: 'put'
         },
         data: JSON.stringify({
-          setHeadImg: this.imageUrl
+          'imgUri': this.imageUrl
         })
           .then(res => {
             if (res.data.errorCode === '1') {

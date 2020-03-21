@@ -9,8 +9,7 @@
         </div>
     </el-row>
     <el-row class="box">
-        <img src="https://s2.ax1x.com/2020/02/28/3Dkp5T.jpg" class="img1" alt="">
-        <img src="https://s2.ax1x.com/2020/02/28/3Dkp5T.jpg" class="img2" alt="">
+        <img :src="item.cover" id="img1" alt="" v-for="item in recommend" :key="item.songId">
     </el-row>
   </div>
 </template>
@@ -25,7 +24,7 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      axios.get('http://yayoutest.utools.club/highlight')
+      axios.get('/highlight')
         .then(this.getHomeInfoSucc)
     },
     getHomeInfoSucc (res) {
@@ -43,16 +42,14 @@ export default {
 </script>
 
 <style>
-  .img1{
+  #img1{
     width: 580px;
-    height: 260px;
+    height: 270px;
+    padding: 0px;
     border: 1px solid red;
-    padding-right: 60px!important;
   }
-  .img2{
-    width: 570px;
-    height: 260px;
-    border: 1px solid blue;
+  #img1 ~ #img1{
+    margin-left:56px;
   }
   .jc-recommend{
     width: 1300px;
