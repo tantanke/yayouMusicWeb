@@ -65,14 +65,11 @@ export default {
   mounted () {
     let _this = this
     let singerID = '1'
-    let storage = window.localStorage
     _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000'
-    storage['Authorization'] = 12345
-    _this.$axios.interceptors.request.use(
+    this.$axios.interceptors.request.use(
       config => {
         if (localStorage.getItem('Authorization')) {
-          config.headers.Authorization = localStorage.getItem('Authorization')
-          console.log(localStorage.getItem('Authorization'))
+          config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
         } else {
           console.log('未登陆')
         }

@@ -36,11 +36,11 @@
             <li><i class="el-icon-wind-power"></i><span>我的下载</span></li>
             <li><i class="el-icon-time"></i><span>最近播放</span></li>
             <router-link tag='li' :to="{name:routercreatecentre}" @click.native="clickR"><i class="el-icon-service"></i><span  v-if="!isSinger">艺人注册</span><span>创作中心</span></router-link>
-            <li @click="loginOut"><i class="el-icon-delete" ></i><span>退出登陆</span></li>
           </ul>
         </div>
         <el-divider direction="vertical"></el-divider>
-        <span @click="register()">注册</span>
+        <span v-if="notLogin" @click="register()">注册</span>
+        <span v-if="!notLogin" @click="loginOut" class="loginout">注销</span>
         <el-dialog title="注册" :visible.sync="isnotShow" center :append-to-body='true' :lock-scroll='false' width="30%">
           <register></register>
         </el-dialog>
@@ -173,4 +173,7 @@ export default {
 </script>
 <style lang="scss">
 @import "@/assets/css/public/header/topBar.scss";
+.loginout{
+  cursor: pointer;
+}
 </style>

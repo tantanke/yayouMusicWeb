@@ -5,7 +5,7 @@
       </ul>
       <el-divider></el-divider>
       <el-table
-    :data="tableData"
+    :data="allAblum"
     style="width: 100%"
     :default-sort = "{prop: 'date', order: 'descending'}"
     >
@@ -22,22 +22,22 @@
       width="220">
     </el-table-column>
     <el-table-column
-      prop="ablumName"
+      prop="albumName"
       label="专辑名"
       sortable
       width="220"
       >
     </el-table-column>
     <el-table-column
-      prop="isVip"
-      label="是否VIP(1是 0不是)"
+      prop="songNum"
+      label="歌曲数量"
       sortable
       width="220"
       >
     </el-table-column>
     <el-table-column
-      prop="des"
-      label="专辑描述"
+      prop="albumId"
+      label="专辑Id"
       sortable
       width="320"
       >
@@ -55,7 +55,7 @@
     @current-change="handleCurrentChange"
     background
     layout="prev, pager, next"
-    :total="tableData.length"
+    :total="totalLen"
     :page-size='15'>
     </el-pagination>
   </div>
@@ -65,48 +65,53 @@
 export default {
   data () {
     return {
-      tableData: [{
-        ablumName: '想你的夜',
-        songName: '哈哈',
-        artist: '不知道是谁',
-        createTime: '2016-05-04',
-        isVip: '1',
-        des: '这是专辑描述'
-      }, {
-        ablumName: '想你的夜',
-        songName: '哈哈',
-        artist: '知道是谁',
-        createTime: '2016-05-04',
-        isVip: '1',
-        des: '这是专辑描述'
-      }, {
-        ablumName: '想你的夜',
-        songName: '哈哈',
-        artist: '道是谁',
-        createTime: '2016-05-04',
-        isVip: '1',
-        des: '这是专辑描述'
-      }, {
-        ablumName: '想你的夜',
-        songName: '哈哈',
-        artist: '是谁',
-        createTime: '2016-05-04',
-        isVip: '1',
-        des: '这是专辑描述'
-      }]
+      tableData: [],
+      totalTable: 0,
+      nowPage: 1 // 当前页码 默认为一
+    }
+  },
+  computed: {
+    allAblum () {
+      return this.tableData
+    },
+    totalLen () {
+      return this.totalTable
     }
   },
   methods: {
     // 拿到页码 发送 ajax
     handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
+      let _this = this
+      let curPage = val
+      _this.tableData = []
+      _this.$axios({
+        method: 'get',
+        url: '/getSingerAlbum',
+        // 这里的页码默认为一 singerId在路由中拿到
+        params: {'singerId': 1, 'pageNum': curPage}
+      }).then(res => {
+        if (res.data.code === 1) {
+          _this.totalTable = res.data.data.total
+          res.data.data.list.forEach((item, index) => {
+            let albumitem = {}
+            albumitem.albumId = item.albumId
+            albumitem.albumName = item.albumName
+            albumitem.songNum = item.songNum
+            albumitem.artist = item.artist
+            albumitem.createtime = item.createtime
+            _this.tableData.push(albumitem)
+          })
+        } else {
+          _this.$message.error('当前网络繁忙，请刷新后重试！')
+        }
+      })
       // 由页码数发送ajax请求 渲染数据
     },
     handleEdit (index, row) {
       console.log(index, row)
     },
     handleDelete (index, row) {
-      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该专辑, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -117,21 +122,39 @@ export default {
     }
   },
   mounted () {
-    this.$axios({
+    let _this = this
+    _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000'
+    _this.$axios.interceptors.request.use(
+      config => {
+        if (localStorage.getItem('Authorization')) {
+          config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
+        }
+        return config
+      },
+      error => {
+        return Promise.reject(error)
+      }
+    )
+    _this.$axios({
       method: 'get',
-      url: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/getSingerAlbum',
+      url: '/getSingerAlbum',
       // 这里的页码默认为一 singerId在路由中拿到
       params: {'singerId': 1, 'pageNum': 1}
     }).then(res => {
-      console.log(res)
-    })
-    this.$axios({
-      method: 'get',
-      url: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/getSingerAlbum',
-      // 这里的页码默认为一 singerId在路由中拿到
-      params: {'singerId': 1, 'pageNum': 2}
-    }).then(res => {
-      console.log(res)
+      if (res.data.code === 1) {
+        this.totalTable = res.data.data.total
+        res.data.data.list.forEach((item, index) => {
+          let albumitem = {}
+          albumitem.albumId = item.albumId
+          albumitem.albumName = item.albumName
+          albumitem.songNum = item.songNum
+          albumitem.artist = item.artist
+          albumitem.createtime = item.createtime
+          _this.tableData.push(albumitem)
+        })
+      } else {
+        alert('当前网络繁忙，请刷新后重试！')
+      }
     })
   }
 }

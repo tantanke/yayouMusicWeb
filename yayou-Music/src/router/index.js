@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import defaultPage from '@/layout/default.vue'
 import createCentre from '@/layout/createcentre.vue'
 import musicPlayer from '@/layout/musicplayer.vue'
+import notFound from '@/layout/404notfound.vue'
 import Find from '@/page/find.vue'
 import Movie from '@/page/movie.vue'
 import Shop from '@/page/shop.vue'
@@ -214,9 +215,9 @@ export default new Router({
       name: 'fanscentre',
       component: () => import('@/components/createcentre/main/fanscentre.vue')
     }, {
-      path: '/createcentre/createablum',
-      name: 'createablum',
-      component: () => import('@/components/createcentre/main/createablum.vue'),
+      path: '/createcentre/createalbum',
+      name: 'createalbum',
+      component: () => import('@/components/createcentre/main/createalbum.vue'),
       beforeEnter: (to, from, next) => { // 限制该路由的进入
         if (from.meta.fromhand) {
           if (from.meta.isNormol) {
@@ -257,5 +258,9 @@ export default new Router({
       name: 'managemusic',
       component: () => import('@/components/createcentre/main/managemusic.vue')
     }]
+  }, {
+    path: '*',
+    name: 'notFound',
+    component: notFound
   }]
 })

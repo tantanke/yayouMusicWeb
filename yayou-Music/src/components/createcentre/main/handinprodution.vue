@@ -19,49 +19,49 @@
         <el-dialog title="上传作品至已发布专辑" :visible.sync="dialogFormAblum" :show-close='false' :close-on-click-modal='false' :close-on-press-escape='false'>
           <el-form :model="albumForm" :rules='musicRules' ref="albumForm" v-loading="loadingMusic" element-loading-text="努力上传中,请不要关闭或刷新页面！"
     element-loading-spinner="el-icon-loading">
-            <el-form-item label="已有专辑名" :label-width="formLabelWidth">
+            <el-form-item label="已有专辑名">
               <el-input v-model="hasAblumName" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="歌曲名" :label-width="formLabelWidth" prop='songName'>
+            <el-form-item label="歌曲名"  prop='songName'>
               <el-input v-model="albumForm.songName" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="作者名" :label-width="formLabelWidth" prop='artist'>
+            <el-form-item label="作者名" prop='artist'>
               <el-input v-model="albumForm.artist" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="是否vip专属" :label-width="formLabelWidth" prop='isvip'>
+            <el-form-item label="是否vip专属"  prop='isvip'>
               <el-select v-model="albumForm.isvip" placeholder="请选择视频权限">
                 <el-option label="是" value="1"></el-option>
                 <el-option label="不是" value="0"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="音频文件(mp3,wav)" :label-width="formLabelWidth">
+            <el-form-item label="音频文件(mp3,wav)">
               <el-upload
               ref="uploadAblumMusic"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="none"
               :auto-upload="false"
               :on-change='checkTypeMusic'
               :limit='1'>
-              <el-button slot="trigger"  type="primary">选取音频文件</el-button>
+              <el-button slot="trigger"  type="primary" >选取音频文件</el-button>
               </el-upload>
             </el-form-item>
-            <el-form-item label="歌词文件(lrc)" :label-width="formLabelWidth">
+            <el-form-item label="歌词文件(lrc)" >
               <el-upload
               ref="uploadAblumWord"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="none"
               :on-change='checkTypeLrc'
               :auto-upload="false"
               :limit='1'>
-              <el-button slot="trigger"  type="primary">选取歌词文件</el-button>
+              <el-button slot="trigger"  type="primary" >选取歌词文件</el-button>
               </el-upload>
             </el-form-item>
-            <el-form-item label="封面文件" :label-width="formLabelWidth">
+            <el-form-item label="封面文件">
               <el-upload
               ref="uploadAblumCover"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="none"
               :auto-upload="false"
               :on-change='checkTypeCover'
               :limit='1'>
-              <el-button slot="trigger"  type="primary">选取封面文件</el-button>
+              <el-button slot="trigger"  type="primary" >选取封面文件</el-button>
               <div slot="tip" class="el-upload__tip">每种文件单次最多上传一个</div>
               </el-upload>
             </el-form-item>
@@ -82,19 +82,19 @@
         <el-dialog title="上传视频作品" :visible.sync="dialogFormVideo" :show-close='false' :close-on-click-modal='false' :close-on-press-escape='false' :destroy-on-close='true'>
           <el-form  :model="videoForm" ref="videoForm" v-loading="loadingVideo" :rules="videoRules" element-loading-text="努力上传中，请不要刷新或关闭页面!"
     element-loading-spinner="el-icon-loading">
-            <el-form-item label="视频名称" :label-width="formLabelWidth" prop='videoName'>
+            <el-form-item label="视频名称" prop='videoName'>
               <el-input v-model="videoForm.videoName" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="作者名称" :label-width="formLabelWidth" prop='artist'>
+            <el-form-item label="作者名称" prop='artist'>
               <el-input v-model="videoForm.artist" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="是否vip专属" :label-width="formLabelWidth" prop='isvip'>
+            <el-form-item label="是否vip专属" prop='isvip'>
               <el-select v-model="videoForm.isvip" placeholder="请选择视频权限" >
                 <el-option label="是" value="1"></el-option>
                 <el-option label="不是" value="0"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="视频文件(mp4)" :label-width="formLabelWidth">
+            <el-form-item  label="视频文件(mp4)">
               <el-upload
               ref="uploadVideo"
               action="none"
@@ -105,10 +105,10 @@
               <div slot="tip" class="el-upload__tip">只能上传视频相关文件，且单次最多上传一个</div>
               </el-upload>
             </el-form-item>
-            <el-form-item label="视频描述" :label-width="formLabelWidth" prop='videoDes'>
+            <el-form-item label="视频描述" prop='videoDes'>
               <el-input v-model="videoForm.videoDes" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item  :label-width="formLabelWidth">
+            <el-form-item >
             <el-button @click="confirmCancel1">取 消</el-button>
             <el-button type="primary" @click="uploadVideoForm">确 定</el-button>
             </el-form-item>
@@ -292,7 +292,7 @@ export default {
       _this.loadingMusic = true
       _this.$axios({
         method: 'post',
-        url: _this.uploadCoverUrl,
+        url: '/singer/upVideo',
         data: coverForm,
         processData: false
       })
@@ -372,35 +372,32 @@ export default {
       }
       _this.isMp4 = false
       let upVideoForm = new FormData()
-      console.log(_this.videoFile.raw, _this.videoForm.isvip)
       upVideoForm.append('mvFile', _this.videoFile.raw)
-      upVideoForm.append('isvip', _this.videoForm.isvip)
+      console.log(upVideoForm.get('mvFile'), upVideoForm.get('isvip'))
       this.loadingVideo = true
       _this.$axios({
         method: 'post',
         url: _this.getVideoUrl,
-        data: upVideoForm,
+        params: upVideoForm,
         processData: false
       })
-        .then(res => {
-          if (res.data.code === 1) {
-            let videoFormData = {}
-            videoFormData.videoName = _this.videoForm.videoName
-            videoFormData.videoDes = _this.videoForm.videoDes
-            videoFormData.artist = _this.videoForm.artist
-            videoFormData.isvip = _this.videoForm.isvip
-            videoFormData.videoUrl = res.data.data.filePath
-            console.log(videoFormData)
-            return _this.$axios({
-              method: 'post',
-              url: _this.uploadVideoUrl,
-              data: videoFormData
-            })
-          }
-        })
+        /* .then(res => {
+          console.log(res)
+          let videoFormData = {}
+          videoFormData.videoName = _this.videoForm.videoName
+          videoFormData.videoDes = _this.videoForm.videoDes
+          videoFormData.artist = _this.videoForm.artist
+          videoFormData.isvip = _this.videoForm.isvip
+          videoFormData.videoUrl = '1'
+          return _this.$axios({
+            method: 'get',
+            url: _this.uploadVideoUrl,
+            params: videoFormData
+          })
+        }) */
         .then(res => {
           console.log(res)
-          if (res.data.code === 1) {
+          /* if (res.data.code === 1) {
             this.$message.success('上传成功')
             _this.videoForm.videoName = ''
             _this.videoForm.videoDes = ''
@@ -409,7 +406,7 @@ export default {
             _this.videoForm.videoUrl = ''
           } else {
             this.$message.error('上传失败，请稍后再试！')
-          }
+          } */
           // 重置表单
           this.loadingVideo = false
           this.dialogFormVideo = false
@@ -427,9 +424,6 @@ export default {
           if (confirm('确认提交吗？')) {
             this.uploadFileVideo()
           }
-        } else {
-          console.log('提交失败，请重试！')
-          return false
         }
       })
     },
@@ -461,7 +455,7 @@ export default {
     _this.$axios.interceptors.request.use(
       config => {
         if (localStorage.getItem('Authorization')) {
-          config.headers.Authorization = localStorage.getItem('Authorization')
+          config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
         }
         return config
       },
@@ -472,7 +466,7 @@ export default {
     _this.$axios.create({
       withCredentials: true
     })
-    _this.$axios({
+    /*  _this.$axios({
       method: 'get',
       data: '',
       url: this.getAlbumUrl
@@ -487,7 +481,7 @@ export default {
       console.log(_this.allAblums)
     }).catch(err => {
       console.log(err)
-    })
+    }) */
   }
 }
 </script>
