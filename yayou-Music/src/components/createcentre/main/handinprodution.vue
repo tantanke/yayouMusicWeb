@@ -373,28 +373,29 @@ export default {
       _this.isMp4 = false
       let upVideoForm = new FormData()
       upVideoForm.append('mvFile', _this.videoFile.raw)
-      console.log(upVideoForm.get('mvFile'), upVideoForm.get('isvip'))
-      this.loadingVideo = true
+      upVideoForm.append('isvip', _this.videoForm.isvip)
+      _this.loadingVideo = true
       _this.$axios({
         method: 'post',
-        url: _this.getVideoUrl,
-        params: upVideoForm,
+        url: 'http://yayoutes.utools.club/singer/upVideo',
+        data: upVideoForm,
         processData: false
       })
-        /* .then(res => {
+        .then(res => {
           console.log(res)
           let videoFormData = {}
           videoFormData.videoName = _this.videoForm.videoName
           videoFormData.videoDes = _this.videoForm.videoDes
           videoFormData.artist = _this.videoForm.artist
           videoFormData.isvip = _this.videoForm.isvip
-          videoFormData.videoUrl = '1'
+          videoFormData.videoUrl = res.data.data.filePath
+          console.log(videoFormData)
           return _this.$axios({
-            method: 'get',
-            url: _this.uploadVideoUrl,
-            params: videoFormData
+            method: 'post',
+            url: 'http://yayoutes.utools.club/singer/subMv',
+            data: videoFormData
           })
-        }) */
+        })
         .then(res => {
           console.log(res)
           /* if (res.data.code === 1) {
@@ -408,8 +409,8 @@ export default {
             this.$message.error('上传失败，请稍后再试！')
           } */
           // 重置表单
-          this.loadingVideo = false
-          this.dialogFormVideo = false
+          /*  this.loadingVideo = false
+          this.dialogFormVideo = false */
         })
         .catch(err => {
           console.log(err)
@@ -451,7 +452,10 @@ export default {
     // 拿到该歌手的全部专辑信息 方便上传歌曲到已有专辑
     // this.$axios.post(this.getVideoUrl, this.getAlbumUrl)
     let _this = this
-    _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000'
+    /* _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000' */
+    _this.$axios.create({
+      withCredentials: true
+    })
     _this.$axios.interceptors.request.use(
       config => {
         if (localStorage.getItem('Authorization')) {
@@ -463,9 +467,6 @@ export default {
         return Promise.reject(error)
       }
     )
-    _this.$axios.create({
-      withCredentials: true
-    })
     /*  _this.$axios({
       method: 'get',
       data: '',

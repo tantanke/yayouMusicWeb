@@ -234,6 +234,7 @@ export default {
 <style lang="scss">
 .aplayer{
   background-color: #FFFAFA;
+  width: 800px;
   .aplayer-body{
     .aplayer-pic{
       .aplayer-pause{
@@ -245,7 +246,7 @@ export default {
       width: 200px !important;
     }
     .aplayer-info{
-      height: 200px !important;
+      height: 220px !important;
       .aplayer-music{
         margin-bottom: 10px
         span{
@@ -282,8 +283,8 @@ export default {
   }
 }
 .lastbtn{
-  position: absolute;
-  top: 90px;
+  position: relative;
+  top: -100px;
   left: 46px;
   font-size: 20px;
   z-index: 999;

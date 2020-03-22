@@ -10,12 +10,15 @@ export default {
     changeHandle () {
       const file = this.$refs.fileInt.files[0]
       let upVideoForm = new FormData()
-      upVideoForm.append('coverImg', file)
-      console.log(upVideoForm.get('coverImg'))
+      upVideoForm.append('coverImage', file)
+      upVideoForm.append('coverImage', file)
+      console.log(upVideoForm.get('coverImage'))
       this.$axios({
-        method: 'put',
-        url: '/setCover',
-        data: upVideoForm
+        method: 'post',
+        url: 'http://yayoutes.utools.club/singer/subMv',
+        // 这里的页码默认为一 singerId在路由中拿到
+        data: upVideoForm,
+        processData: false
       }).then(res => {
         console.log(res)
       }).catch(err => {
@@ -24,9 +27,12 @@ export default {
     }
   },
   mounted () {
-    /* let _this = this */
-    this.$axios.defaults.baseURL = 'http://175.24.83.13:8080'
-    /* _this.$axios.interceptors.request.use(
+    let _this = this
+    _this.$axios.defaults.baseURL = 'http://yayoutes.utools.club'
+    _this.$axios.create({
+      withCredentials: true
+    })
+    _this.$axios.interceptors.request.use(
       config => {
         if (localStorage.getItem('Authorization')) {
           config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
@@ -36,7 +42,7 @@ export default {
       error => {
         return Promise.reject(error)
       }
-    ) */
+    )
   }
 }
 </script>
