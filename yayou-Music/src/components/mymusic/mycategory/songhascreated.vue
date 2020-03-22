@@ -101,8 +101,8 @@ export default {
       imageUrl: '',
       disabled: true,
       urls: {
-        uploadCover: '/api/setCover',
-        uploadSonglist: '/api/user/createSongList'
+        uploadCover: '/setCover',
+        uploadSonglist: '/user/createSongList'
       },
       form: {
         file: ''

@@ -70,7 +70,7 @@
 export default {
   data () {
     return {
-      imageUrl: '',
+      imageUrl: '/singer/getSingerInfo',
       active: 0,
       urls: {
         info: ''

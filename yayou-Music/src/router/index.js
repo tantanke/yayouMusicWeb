@@ -154,8 +154,8 @@ export default new Router({
       name: 'search',
       component: search
     }, {
-      /* path: '/musicplayer/:songId', */ // 动态路由歌曲id
-      path: '/musicplayer',
+      path: '/musicplayer/:songId', // 动态路由歌曲id
+      // path: '/musicplayer',
       name: 'musicplayer',
       component: musicPlayer
     }, {

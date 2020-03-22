@@ -10,10 +10,10 @@
     </el-row>
     <el-row>
       <div class="block">
-        <el-carousel trigger="click">
-          <el-carousel-item v-for="(Item,index) in newSong" :key="index" style="height:200px">
-            <el-col :span="4" v-for="item in Item" :key="item.songId">
-              <el-card :body-style="{ padding: '0px' }" shadow="never">
+        <el-carousel trigger="click" arrow="never">
+          <el-carousel-item v-for="(Item,index) in newSong" :key="index" style="height:200px;width:1260px;">
+            <el-col :span="4" v-for="item in Item" :key="item.songId" >
+              <el-card :body-style="{ padding: '0px'}" shadow="never" >
                 <img src="../../assets/img/homePage/吉克杰拉.png" /><!--这个地方后面也需要请求后端的图片链接的接口 名字是cover-->
                 <div class="song-info">
                   <div>
@@ -57,6 +57,7 @@ export default {
           }
           this.newSong[e] = arr
         }
+        this.$forceUpdate()
         console.log(this.newSong)
         console.log(res)
       }
@@ -68,5 +69,5 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 </style>

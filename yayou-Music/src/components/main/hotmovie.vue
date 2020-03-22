@@ -10,8 +10,8 @@
     </el-row>
     <el-row>
       <div class="block">
-        <el-carousel trigger="click">
-          <el-carousel-item v-for="(Item,index) in hotMovie" :key="index" >
+        <el-carousel trigger="click" arrow="never">
+          <el-carousel-item v-for="(Item,index) in hotMovie" :key="index" style="width:1260px;">
             <el-col :span="8" v-for="item in Item" :key="item.videoId">
               <el-card :body-style="{ padding: '0px',margin: '0px' }" shadow="never">
                 <div class="imgBox">
@@ -80,15 +80,16 @@ export default {
           }
           this.hotMovie[e] = arr
         }
+        this.$forceUpdate()
         console.log(this.hotMovie)
       }
     }
   },
   mounted () {
-    this.getHomeInfo()
+    this.$nextTick(this.getHomeInfo())
   }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 </style>
