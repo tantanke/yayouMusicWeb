@@ -4,12 +4,17 @@
     .aboutsinger{
         position: relative;
         left: -300px;
+        a{
+            text-decoration: none;
+            color: black;
+        }
         .like-singer{
         height: 350px;
         width: 1920px;
         position: relative;
         background-color: #F4F4F4;
         margin-bottom: 80px;
+        
         .singer-info{
             position: relative;
             left: 330px;

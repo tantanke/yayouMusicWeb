@@ -214,7 +214,7 @@ export default {
             coverForm.append('coverImage', albumCover)
             this.$axios({
               method: 'post',
-              url: 'http://yayoutes.utools.club/setCover',
+              url: '/setCover',
               data: coverForm,
               processData: false
             })
@@ -229,11 +229,7 @@ export default {
                   })
                 }
               })
-              .catch(() => {
-                /* this.loadingAblum = false
-                this.$message.error(err) */
-              })
-              /* .then(res => {
+              .then(res => {
                 console.log(res)
                 if (res.data.code === 1) {
                   this.nextStep = true
@@ -246,7 +242,11 @@ export default {
                   alert('提交失败，请稍后再试!')
                   return false
                 }
-              }) */
+              })
+              .catch((err) => {
+                this.loadingAblum = false
+                this.$message.error(err)
+              })
           }
         } else {
           this.$message.error('提交失败!!')
@@ -330,7 +330,7 @@ export default {
             coverForm.append('coverImage', cover)
             _this.$axios({
               method: 'post',
-              url: '/api/setCover',
+              url: '/setCover',
               data: coverForm,
               processData: false
             })
@@ -340,7 +340,7 @@ export default {
                   _this.albumForm.cover = res.data.data
                   return _this.$axios({
                     method: 'post',
-                    url: '/api/singer/upSong',
+                    url: '/singer/upSong',
                     data: _this.albumForm
                   })
                 }

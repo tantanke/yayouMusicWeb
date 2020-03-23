@@ -322,20 +322,19 @@ export default {
           console.log(res)
           if (res.data.code === 1) {
             this.$message.success('上传成功')
-            _this.loadingMusic = false
           } else {
             this.$message.error('上传失败，请稍后再试！')
           }
           // 重置表单
-          this.loadingVideo = false
-          this.dialogFormVideo = false
+          this.loadingMusic = false
+          this.dialogFormAlbum = false
           _this.albumForm.songName = ''
           _this.albumForm.artist = ''
         })
         .catch(err => {
           console.log(err)
-          this.loadingVideo = false
-          this.dialogFormVideo = false
+          this.loadingMusic = false
+          this.dialogFormAlbum = false
         })
     },
     // 视频表单相关
@@ -377,13 +376,13 @@ export default {
       _this.loadingVideo = true
       _this.$axios({
         method: 'post',
-        url: 'http://yayoutes.utools.club/singer/upVideo',
+        url: '/singer/upVideo',
         data: upVideoForm,
         processData: false
       })
         .then(res => {
           console.log(res)
-          let videoFormData = {}
+          /* let videoFormData = {}
           videoFormData.videoName = _this.videoForm.videoName
           videoFormData.videoDes = _this.videoForm.videoDes
           videoFormData.artist = _this.videoForm.artist
@@ -392,13 +391,13 @@ export default {
           console.log(videoFormData)
           return _this.$axios({
             method: 'post',
-            url: 'http://yayoutes.utools.club/singer/subMv',
+            url: '/singer/subMv',
             data: videoFormData
-          })
+          }) */
         })
-        .then(res => {
+        /* .then(res => {
           console.log(res)
-          /* if (res.data.code === 1) {
+          if (res.data.code === 1) {
             this.$message.success('上传成功')
             _this.videoForm.videoName = ''
             _this.videoForm.videoDes = ''
@@ -407,11 +406,11 @@ export default {
             _this.videoForm.videoUrl = ''
           } else {
             this.$message.error('上传失败，请稍后再试！')
-          } */
+          }
           // 重置表单
-          /*  this.loadingVideo = false
-          this.dialogFormVideo = false */
-        })
+          this.loadingVideo = false
+          this.dialogFormVideo = false
+        }) */
         .catch(err => {
           console.log(err)
           this.loadingVideo = false
@@ -452,7 +451,7 @@ export default {
     // 拿到该歌手的全部专辑信息 方便上传歌曲到已有专辑
     // this.$axios.post(this.getVideoUrl, this.getAlbumUrl)
     let _this = this
-    /* _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000' */
+    _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000'
     _this.$axios.create({
       withCredentials: true
     })
