@@ -86,9 +86,9 @@ export default {
       _this.tableData = []
       _this.$axios({
         method: 'get',
-        url: '/getSingerAlbum',
+        url: '/singer/getAlbum',
         // 这里的页码默认为一 singerId在路由中拿到
-        params: {'singerId': 1, 'pageNum': curPage}
+        params: {pageNum: curPage}
       }).then(res => {
         if (res.data.code === 1) {
           _this.totalTable = res.data.data.total
@@ -137,9 +137,9 @@ export default {
     )
     _this.$axios({
       method: 'get',
-      url: '/getSingerAlbum',
+      url: '/singer/getAlbum',
       // 这里的页码默认为一 singerId在路由中拿到
-      params: {'singerId': 1, 'pageNum': 1}
+      params: {'pageNum': 1}
     }).then(res => {
       if (res.data.code === 1) {
         this.totalTable = res.data.data.total

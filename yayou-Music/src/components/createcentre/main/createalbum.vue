@@ -19,12 +19,6 @@
       <el-option label="录制版" value="录制版"></el-option>
     </el-select>
   </el-form-item>
-  <el-form-item label="是否vip专属" >
-    <el-select v-model="ruleForm.isVip" placeholder="请选择视频权限">
-      <el-option label="是" value="1"></el-option>
-      <el-option label="不是" value="0"></el-option>
-    </el-select>
-    </el-form-item>
   <el-form-item label="语种" prop="language">
     <el-select v-model="ruleForm.language" placeholder="请选择专辑语种">
       <el-option label="彝语" value="彝语"></el-option>
@@ -141,7 +135,7 @@ export default {
         language: '',
         style: '',
         desc: '',
-        isVip: '',
+        isvip: '',
         cover: '',
         artist: '陈玥玥'
       },
@@ -152,13 +146,13 @@ export default {
       formLabelWidth: '150px',
       albumForms: [],
       albumForm: {
-        'songName': '',
-        'artist': '',
-        'cover': '', // 用户上传音乐封面 点击确定后 发送请求拿到url 把url设置进入表单后一起发送
-        'isvip': '',
-        'file': '',
-        'lyrics': '',
-        'albumId': '' // 先获取用户当前已有专辑 然后加入选项中
+        songName: '',
+        artist: '',
+        cover: '', // 用户上传音乐封面 点击确定后 发送请求拿到url 把url设置进入表单后一起发送
+        file: '',
+        isvip: '',
+        lyrics: '',
+        albumId: '' // 先获取用户当前已有专辑 然后加入选项中
       },
       posterURL: '',
       coverFile: '', // 记录封面文件
@@ -169,9 +163,6 @@ export default {
         ],
         edition: [
           { required: true, message: '请选择专辑版本', trigger: 'change' }
-        ],
-        isvip: [
-          { required: true, message: '请选择vip信息', trigger: 'change' }
         ],
         language: [
           { required: true, message: '请选择语种', trigger: 'change' }
@@ -192,15 +183,12 @@ export default {
         artist: [
           { required: true, message: '请输入作者名称', trigger: 'blur' },
           { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
-        ],
-        isvip: [
-          { required: true, message: '请选择专辑权限', trigger: 'change' }
         ]
       },
       upUrls: {
-        upAlbumUrl: 'http://175.24.83.13:8000/singer/newAlbum',
-        upSongUrl: 'http://175.24.83.13:8000/singer/upSong',
-        upCoverUrl: 'http://175.24.83.13:8000/setCover'
+        upAlbumUrl: '/singer/newAlbum',
+        upSongUrl: '/singer/upSong',
+        upCoverUrl: '/setCover'
       },
       loadingAblum: false,
       loadingSong: false
@@ -223,15 +211,12 @@ export default {
             let albumCover = this.coverFile
             let coverForm = new FormData()
             console.log(typeof (albumCover))
-            coverForm.append('coverImg', albumCover)
+            coverForm.append('coverImage', albumCover)
             this.$axios({
-              post: 'get',
-              url: _this.upUrls.upCoverUrl,
+              method: 'post',
+              url: '/setCover',
               data: coverForm,
-              processData: false,
-              headers: {
-                'Content-Type': 'multipart/form-data'
-              }
+              processData: false
             })
               .then(res => {
                 console.log(res)
@@ -244,11 +229,7 @@ export default {
                   })
                 }
               })
-              .catch(() => {
-                /* this.loadingAblum = false
-                this.$message.error(err) */
-              })
-              /* .then(res => {
+              .then(res => {
                 console.log(res)
                 if (res.data.code === 1) {
                   this.nextStep = true
@@ -261,7 +242,11 @@ export default {
                   alert('提交失败，请稍后再试!')
                   return false
                 }
-              }) */
+              })
+              .catch((err) => {
+                this.loadingAblum = false
+                this.$message.error(err)
+              })
           }
         } else {
           this.$message.error('提交失败!!')
@@ -345,7 +330,7 @@ export default {
             coverForm.append('coverImage', cover)
             _this.$axios({
               method: 'post',
-              url: '/api/setCover',
+              url: '/setCover',
               data: coverForm,
               processData: false
             })
@@ -355,7 +340,7 @@ export default {
                   _this.albumForm.cover = res.data.data
                   return _this.$axios({
                     method: 'post',
-                    url: '/api/singer/upSong',
+                    url: '/singer/upSong',
                     data: _this.albumForm
                   })
                 }
@@ -424,9 +409,12 @@ export default {
     }
   },
   mounted () {
-    /* let _this = this */
-    /* this.$axios.defaults.baseURL = 'http://175.24.83.13:8000' */
-    /* _this.$axios.interceptors.request.use(
+    let _this = this
+    this.$axios.defaults.baseURL = 'http://175.24.83.13:8000'
+    _this.$axios.create({
+      withCredentials: true
+    })
+    _this.$axios.interceptors.request.use(
       config => {
         if (localStorage.getItem('Authorization')) {
           config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
@@ -436,12 +424,18 @@ export default {
       error => {
         return Promise.reject(error)
       }
-    ) */
+    )
+    // 设置是否vip专属
     if (this.$route.meta.isNormol) {
       this.albumCate = '编辑普通专辑信息'
+      this.albumForm.isvip = 0
+      this.ruleForm.isvip = 0
     } else {
       this.albumCate = '编辑数字专辑信息'
+      this.albumForm.isvip = 1
+      this.ruleForm.isvip = 1
     }
+    console.log(this.ruleForm, this.albumForm)
   }
 }
 </script>

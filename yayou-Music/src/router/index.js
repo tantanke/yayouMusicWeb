@@ -64,7 +64,7 @@ export default new Router({
         if (localStorage.getItem('Authorization')) {
           next()
         } else {
-          next('/mymusic/personalcenter')
+          alert('请点击右上角登陆后查看！')
         }
       },
       children: [{
@@ -154,7 +154,7 @@ export default new Router({
       name: 'search',
       component: search
     }, {
-      path: '/musicplayer/:songId', // 动态路由歌曲id
+      path: '/musicplayer/:isvip/:songId', // 动态路由歌曲id
       // path: '/musicplayer',
       name: 'musicplayer',
       component: musicPlayer

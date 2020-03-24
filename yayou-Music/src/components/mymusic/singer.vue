@@ -56,10 +56,10 @@
       </el-row>
       <el-row class="list">
          <el-table :data="songTableData" style="width: 100%" stripe>
-        <el-table-column prop="order" label="序号" width="70"></el-table-column>
-        <el-table-column prop="song" label="歌曲" width="650">
+        <el-table-column prop="order" label="歌曲id" width="70"></el-table-column>
+        <el-table-column prop="song" label="歌曲(点击歌曲名播放)" width="650">
           <template slot-scope="scope">
-            <span>{{ scope.row.song }}</span>
+            <router-link tag="a" target="_blank" :to="{name: 'musicplayer',params: {isvip:scope.row.isvip, songId: scope.row.order}}" style="cursor:pointer">{{ scope.row.song }}</router-link>
             <span class="vip">vip</span>
             <span class='dujia'>独家</span>
             <span class="movie">MV</span>
@@ -68,7 +68,7 @@
         <el-table-column prop="singer" label="歌手" width="250">
         </el-table-column>
         <el-table-column prop="ed" label="专辑" width="200"></el-table-column>
-        <el-table-column prop="time" label="时长" width='100'></el-table-column>
+        <el-table-column prop="isvip" label="是否vip" width='100'></el-table-column>
       </el-table>
       </el-row>
     </el-row>
@@ -76,7 +76,7 @@
        <router-view></router-view>
     </el-row> 后面需要的话就写上 -->
     <el-row><!--这里的分页采用后端分页 数据较多 -->
-      <el-pagination :page-size="30" :pager-count="6" layout="prev, pager, next" :total="600"></el-pagination>
+      <el-pagination :page-size="30"  layout="prev, pager, next" :total="6"></el-pagination>
     </el-row>
   </div>
 </template>
@@ -104,213 +104,45 @@ export default {
       songTableData: [
         {
           order: 1,
-          song: '面朝大海',
+          song: '等雨停',
           singer: '南瑶乐队',
           ed: '第一张单曲专辑',
-          time: '04:51'
+          isvip: 0
         },
         {
           order: 2,
-          song: '面朝大海',
+          song: '等雨停',
           singer: '南瑶乐队',
           ed: '第一张单曲专辑',
-          time: '04:51'
+          isvip: 1
         },
         {
           order: 3,
-          song: '面朝大海',
+          song: '等雨停',
           singer: '南瑶乐队',
           ed: '第一张单曲专辑',
-          time: '04:51'
+          isvip: 0
         },
         {
           order: 4,
-          song: '面朝大海',
+          song: '等雨停',
           singer: '南瑶乐队',
           ed: '第一张单曲专辑',
-          time: '04:51'
+          isvip: 1
         },
         {
           order: 5,
-          song: '面朝大海',
+          song: '等雨停',
           singer: '南瑶乐队',
           ed: '第一张单曲专辑',
-          time: '04:51'
+          isvip: 1
         },
         {
           order: 6,
-          song: '面朝大海',
+          song: '等雨停',
           singer: '南瑶乐队',
           ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 7,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 8,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 9,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 10,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 11,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 12,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 13,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 14,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 15,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 16,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 17,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 18,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 19,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 20,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 21,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 22,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 23,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 24,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 25,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 26,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 27,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 28,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 29,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
-        },
-        {
-          order: 30,
-          song: '面朝大海',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          time: '04:51'
+          isvip: 1
         }
       ]
     }

@@ -322,20 +322,19 @@ export default {
           console.log(res)
           if (res.data.code === 1) {
             this.$message.success('上传成功')
-            _this.loadingMusic = false
           } else {
             this.$message.error('上传失败，请稍后再试！')
           }
           // 重置表单
-          this.loadingVideo = false
-          this.dialogFormVideo = false
+          this.loadingMusic = false
+          this.dialogFormAlbum = false
           _this.albumForm.songName = ''
           _this.albumForm.artist = ''
         })
         .catch(err => {
           console.log(err)
-          this.loadingVideo = false
-          this.dialogFormVideo = false
+          this.loadingMusic = false
+          this.dialogFormAlbum = false
         })
     },
     // 视频表单相关
@@ -373,31 +372,32 @@ export default {
       _this.isMp4 = false
       let upVideoForm = new FormData()
       upVideoForm.append('mvFile', _this.videoFile.raw)
-      console.log(upVideoForm.get('mvFile'), upVideoForm.get('isvip'))
-      this.loadingVideo = true
+      upVideoForm.append('isvip', _this.videoForm.isvip)
+      _this.loadingVideo = true
       _this.$axios({
         method: 'post',
-        url: _this.getVideoUrl,
-        params: upVideoForm,
+        url: '/singer/upVideo',
+        data: upVideoForm,
         processData: false
       })
-        /* .then(res => {
+        .then(res => {
           console.log(res)
-          let videoFormData = {}
+          /* let videoFormData = {}
           videoFormData.videoName = _this.videoForm.videoName
           videoFormData.videoDes = _this.videoForm.videoDes
           videoFormData.artist = _this.videoForm.artist
           videoFormData.isvip = _this.videoForm.isvip
-          videoFormData.videoUrl = '1'
+          videoFormData.videoUrl = res.data.data.filePath
+          console.log(videoFormData)
           return _this.$axios({
-            method: 'get',
-            url: _this.uploadVideoUrl,
-            params: videoFormData
-          })
-        }) */
-        .then(res => {
+            method: 'post',
+            url: '/singer/subMv',
+            data: videoFormData
+          }) */
+        })
+        /* .then(res => {
           console.log(res)
-          /* if (res.data.code === 1) {
+          if (res.data.code === 1) {
             this.$message.success('上传成功')
             _this.videoForm.videoName = ''
             _this.videoForm.videoDes = ''
@@ -406,11 +406,11 @@ export default {
             _this.videoForm.videoUrl = ''
           } else {
             this.$message.error('上传失败，请稍后再试！')
-          } */
+          }
           // 重置表单
           this.loadingVideo = false
           this.dialogFormVideo = false
-        })
+        }) */
         .catch(err => {
           console.log(err)
           this.loadingVideo = false
@@ -452,6 +452,9 @@ export default {
     // this.$axios.post(this.getVideoUrl, this.getAlbumUrl)
     let _this = this
     _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000'
+    _this.$axios.create({
+      withCredentials: true
+    })
     _this.$axios.interceptors.request.use(
       config => {
         if (localStorage.getItem('Authorization')) {
@@ -463,9 +466,6 @@ export default {
         return Promise.reject(error)
       }
     )
-    _this.$axios.create({
-      withCredentials: true
-    })
     /*  _this.$axios({
       method: 'get',
       data: '',
