@@ -74,7 +74,7 @@ export default {
     }
     return {
       urls: {
-        changPhone: '/userInfo/changePhone'
+        changPhone: 'http://175.24.83.13:8000/userInfo/changePhone'
       },
       ruleForm: {
         username: '',

@@ -11,9 +11,9 @@
             <i class="el-icon-zoom-in imore"></i>
           </div>
         </el-row>
-        <el-row class="sContent" v-for="i in 2" :key="i">
+        <el-row class="sContent" v-for="(Item,index) in array" :key="index">
           <!--这下面的数据都是循环获得的 -->
-          <el-col class="card-box" :span="6" v-for="(item,i) in array" :key="i">
+          <el-col class="card-box" :span="6" v-for="item in Item" :key="item.songListId">
            <el-card class="hot-card" shadow="never">
              <div class="imgBox">
                <!--这个地方需要动态的从后端获取数据 -->
@@ -73,13 +73,27 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      axios.get('/hotSongList')
+      axios.get('http://175.24.83.13:8000/hotSongList')
         .then(this.getHomeInfoSucc)
     },
     getHomeInfoSucc (res) {
       res = res.data
-      this.array = res.data
-      console.log(res)
+      if (res.code === 1) {
+        var k = 0
+        console.log(res)
+        for (var e = 0; e <= (res.data.length / 4) && e < 2; e++) {
+          let arr = {}
+          for (var i = 0; i < 4; i++) {
+            arr[i] = res.data[k++]
+            if (k === res.data.length) {
+              break
+            }
+          }
+          this.array[e] = arr
+        }
+        this.$forceUpdate()
+        console.log(this.array)
+      }
     }
   },
   mounted () {

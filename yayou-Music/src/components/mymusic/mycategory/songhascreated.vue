@@ -11,7 +11,6 @@
                 ref="upload"
                 class="avatar-uploader"
                 action="#"
-                http-request=""
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"

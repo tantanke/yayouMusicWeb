@@ -56,7 +56,7 @@ export default {
     }
     return {
       urls: {
-        changPassword: '/userInfo/changePassword'
+        changPassword: 'http://175.24.83.13:8000/userInfo/changePassword'
       },
       ruleForm: {
         pass: '',

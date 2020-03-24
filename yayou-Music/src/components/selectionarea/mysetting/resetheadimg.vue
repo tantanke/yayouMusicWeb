@@ -13,9 +13,10 @@
       <el-col :span="2" :offset="7">
         <el-upload
           class="avatar-uploader"
-          action="uploadephoto"
+          action="#"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
+          :on-change="handleAvatarChange"
           :before-upload="beforeAvatarUpload"
           v-loading="loadingHeadImg"
           element-loading-text="拼命加载中"
@@ -51,6 +52,7 @@ axios.interceptors.request.use(
   config => {
     if (localStorage.getItem('Authorization')) {
       config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
+      config.headers.contentType = 'multipart/form-data'
     }
     return config
   },
@@ -66,8 +68,8 @@ export default {
       imgUrl1: '',
       imgUrl2: '',
       urls: {
-        setHeadImg: '/user/setHeadImg',
-        uploadephoto: '/upImg'
+        setHeadImg: 'http://175.24.83.13:8000/user/setHeadImg',
+        uploadephoto: 'http://175.24.83.13:8000/image/setHeadImage'
       }
     }
   },
@@ -91,38 +93,40 @@ export default {
         this.$message.error('上传头像图片大小不能超过 20MB!')
       }
       if (isJPG && isLt2M) {
-        let df = new FormData()
-        df.append('img', file)
-        console.log(df.get('img'))
-        axios({
-          url: this.urls.setHeadImg,
-          method: 'post',
-          headers: {'Content-Type': 'multipart/form-data'},
-          data: df,
-          processData: false
-        })
-          .then(res => {
-            console.log(res.data)
-            let data = res.data
-            if (data.code === 1) {
-              this.$message({
-                message: 'success',
-                type: 'success'
-              })
-              this.imageUrl = data.url
-              this.imgUrl1 = data.url
-              this.imgUrl2 = data.url
-            } else {
-              this.$message.error(data.msg)
-            }
-            this.loadingHeadImg = false
-          })
-          .catch(err => {
-            console.log(err)
-          })
       }
       this.loadingHeadImg = false
       return isJPG && isLt2M
+    },
+    handleAvatarChange (file) {
+      let df = new FormData()
+      df.append('headImgFile', file.raw)
+      console.log(df.get('headImgFile'))
+      axios({
+        url: this.urls.uploadephoto,
+        method: 'post',
+        params: df,
+        processData: false,
+        withCredentials: true
+      })
+        .then(res => {
+          console.log(res.data)
+          let data = res.data
+          if (data.code === 1) {
+            this.$message({
+              message: 'success',
+              type: 'success'
+            })
+            this.imageUrl = data.url
+            this.imgUrl1 = data.url
+            this.imgUrl2 = data.url
+          } else {
+            this.$message.error(data.msg)
+          }
+          this.loadingHeadImg = false
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     onSubmit () {
       axios({

@@ -89,7 +89,7 @@ export default {
       totalTable: 15,
       tableData: [],
       urls: {
-        focus: '/user/subscribeSinger'
+        focus: 'http://175.24.83.13:8000/user/subscribeSinger'
       },
       songTableData: [
         {
