@@ -19,9 +19,6 @@
         <el-dialog title="上传作品至已发布专辑" :visible.sync="dialogFormAblum" :show-close='false' :close-on-click-modal='false' :close-on-press-escape='false'>
           <el-form :model="albumForm" :rules='musicRules' ref="albumForm" v-loading="loadingMusic" element-loading-text="努力上传中,请不要关闭或刷新页面！"
     element-loading-spinner="el-icon-loading">
-            <el-form-item label="已有专辑名">
-              <el-input v-model="hasAblumName" autocomplete="off"></el-input>
-            </el-form-item>
             <el-form-item label="歌曲名"  prop='songName'>
               <el-input v-model="albumForm.songName" autocomplete="off"></el-input>
             </el-form-item>
@@ -32,6 +29,11 @@
               <el-select v-model="albumForm.isvip" placeholder="请选择视频权限">
                 <el-option label="是" value="1"></el-option>
                 <el-option label="不是" value="0"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="已有专辑名" prop='isAlbum'>
+              <el-select v-model="albumForm.isvip" placeholder="请选择已发布专辑">
+                <el-option v-for="(item,index) in hasAblum " :key="index" :label="item.albumName" :value="item.albumId"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="音频文件(mp3,wav)">
@@ -131,6 +133,10 @@ export default {
         'isvip': '',
         'videoUrl': '' // 用户上传视频 点击确定后 发送请求拿到url 把url设置进入表单后一起发送
       },
+      hasAblum: [
+        {albumId: 1, albumName: 'hhh'},
+        {albumId: 2, albumName: 'kkk'}
+      ],
       videoFile: '',
       coverFile: '',
       hasAblumName: '',
@@ -170,6 +176,9 @@ export default {
           { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
         ],
         isvip: [
+          { required: true, message: '请选择是否为vip', trigger: 'change' }
+        ],
+        isAlbum: [
           { required: true, message: '请选择是否为vip', trigger: 'change' }
         ]
       },
@@ -382,20 +391,20 @@ export default {
       })
         .then(res => {
           console.log(res)
-          /* let videoFormData = {}
+          let videoFormData = {}
           videoFormData.videoName = _this.videoForm.videoName
           videoFormData.videoDes = _this.videoForm.videoDes
           videoFormData.artist = _this.videoForm.artist
           videoFormData.isvip = _this.videoForm.isvip
-          videoFormData.videoUrl = res.data.data.filePath
+          videoFormData.videoUrl = res.data.data
           console.log(videoFormData)
           return _this.$axios({
-            method: 'post',
+            method: 'GET',
             url: '/singer/subMv',
-            data: videoFormData
-          }) */
+            params: videoFormData
+          })
         })
-        /* .then(res => {
+        .then(res => {
           console.log(res)
           if (res.data.code === 1) {
             this.$message.success('上传成功')
@@ -410,7 +419,7 @@ export default {
           // 重置表单
           this.loadingVideo = false
           this.dialogFormVideo = false
-        }) */
+        })
         .catch(err => {
           console.log(err)
           this.loadingVideo = false

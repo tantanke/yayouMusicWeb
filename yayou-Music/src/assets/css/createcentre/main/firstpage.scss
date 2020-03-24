@@ -31,12 +31,9 @@
                height: 150px;
           }
           .cover{
-              position: relative;
-              float: left;
-              top:-500px;
-              left:910px;
               height: 230px;
               width: 230px;
+              margin-bottom: 10px;
               img{
                   width: 231px;
                   height: 190px;
@@ -52,6 +49,8 @@
                   }
               }
               button{
+                  position: relative;
+                  top: -15px;
                border: 1px solid black;   
                width: 230px;
               }

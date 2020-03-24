@@ -27,10 +27,10 @@
     <el-row class="songList">
       <p>歌曲列表</p>
       <el-table :data="songTableData" style="width: 100%" stripe>
-        <el-table-column prop="order" label="歌曲ID" width="100"></el-table-column>
+        <el-table-column prop="order" label="序号" width="100"></el-table-column>
         <el-table-column prop="song" label="歌曲" width="280">
           <template slot-scope="scope">
-            <router-link tag="a" target="_blank" :to="{name: 'musicplayer',params: {isvip:scope.row.isvip, songId: scope.row.order}}" style="cursor:pointer">{{ scope.row.song }}</router-link>
+            <router-link tag="a" target="_blank" :to="{name: 'musicplayer',params: {isvip:scope.row.isvip, songId: scope.row.songId}}" style="cursor:pointer">{{ scope.row.song }}</router-link>
             <span class="vip" v-if="scope.row.isvip === 1">vip</span>
             <!-- <span class='dujia'>独家</span>
             <span class="movie">MV</span> -->
@@ -39,7 +39,7 @@
         <el-table-column prop="singer" label="歌手" width="150">
         </el-table-column>
         <el-table-column prop="ed" label="专辑" width="180"></el-table-column>
-        <el-table-column prop="isvip" label=" 是否vip专属（1是 0不是）" width='150'></el-table-column>
+        <!-- <el-table-column prop="isvip" label=" 是否vip专属（1是 0不是）" width='150' style="display:none"></el-table-column> -->
       </el-table>
     </el-row>
     <el-pagination
@@ -57,48 +57,15 @@ export default {
   data () {
     return {
       totalTable: 15,
+      tableData: [],
       songTableData: [
         {
           order: 1,
           song: '等雨停',
           singer: '南瑶乐队',
           ed: '第一张单曲专辑',
-          isvip: 0
-        },
-        {
-          order: 2,
-          song: '等雨停',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          isvip: 1
-        },
-        {
-          order: 3,
-          song: '等雨停',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          isvip: 0
-        },
-        {
-          order: 4,
-          song: '等雨停',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          isvip: 1
-        },
-        {
-          order: 5,
-          song: '等雨停',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          isvip: 1
-        },
-        {
-          order: 6,
-          song: '等雨停',
-          singer: '南瑶乐队',
-          ed: '第一张单曲专辑',
-          isvip: 1
+          isvip: 0,
+          songId: 1
         }
       ]
     }
@@ -106,11 +73,14 @@ export default {
   computed: {
     totalLen () {
       return this.totalTable
+    },
+    likeSongTable () {
+      return this.tableData
     }
   },
   mounted () {
     let _this = this
-    _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000'
+    _this.$axios.defaults.baseURL = 'http://yayoutest.utools.club' // 'http://175.24.83.13:8000'
     _this.$axios.create({
       withCredentials: true
     })
@@ -127,10 +97,27 @@ export default {
     )
     _this.$axios({
       method: 'get',
-      url: '/user/getCollectSongs',
+      url: '/user/getLikeSong',
       params: {pageNum: 1}
     }).then(res => {
-      console.log(res)
+      if (res.data.code === 1) {
+        console.log(res)
+        _this.totalTable = res.data.data.total
+        let order = 1
+        res.data.data.list.forEach((item, index) => {
+          let albumitem = {}
+          // 差个专辑名
+          albumitem.order = order++
+          albumitem.isvip = item.isvip
+          albumitem.ed = item.albumName
+          albumitem.song = item.songName
+          albumitem.singer = item.artist
+          albumitem.songId = item.songId
+          _this.tableData.push(albumitem)
+        })
+      } else {
+        this.$message.error('当前网络繁忙，请稍后再试！')
+      }
     })
   },
   methods: {
@@ -140,24 +127,26 @@ export default {
       _this.tableData = []
       _this.$axios({
         method: 'get',
-        url: '/user/getLikeSong',
-        // 这里的页码默认为一 singerId在路由中拿到
+        url: '/user/getCollectSongs',
         params: {pageNum: curPage}
       }).then(res => {
         if (res.data.code === 1) {
           console.log(res)
           _this.totalTable = res.data.data.total
-          /*  res.data.data.list.forEach((item, index) => {
+          let order = 1
+          res.data.data.list.forEach((item, index) => {
             let albumitem = {}
-            albumitem.albumId = item.albumId
-            albumitem.albumName = item.albumName
-            albumitem.songNum = item.songNum
-            albumitem.artist = item.artist
-            albumitem.createtime = item.createtime
+            // 差个专辑名
+            albumitem.order = order++
+            albumitem.isvip = item.isvip
+            albumitem.ed = item.albumName
+            albumitem.song = item.songName
+            albumitem.singer = item.artist
+            albumitem.songId = item.songId
             _this.tableData.push(albumitem)
-          }) */
+          })
         } else {
-          _this.$message.error('当前网络繁忙，请刷新后重试！')
+          this.$message.error('当前网络繁忙，请稍后再试！')
         }
       })
     }

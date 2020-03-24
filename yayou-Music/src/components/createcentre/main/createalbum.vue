@@ -13,33 +13,14 @@
   <el-form-item label="专辑名称" prop="albumName">
   <el-input v-model="ruleForm.albumName" placeholder="请输入专辑名称"></el-input>
   </el-form-item>
-  <el-form-item label="专辑版本" prop="edition">
-    <el-select v-model="ruleForm.edition" placeholder="请选择专辑版本">
-      <el-option label="现场版" value="现场版"></el-option>
-      <el-option label="录制版" value="录制版"></el-option>
-    </el-select>
+  <el-form-item label="作者名称" prop="artist">
+  <el-input v-model="ruleForm.artist" placeholder="请输入作者名称"></el-input>
   </el-form-item>
-  <el-form-item label="语种" prop="language">
-    <el-select v-model="ruleForm.language" placeholder="请选择专辑语种">
-      <el-option label="彝语" value="彝语"></el-option>
-      <el-option label="汉语" value="汉语"></el-option>
-    </el-select>
-  </el-form-item>
-  <el-form-item label="专辑风格" prop="style">
-    <el-select v-model="ruleForm.style" placeholder="请选择专辑风格">
-      <el-option label="古典" value="古典"></el-option>
-      <el-option label="现代" value="现代"></el-option>
-    </el-select>
-  </el-form-item>
-  <el-form-item label="专辑描述" prop="desc" placeholder="字符控制在10-1000之内" >
-    <el-input type="textarea" v-model="ruleForm.desc" :rows="6"></el-input>
+  <el-form-item label="专辑描述" prop="des" placeholder="字符控制在10-1000之内" >
+    <el-input type="textarea" v-model="ruleForm.des" :rows="6"></el-input>
   </el-form-item>
   <el-form-item>
-    <el-button type="primary" @click="uploadAblum">立即创建</el-button>
-    <el-button @click="resetForm('ruleForm')">重置</el-button>
-  </el-form-item>
-</el-form>
-<div class="cover">
+    <div class="cover">
   <el-upload
         action="https://jsonplaceholder.typicode.com/posts/"
         :show-file-list="false"
@@ -51,6 +32,13 @@
         <el-button v-else>上传我的专辑封面</el-button>
 </el-upload>
 </div>
+  </el-form-item>
+  <el-form-item>
+    <el-button type="primary" @click="uploadAblum">立即创建</el-button>
+    <el-button @click="resetForm('ruleForm')">重置</el-button>
+  </el-form-item>
+  <el-button style="margin-left: 35px;" @click="noMusicNext">下一步</el-button>
+</el-form>
     </div>
   <div class="upload" v-if="active == 1" element-loading-text="努力上传中，请不要刷新或关闭页面!" element-loading-spinner="el-icon-loading" v-loading="loadingSong1">
      <span class="title">上传专辑歌曲</span><span class='title2'>(如暂不需要加入歌曲可点击下一步按钮)</span>
@@ -63,16 +51,10 @@
             <el-form-item label="作者名" :label-width="formLabelWidth" prop='artist'>
               <el-input v-model="albumForm.artist" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="是否vip专属" :label-width="formLabelWidth" prop='isvip'>
-              <el-select v-model="albumForm.isvip" placeholder="请选择视频权限">
-                <el-option label="是" value="1"></el-option>
-                <el-option label="不是" value="0"></el-option>
-              </el-select>
-            </el-form-item>
             <el-form-item label="音频文件" :label-width="formLabelWidth">
               <el-upload
               ref="uploadAblumMusic"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="none"
               :auto-upload="false"
               :on-change='beforeUpMp3'
               :limit='1'>
@@ -131,13 +113,10 @@ export default {
       albumCate: '',
       ruleForm: {
         albumName: '',
-        edition: '',
-        language: '',
-        style: '',
-        desc: '',
-        isvip: '',
+        des: '',
+        isVip: '',
         cover: '',
-        artist: '陈玥玥'
+        artist: ''
       },
       isMp3: false,
       isImg: false,
@@ -150,7 +129,7 @@ export default {
         artist: '',
         cover: '', // 用户上传音乐封面 点击确定后 发送请求拿到url 把url设置进入表单后一起发送
         file: '',
-        isvip: '',
+        isVip: '',
         lyrics: '',
         albumId: '' // 先获取用户当前已有专辑 然后加入选项中
       },
@@ -161,27 +140,22 @@ export default {
           { required: true, message: '请输入专辑名称', trigger: 'blur' },
           { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
         ],
-        edition: [
-          { required: true, message: '请选择专辑版本', trigger: 'change' }
+        artist: [
+          { required: true, message: '请输入作者名称', trigger: 'blur' },
+          { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
         ],
-        language: [
-          { required: true, message: '请选择语种', trigger: 'change' }
-        ],
-        style: [
-          { required: true, message: '请选择语种', trigger: 'change' }
-        ],
-        desc: [
+        des: [
           { required: true, message: '请填写专辑描述', trigger: 'blur' },
-          { min: 10, max: 1000, message: '长度在 10 到 1000 个字符', trigger: 'blur' }
+          { min: 1, max: 1000, message: '长度在 1 到 100 个字符', trigger: 'blur' }
         ]
       },
       songRules: {
-        songName: [
-          { required: true, message: '请输入歌曲名称', trigger: 'blur' },
-          { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
-        ],
         artist: [
           { required: true, message: '请输入作者名称', trigger: 'blur' },
+          { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
+        ],
+        songName: [
+          { required: true, message: '请输入歌曲名称', trigger: 'blur' },
           { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
         ]
       },
@@ -210,22 +184,21 @@ export default {
             this.loadingAblum = true
             let albumCover = this.coverFile
             let coverForm = new FormData()
-            console.log(typeof (albumCover))
-            coverForm.append('coverImage', albumCover)
-            this.$axios({
+            coverForm.append('img', albumCover)
+            _this.$axios({
               method: 'post',
-              url: '/setCover',
+              url: '/upImg',
               data: coverForm,
               processData: false
             })
               .then(res => {
                 console.log(res)
                 if (res.data.code === 1) {
-                  this.ruleForm.cover = res.data.data
+                  _this.ruleForm.cover = res.data.data
                   return _this.$axios({
-                    method: 'post',
-                    url: _this.upUrls.upCoverUrl,
-                    data: _this.ruleForm
+                    method: 'get',
+                    url: _this.upUrls.upAlbumUrl,
+                    params: _this.ruleForm
                   })
                 }
               })
@@ -235,17 +208,18 @@ export default {
                   this.nextStep = true
                   _this.active++
                   _this.checked = false
-                  _this.albumForm.albumId = res.data.data.albumId
+                  _this.albumForm.albumId = res.data.data
                   this.loadingAblum = false
+                  console.log(_this.albumForm)
                 } else {
                   this.loadingAblum = false
                   alert('提交失败，请稍后再试!')
                   return false
                 }
               })
-              .catch((err) => {
-                this.loadingAblum = false
-                this.$message.error(err)
+              .catch(() => {
+                /* this.loadingAblum = false
+                this.$message.error(err) */
               })
           }
         } else {
@@ -258,7 +232,7 @@ export default {
     beforeUpLrc (file, fileList) {
       console.log(file.raw) // 这个才是文件
       let fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
-      const extension = fileType === 'png' && 'jpg'
+      const extension = fileType === 'lrc'
       if (!extension) {
         this.$message({
           message: '歌词文件只能是lrc格式！请删除后重选！',
@@ -327,10 +301,10 @@ export default {
             }
             let cover = this.coverFile
             let coverForm = new FormData()
-            coverForm.append('coverImage', cover)
+            coverForm.append('img', cover)
             _this.$axios({
               method: 'post',
-              url: '/setCover',
+              url: '/upImg',
               data: coverForm,
               processData: false
             })
@@ -338,11 +312,23 @@ export default {
                 if (res.data.code === 1) {
                   // 获取专辑封面
                   _this.albumForm.cover = res.data.data
+                  let musicForm = new FormData()
+                  musicForm.append('songName', _this.albumForm.songName)
+                  musicForm.append('artist', _this.albumForm.artist)
+                  musicForm.append('cover', _this.albumForm.cover)
+                  musicForm.append('file', _this.albumForm.file)
+                  musicForm.append('isVip', _this.albumForm.isVip)
+                  musicForm.append('albumId', _this.albumForm.albumId)
+                  musicForm.append('lyrics', _this.albumForm.lyrics)
                   return _this.$axios({
                     method: 'post',
                     url: '/singer/upSong',
-                    data: _this.albumForm
+                    data: musicForm,
+                    processData: false
                   })
+                } else {
+                  this.loadingSong = false
+                  this.$message.error('上传失败！请重试！不要刷新页面')
                 }
               }).then(res => {
                 if (res.data.code === 1) {
@@ -356,6 +342,9 @@ export default {
                     _this.nextStep = true
                     _this.active++
                   }
+                } else {
+                  this.loadingSong = false
+                  this.$message.error('上传失败，请重试！不要刷新页面！')
                 }
               })
           }
@@ -428,12 +417,12 @@ export default {
     // 设置是否vip专属
     if (this.$route.meta.isNormol) {
       this.albumCate = '编辑普通专辑信息'
-      this.albumForm.isvip = 0
-      this.ruleForm.isvip = 0
+      this.albumForm.isVip = 0
+      this.ruleForm.isVip = 0
     } else {
       this.albumCate = '编辑数字专辑信息'
-      this.albumForm.isvip = 1
-      this.ruleForm.isvip = 1
+      this.albumForm.isVip = 1
+      this.ruleForm.isVip = 1
     }
     console.log(this.ruleForm, this.albumForm)
   }
