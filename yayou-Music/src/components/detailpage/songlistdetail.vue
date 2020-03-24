@@ -113,10 +113,10 @@ export default {
   data () {
     return {
       urls: {
-        collectionMusic: '/user/addMusicToCollection',
-        discollectionMusic: '/user/unCollectSong',
-        songAgreeUrl: '/user/likeSong',
-        songDisagreeUrl: '/user/cancelLike'
+        collectionMusic: 'http://175.24.83.13:8000/user/addMusicToCollection',
+        discollectionMusic: 'http://175.24.83.13:8000/user/unCollectSong',
+        songAgreeUrl: 'http://175.24.83.13:8000/user/likeSong',
+        songDisagreeUrl: 'http://175.24.83.13:8000/user/cancelLike'
       },
       playShow: true,
       show: true,

@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      axios.get('/hotMv')
+      axios.get('http://175.24.83.13:8000/hotMv')
         .then(this.getHomeInfoSucc)
     },
     getHomeInfoSucc (res) {

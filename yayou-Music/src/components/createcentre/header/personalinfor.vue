@@ -70,7 +70,7 @@
 export default {
   data () {
     return {
-      imageUrl: '/singer/getSingerInfo',
+      imageUrl: 'http://175.24.83.13:8000/singer/getSingerInfo',
       active: 0,
       urls: {
         info: ''

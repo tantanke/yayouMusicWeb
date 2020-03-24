@@ -35,19 +35,13 @@
             <li><i class="el-icon-lollipop"></i><span>我的歌单</span></li>
             <li><i class="el-icon-wind-power"></i><span>我的下载</span></li>
             <li><i class="el-icon-time"></i><span>最近播放</span></li>
-            <router-link tag='li' :to="{name:routercreatecentre}" @click.native="clickR"><i class="el-icon-service"></i><span  v-if="!isSinger">艺人注册</span><span>创作中心</span></router-link>
+            <router-link tag='li' :to="{name:routercreatecentre}" @click.native="clickR"><i class="el-icon-service"></i><span  v-if="!isSinger">艺人注册</span><span v-else>创作中心</span></router-link>
           </ul>
         </div>
         <el-divider direction="vertical"></el-divider>
-<<<<<<< HEAD
-        <span v-if="notLogin" @click="register()">注册</span>
-        <span v-if="!notLogin" @click="loginOut" class="loginout">注销</span>
-        <el-dialog title="注册" :visible.sync="isnotShow" center :append-to-body='true' :lock-scroll='false' width="30%">
-=======
         <span @click="register()" v-if="notLogin">注册</span>
         <span @click="loginOut" v-else>注销</span>
         <el-dialog title="注册" :visible.sync="isnotShow" center :append-to-body='true' :lock-scroll='false' width="400px">
->>>>>>> 49e483b3f7b820d1fc34a80e6e7946649d7e7a0a
           <register></register>
         </el-dialog>
       </el-col>
@@ -143,7 +137,7 @@ export default {
       var val = this.topInfo.inputValue
       Bus.$emit('inputVal', val)
       axios({
-        url: '/search',
+        url: 'http://175.24.83.13:8000/search',
         method: 'post',
         params: {
           'value': this.inputValue,
@@ -172,7 +166,7 @@ export default {
     if (window.localStorage.getItem('Authorization')) {
       this.isnotLogin = false
     }
-    if (window.localStorage.getItem('Role')) {
+    if (window.localStorage.getItem('Role') === 'Singer') {
       this.isSinger = true
     }
   }

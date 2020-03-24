@@ -7,7 +7,7 @@
         class="video-js"
         >
         <source
-            src=""
+            src="Https://oss-cache.guoanqi.com/4k.mp4"
             type="video/mp4"
         >
         </video>
@@ -116,8 +116,8 @@ export default {
       remarktextarea: '',
       show: true,
       urls: {
-        collection: '/user/addVideoToCollection',
-        discollection: '/user/unCollectVideo'
+        collection: 'http://175.24.83.13:8000/user/addVideoToCollection',
+        discollection: 'http://175.24.83.13:8000/user/unCollectVideo'
       },
       videoInfo: {
         videoId: '001',

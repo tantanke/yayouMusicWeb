@@ -42,7 +42,7 @@ export default {
     return {
       msg: '',
       urls: {
-        submitUrl: '/confirmPassword'
+        submitUrl: 'http://175.24.83.13:8000/confirmPassword'
       },
       ruleForm: {
         pass: ''

@@ -99,7 +99,7 @@ export default {
     return {
       singerId: '',
       urls: {
-        focus: '/user/subscribeSinger'
+        focus: 'http://175.24.83.13:8000/user/subscribeSinger'
       },
       songTableData: [
         {

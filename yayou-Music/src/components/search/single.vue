@@ -45,7 +45,7 @@ export default {
   methods: {
     handleCurrentChange (val) {
       axios({
-        url: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=search/result/single',
+        url: 'http://175.24.83.13:8000search/result/single',
         method: 'post',
         params: {
           'type': 2,

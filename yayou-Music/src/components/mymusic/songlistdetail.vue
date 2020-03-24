@@ -156,9 +156,9 @@ export default {
     return {
       // <!-- 此页面已经废弃新页面见detailpage文件夹下 -->
       urls: {
-        songAgreeUrl: '/user/likeSong',
+        songAgreeUrl: 'http://175.24.83.13:8000/user/likeSong',
         commentAgreeUrl: '',
-        songDisagreeUrl: '/user//cancelLike',
+        songDisagreeUrl: 'http://175.24.83.13:8000/user//cancelLike',
         commentDisagreeUrl: ''
       },
       playShow: true,

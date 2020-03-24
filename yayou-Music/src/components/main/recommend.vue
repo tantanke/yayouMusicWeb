@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      axios.get('/highlight')
+      axios.get('http://175.24.83.13:8000/highlight')
         .then(this.getHomeInfoSucc)
     },
     getHomeInfoSucc (res) {
