@@ -174,7 +174,7 @@ export default {
     let _this = this
     let singerId = this.$route.params.singerid
     console.log(singerId)
-    _this.$axios.defaults.baseURL = 'http://yayoutest.utools.club' // 'http://175.24.83.13:8000'
+    _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000' // 'http://175.24.83.13:8000'
     console.log()
     _this.$axios.create({
       withCredentials: true

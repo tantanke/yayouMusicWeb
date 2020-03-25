@@ -96,7 +96,7 @@ export default {
   mounted () {
     this.click = true
     let _this = this
-    _this.$axios.defaults.baseURL = 'http://yayoutest.utools.club' // 'http://175.24.83.13:8000'
+    _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000' // 'http://175.24.83.13:8000'
     _this.$axios.create({
       withCredentials: true
     })
