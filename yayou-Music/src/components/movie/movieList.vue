@@ -2,7 +2,7 @@
   <div class="allmovie" v-loading="loading">
     <div class="allmoviepage" ref="allmovie" >
     <el-row class="moviepic" >
-      <div  class="moviecard" v-for='(item,index) in allMovieTable' :key="index"  @click="getData($event,item.videoId)">
+      <div  class="moviecard" v-for='(item,index) in allMovieTable' :key="index"  @click="getData($event,item.videoId,item.isvip)">
         <img  src="../../assets/img/homePage/狂徒(dts版).png" alt />
         <p>{{item.videoName}})</p>
         <p>
@@ -59,6 +59,7 @@ export default {
             movieItem.videoId = item.videoId
             movieItem.artist = item.artist
             movieItem.cover = item.cover
+            movieItem.isvip = item.isvip
             _this.tableData.push(movieItem)
           })
         } else {
@@ -67,9 +68,9 @@ export default {
         _this.loading = false
       })
     },
-    getData (e, videoId) {
+    getData (e, videoId, isvip) {
       console.log(videoId)
-      this.$router.push({name: 'movieListItem', params: {movieid: videoId}})
+      this.$router.push({name: 'movieListItem', params: {isvip: isvip, movieid: videoId}})
     }
   },
   computed: {
@@ -83,7 +84,7 @@ export default {
   mounted () {
     this.click = true
     let _this = this
-    _this.$axios.defaults.baseURL = 'http://yayoutest.utools.club' // 'http://175.24.83.13:8000'
+    _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000' // 'http://175.24.83.13:8000'
     _this.$axios.create({
       withCredentials: true
     })
@@ -114,6 +115,7 @@ export default {
           movieItem.videoId = item.videoId
           movieItem.artist = item.artist
           movieItem.cover = item.cover
+          movieItem.isvip = item.isvip
           _this.tableData.push(movieItem)
         })
       } else {

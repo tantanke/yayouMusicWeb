@@ -1,17 +1,11 @@
 <template>
-  <span data-num="21" ref="dataNum"  @click="getData($event)">55</span>
+  <div>评论管理</div>
 </template>
 
 <script>
 export default {
-  methods: {
-    getData: function (e) {
-      console.log(this.$refs.dataNum.getAttribute('data-num'))
-    }
-  }
 }
 </script>
 
 <style>
-
 </style>

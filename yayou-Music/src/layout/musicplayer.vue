@@ -113,7 +113,7 @@ export default {
     if (isvip === 1) {
       this.$axios({
         method: 'get',
-        url: 'http://175.24.83.13:8000/vip/playMusic',
+        url: '/vip/playMusic',
         params: {'songId': songId}
       })
         .then(function (res) {
@@ -136,11 +136,7 @@ export default {
     } else {
       this.$axios({
         method: 'get',
-<<<<<<< HEAD
-        url: 'http://175.24.83.13:8000/playMusic',
-=======
         url: '/user/playMusic',
->>>>>>> 3152e60d66e8a4aeffa882d757ea6af02467746d
         params: {'songId': songId}
       })
         .then(function (res) {

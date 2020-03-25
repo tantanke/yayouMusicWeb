@@ -213,6 +213,7 @@ export default {
         error => {
           return Promise.reject(error)
         }
+        // 通过this.$route.params.isvip获取是否vip
       )
     }
   }

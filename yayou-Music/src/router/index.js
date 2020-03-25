@@ -46,7 +46,7 @@ export default new Router({
           name: 'movieList',
           component: () => import('@/components/movie/movieList.vue')
         }, {
-          path: '/movie/allMovie/movieItem/:movieid',
+          path: '/movie/allMovie/movieItem/:isvip/:movieid',
           name: 'movieListItem',
           component: () => import('@/components/movie/movieitem.vue')
         }]
