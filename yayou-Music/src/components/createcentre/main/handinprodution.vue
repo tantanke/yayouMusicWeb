@@ -17,7 +17,7 @@
       </div>
       <!--上传作品至已发布专辑表单 -->
         <el-dialog title="上传作品至已发布专辑" :visible.sync="dialogFormAblum" :show-close='false' :close-on-click-modal='false' :close-on-press-escape='false'>
-          <el-form :model="albumForm" :rules='musicRules' ref="albumForm" v-loading="loadingMusic" element-loading-text="努力上传中,请不要关闭或刷新页面！"
+          <el-form :model="albumForm" :rules='musicRules' ref="albumForm" v-loading="loadingMusic" element-loading-text="正在努力上传中！请不要关闭或刷新页面！"
     element-loading-spinner="el-icon-loading">
             <el-form-item label="歌曲名"  prop='songName'>
               <el-input v-model="albumForm.songName" autocomplete="off"></el-input>
@@ -76,7 +76,7 @@
         </el-dialog>
         <!--上传作品至视频列表 -->
         <el-dialog title="上传视频作品" :visible.sync="dialogFormVideo" :show-close='false' :close-on-click-modal='false' :close-on-press-escape='false' :destroy-on-close='true'>
-          <el-form  :model="videoForm" ref="videoForm" v-loading="loadingVideo" :rules="videoRules" element-loading-text="努力上传中，请不要刷新或关闭页面!"
+          <el-form  :model="videoForm" ref="videoForm" v-loading="loadingVideo" :rules="videoRules" :element-loading-text="uploadProgress"
     element-loading-spinner="el-icon-loading">
             <el-form-item label="视频名称" prop='videoName'>
               <el-input v-model="videoForm.videoName" autocomplete="off"></el-input>
@@ -116,6 +116,7 @@
 </template>
 
 <script>
+import * as qiniu from 'qiniu-js'
 export default {
   name: 'ComposeClassContent',
   data () {
@@ -197,7 +198,13 @@ export default {
       uploadVideoUrl: '/singer/subMv',
       uploadCoverUrl: '/setCover',
       getAlbumUrl: '/getSingerAlbum',
-      upSongUrl: '/singer/upSong'
+      upSongUrl: '/singer/upSong',
+      config: {useCdnDomain: true, region: qiniu.region.z0},
+      putExtra: {
+        fname: '',
+        params: {},
+        mimeType: null
+      }
     }
   },
   methods: {
@@ -233,7 +240,7 @@ export default {
       this.lycFile = file.raw
     },
     checkTypeCover (file, fileList) {
-      let fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
+      let fileType = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
       const isLt4M = file.size / 1024 / 1024 < 4
       if (fileType !== 'png' && fileType !== 'jpg') {
         this.$message({
@@ -253,7 +260,7 @@ export default {
       this.coverFile = file.raw
     },
     checkTypeMusic (file, fileList) {
-      let fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
+      let fileType = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
       if (fileType !== 'mp3' && fileType !== 'wav') {
         this.$message({
           message: '上传文件只能是mp3或wav格式！请重选！',
@@ -342,6 +349,7 @@ export default {
         .then(res => {
           let hash = res.data.hash
           _this.albumForm.audio = domain + hash
+          console.log(_this.albumForm)
           return _this.$axios({
             // 上传整合表单
             method: 'get',
@@ -354,19 +362,20 @@ export default {
           })
         })
         .then(res => {
+          console.log(res)
           if (res.data.code === 1) {
             this.$message.success('上传成功')
+            this.loadingMusic = false
+            this.dialogFormAblum = true
+            this.$refs.musicupload.clearFiles()
+            this.$refs.lrcupload.clearFiles()
+            this.$refs.imgupload.clearFiles()
+            _this.albumForm.songName = ''
+            _this.albumForm.artist = ''
           } else {
             this.$message.error('上传失败，请稍后再试！')
           }
           // 重置表单
-          this.loadingMusic = false
-          this.dialogFormAblum = true
-          this.$refs.musicupload.clearFiles()
-          this.$refs.lrcupload.clearFiles()
-          this.$refs.imgupload.clearFiles()
-          _this.albumForm.songName = ''
-          _this.albumForm.artist = ''
         })
         .catch(err => {
           console.log(err)
@@ -384,7 +393,7 @@ export default {
     },
     // 点击确定之后启用v-loading 完成后alert弹出
     checkTypeVideo (file, fileList) {
-      let fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
+      let fileType = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
       const isLt5g = file.size / 1024 / 1024 < 5 * 1024
       const extension = fileType === 'mp4'
       if (!extension) {
@@ -401,7 +410,7 @@ export default {
       } else {
         this.isMp4 = true
       }
-      this.videoFile = file
+      this.videoFile = file.raw
       return extension
     },
     // 先上传视频拿到连接后 整合表单发送 有一步错就全错
@@ -412,56 +421,63 @@ export default {
         this.loadingVideo = false
         return false
       }
+      // 七牛云上传相关组件
+      let videoName = _this.videoFile.name
+      let videoFile = _this.videoFile
       _this.isMp4 = false
-      let upVideoForm = new FormData()
-      upVideoForm.append('file', _this.videoFile.raw)
-      upVideoForm.append('token', _this.upToken)
       _this.loadingVideo = true
-      _this.$axios({
-        method: 'post',
-        url: 'http://upload.qiniup.com/',
-        data: upVideoForm
-      })
-        .then(res => {
-          console.log(res)
-          let hash = res.data.hash
+      let observer = {
+        next (res) {
+          _this.upProgress = res.total.percent.toFixed(2)
+        },
+        error (err) {
+          console.log(err)
+        },
+        complete (res) {
+          let hash = res.hash
           let videoFormData = {}
           videoFormData.videoUrl = _this.domain + hash
           videoFormData.videoName = _this.videoForm.videoName
           videoFormData.videoDes = _this.videoForm.videoDes
           videoFormData.artist = _this.videoForm.artist
           videoFormData.isvip = _this.videoForm.isvip
-          return _this.$axios({
+          console.log(videoFormData)
+          _this.$axios({
             method: 'GET',
             url: 'http://175.24.83.13:8000/singer/subMv',
             params: videoFormData,
             withCredentials: true,
             headers: {
-              'Authorization': this.tokenHeader
+              'Authorization': _this.tokenHeader
             }
           })
-        })
-        .then(res => {
-          if (res.data.code === 1) {
-            this.$message.success('上传成功')
-            _this.videoForm.videoName = ''
-            _this.videoForm.videoDes = ''
-            _this.videoForm.artist = ''
-            _this.videoForm.isvip = ''
-            _this.videoForm.videoUrl = ''
-          } else {
-            this.$message.error('上传失败，请稍后再试！')
-          }
-          // 重置表单
-          this.loadingVideo = false
-          this.dialogFormVideo = false
-        })
-        .catch(err => {
-          console.log(err)
-          this.loadingVideo = false
-          this.dialogFormVideo = false
-          this.$message.error('上传失败，请稍后再试！')
-        })
+            .then(res => {
+              console.log(res)
+              if (res.data.code === 1) {
+                _this.$message.success('上传成功')
+                _this.videoForm.videoName = ''
+                _this.videoForm.videoDes = ''
+                _this.videoForm.artist = ''
+                _this.videoForm.isvip = ''
+                _this.videoForm.videoUrl = ''
+              } else {
+                _this.$message.error('上传失败，请稍后再试！')
+              }
+              // 重置表单
+              _this.loadingVideo = false
+              _this.dialogFormVideo = false
+            })
+            .catch(err => {
+              console.log(err)
+              _this.loadingVideo = false
+              _this.dialogFormVideo = false
+              _this.$message.error('上传失败，请稍后再试！')
+            })
+        }
+      }
+      let observable = qiniu.upload(videoFile, videoName, _this.upToken, _this.putExtra, _this.config)
+      observable.subscribe(observer)
+      // 谢了兄弟 已经在传了
     },
     uploadVideoForm () {
       this.$refs.videoForm.validate((valid) => {
@@ -489,7 +505,7 @@ export default {
   },
   computed: {
     uploadProgress () {
-      return '请不要刷新或关闭页面，已上传 ' + this.upProgress
+      return '请不要刷新或关闭页面，已上传:%' + this.upProgress
     }
   },
   mounted () {

@@ -235,7 +235,7 @@ export default {
     },
     // 校验并且给表单中的文件赋值
     beforeUpLrc (file, fileList) {
-      let fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
+      let fileType = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
       const extension = fileType === 'lrc'
       if (!extension) {
         this.$message({
@@ -249,7 +249,7 @@ export default {
       this.lycFile = file.raw
     },
     beforeUpImg (file, fileList) {
-      let fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
+      let fileType = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
       if (fileType !== 'png' && fileType !== 'jpg') {
         this.$message({
           message: '上传文件只能是png,jpg格式！请重选！',
@@ -262,7 +262,7 @@ export default {
       this.coverFile = file.raw
     },
     beforeUpMp3 (file, fileList) {
-      let fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
+      let fileType = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
       const extension = fileType === 'mp3' && 'wav'
       if (!extension) {
         this.$message({
