@@ -3,6 +3,14 @@
       <ul class="manage-title">
         <li>管理我发布的专辑</li>
       </ul>
+      <ul class="tableTitle">
+        <li>创建日期</li>
+        <li>作者名</li>
+        <li>专辑名</li>
+        <li>歌曲数量</li>
+        <li>专辑id</li>
+        <li>操作</li>
+      </ul>
       <el-divider></el-divider>
       <el-table
     :data="allAblum"
