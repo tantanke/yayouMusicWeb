@@ -529,7 +529,7 @@ export default {
     )
     _this.$axios({
       method: 'post',
-      url: 'http://175.24.83.13:8000/singer/getUpToken',
+      url: 'http://175.24.83.13:8000/getUpToken',
       headers: {
         'Authorization': this.tokenHeader
       }

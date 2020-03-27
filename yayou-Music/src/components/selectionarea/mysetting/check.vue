@@ -19,17 +19,17 @@
 
 <script>
 import axios from 'axios'
-axios.interceptors.request.use(
-  config => {
-    if (localStorage.getItem('Authorization')) {
-      config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
-    }
-    return config
-  },
-  error => {
-    return Promise.reject(error)
-  }
-)
+// axios.interceptors.request.use(
+//   config => {
+//     if (localStorage.getItem('Authorization')) {
+//       config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
+//     }
+//     return config
+//   },
+//   error => {
+//     return Promise.reject(error)
+//   }
+// )
 export default {
   data () {
     var validatePass = (rule, value, callback) => {
@@ -41,6 +41,7 @@ export default {
     }
     return {
       msg: '',
+      tokenHeader: '',
       urls: {
         submitUrl: 'http://175.24.83.13:8000/confirmPassword'
       },
@@ -56,28 +57,32 @@ export default {
   },
   methods: {
     submitForm (formName) {
-      this.$refs[formName].validate((valid) => {
+      let _this = this
+      _this.$refs[formName].validate((valid) => {
         if (valid) {
           axios({
-            url: this.urls.submitUrl,
+            url: _this.urls.submitUrl,
             method: 'post',
-            headers: {'Content-Type': 'application/json'},
+            withCredentials: true,
+            headers: {
+              'Authorization': _this.tokenHeader
+            },
             params: JSON.stringify({
-              password: this.ruleForm.pass
+              password: _this.ruleForm.pass
             })
           })
             .then(res => {
               if (res.data.errorCode === '1') {
-                if (this.msg === 'resetpassword') {
-                  this.$router.push({name: 'resetpassword'})
-                } else if (this.msg === 'resetphone') {
-                  this.$router.push({name: 'resetphone'})
+                if (_this.msg === 'resetpassword') {
+                  _this.$router.push({name: 'resetpassword'})
+                } else if (_this.msg === 'resetphone') {
+                  _this.$router.push({name: 'resetphone'})
                 }
               } else {
                 if (res.data.msg) {
-                  this.$message.error(res.data.msg)
+                  _this.$message.error(res.data.msg)
                 } else {
-                  this.$message.error('请稍后尝试')
+                  _this.$message.error('请稍后尝试')
                 }
               }
             })
@@ -97,6 +102,7 @@ export default {
   mounted: function () {
     var _this = this
     _this.msg = this.$route.params.msg
+    _this.tokenHeader = 'Bearer ' + localStorage.getItem('Authorization')
     console.log(this.msg)
   }
 }

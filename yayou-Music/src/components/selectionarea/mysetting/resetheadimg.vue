@@ -6,17 +6,20 @@
       <el-breadcrumb-item>头像设置</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row tag="div" class="top-area">
-      <el-col :span="1" :offset="7" class="submit" @click="Submit"><span>上传头像</span></el-col>
+      <el-col :span="1" :offset="7" class="submit"><span @click="submit">上传头像</span></el-col>
       <el-col :span="5" :offset="1" tag="div" class="title">支持JPG、PNG、BMP格式的图片，且文件小于2M</el-col>
     </el-row>
     <el-row>
       <el-col :span="2" :offset="7">
         <el-upload
+          ref="upload"
           class="avatar-uploader"
           action="#"
-          :show-file-list="false"
+          :limit="1"
+          :auto-upload="false"
+          :headers="tokenHeader"
+          :on-progress="onProgress"
           :on-success="handleAvatarSuccess"
-          :on-change="handleAvatarChange"
           :before-upload="beforeAvatarUpload"
           v-loading="loadingHeadImg"
           element-loading-text="拼命加载中"
@@ -28,7 +31,7 @@
           </div>
         </el-upload>
         <el-row class="sec">
-          <el-button type="primary" @click="onSubmit" class="save">保存</el-button>
+          <el-button type="primary" @click="saveImg" class="save">保存</el-button>
           <el-button class="cancel" @click="loadingHeadImg = false">取消</el-button>
         </el-row>
       </el-col>
@@ -48,113 +51,170 @@
 
 <script>
 import axios from 'axios'
-axios.interceptors.request.use(
-  config => {
-    if (localStorage.getItem('Authorization')) {
-      config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
-      config.headers.contentType = 'multipart/form-data'
-    }
-    return config
-  },
-  error => {
-    return Promise.reject(error)
-  }
-)
+import * as qiniu from 'qiniu-js'
 export default {
   data () {
     return {
+      tokenHeader: null,
       loadingHeadImg: false,
+      domain: '',
+      upToken: '',
       imageUrl: '',
       imgUrl1: '',
       imgUrl2: '',
+      imgFile: '',
+      upProgress: '', // 作为计算属性的载体
       urls: {
         setHeadImg: 'http://175.24.83.13:8000/user/setHeadImg',
-        uploadephoto: 'http://175.24.83.13:8000/image/setHeadImage'
+        uploadephoto: 'http://175.24.83.13:8000/upImg',
+        getUpToken: 'http://175.24.83.13:8000/getUpToken',
+        qiNiuYun: 'http://upload.qiniup.com/'
+      },
+      config: {useCdnDomain: true, region: qiniu.region.z0},
+      putExtra: {
+        fname: '',
+        params: {},
+        mimeType: null
       }
     }
   },
   methods: {
-    handleAvatarSuccess (resd, file) {
-      this.loadingHeadImg = false
-      console.log(resd)
-      if (resd.data.code === '401') {
-        localStorage.removeItem('Authorization')
-        this.$router.push('/login')
+    uploadProgress () {
+      return '请不要刷新或关闭页面，已上传:%' + this.upProgress
+    },
+    submit () {
+      this.$refs.upload.submit()
+      if (this.imgFile) {
+      } else {
+        this.$message.error('请先选择上传图片')
       }
     },
+    onProgress (event, file, fileList) {
+      console.log('onProgress')
+      console.log(event)
+      console.log(file)
+      console.log(fileList)
+    },
+    handleAvatarSuccess (resd, file, fileList) {
+      this.loadingHeadImg = false
+      console.log('handleAvatarSuccess')
+      console.log(resd)
+      console.log(file)
+      console.log(fileList)
+    },
     beforeAvatarUpload (file) {
-      this.loadingHeadImg = true
+      let _this = this
+      console.log('beforeAvatarUpload')
       const isJPG = file.type === ('image/jpeg' || 'image/png' || 'image/bmp')
       const isLt2M = file.size / 1024 / 1024 < 2
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG/PNG格式!')
+        _this.$message.error('上传头像图片只能是 JPG/PNG格式!')
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 20MB!')
+        _this.$message.error('上传头像图片大小不能超过 20MB!')
       }
       if (isJPG && isLt2M) {
-      }
-      this.loadingHeadImg = false
-      return isJPG && isLt2M
-    },
-    handleAvatarChange (file) {
-      let df = new FormData()
-      df.append('headImgFile', file.raw)
-      console.log(df.get('headImgFile'))
-      axios({
-        url: this.urls.uploadephoto,
-        method: 'post',
-        params: df,
-        processData: false,
-        withCredentials: true
-      })
-        .then(res => {
-          console.log(res.data)
-          let data = res.data
-          if (data.code === 1) {
-            this.$message({
-              message: 'success',
-              type: 'success'
-            })
-            this.imageUrl = data.url
-            this.imgUrl1 = data.url
-            this.imgUrl2 = data.url
-          } else {
-            this.$message.error(data.msg)
-          }
-          this.loadingHeadImg = false
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    onSubmit () {
-      axios({
-        url: this.urls.setHeadImg,
-        method: 'post',
-        headers: {'Content-Type': 'application/json'},
-        params: {
-          _method: 'put'
-        },
-        data: JSON.stringify({
-          'imgUri': this.imageUrl
+        _this.imgFile = file
+        _this.loadingHeadImg = true
+        let df = new FormData()
+        df.append('file', file)
+        df.append('token', _this.upToken)
+        axios({
+          url: _this.urls.qiNiuYun,
+          method: 'post',
+          data: df
         })
           .then(res => {
-            if (res.data.errorCode === '1') {
-              console.log()
-            } else {
-              if (res.data.msg) {
-                this.$message.error(res.data.msg)
-              } else {
-                this.$message.error('请稍后尝试')
-              }
-            }
+            console.log(res)
+            let hash = res.data.hash
+            let domain = _this.domain + '/'
+            _this.imageUrl = 'http://' + domain + hash
+            this.imgUrl1 = _this.imageUrl
+            this.imgUrl2 = _this.imageUrl
           })
           .catch(err => {
             console.log(err)
           })
-      })
+      }
+      return isJPG && isLt2M
+    },
+    handleAvatarChange (file, fileList) {
+      console.log('handleAvatarChange')
+      this.imgFile = file.raw
+      console.log(this.imgFile)
+      console.log(fileList)
+    },
+    saveImg () {
+      let _this = this
+      let imgName = _this.imgFile.name
+      let imgFile = _this.imgFile
+      let observer = {
+        next (res) {
+          _this.upProgress = res.total.percent.toFixed(2)
+        },
+        error (err) {
+          console.log(err)
+        },
+        complete (res) {
+          let hash = res.hash
+          let imgFileUrl = _this.domain + hash
+          console.log(imgFileUrl)
+          axios({
+            url: _this.urls.setHeadImg,
+            method: 'post',
+            headers: {
+              'Authorization': _this.tokenHeader
+            },
+            params: {
+              _method: 'put'
+            },
+            data: {'imgUri': imgFileUrl}})
+            .then(res => {
+              if (res.data.errorCode === 1) {
+                console.log(res.data.msg)
+              } else {
+                if (res.data.msg) {
+                  this.$message.error(res.data.msg)
+                } else {
+                  this.$message.error('请稍后尝试')
+                }
+              }
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        }
+      }
+      let observable = qiniu.upload(imgFile, imgName, _this.upToken, _this.putExtra, _this.config)
+      observable.subscribe(observer)
     }
+  },
+  mounted () {
+    axios.create({
+      withCredentials: false
+    })
+    this.tokenHeader = {'Authorization': 'Bearer ' + localStorage.getItem('Authorization')}
+    axios.interceptors.request.use(
+      config => {
+        if (localStorage.getItem('Authorization')) {
+          return config
+        }
+      },
+      error => {
+        return Promise.reject(error)
+      }
+    )
+    console.log('1561465')
+    axios({
+      method: 'post',
+      url: this.urls.getUpToken,
+      headers: {
+        'Authorization': this.tokenHeader
+      }
+    }).then(res => {
+      this.upToken = res.data.upToken
+      this.domain = res.data.domain
+    })
   }
 }
 </script>

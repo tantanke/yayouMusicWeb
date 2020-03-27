@@ -39,7 +39,8 @@
               </div>
               <div class="focus" @click="focus">
                 <i class="el-icon-plus"></i>
-                <span>关注 {{singerin.fanNum}}</span>
+                <span v-if="!ifFocus">关注 {{singerin.fanNum}}</span>
+                <span v-else>已关注 {{singerin.fanNum}}</span>
               </div>
             </dd>
           </dl>
@@ -88,8 +89,11 @@ export default {
       singerinfo: {},
       totalTable: 15,
       tableData: [],
+      ifFocus: false,
       urls: {
-        focus: 'http://175.24.83.13:8000/user/subscribeSinger'
+        focus: 'http://175.24.83.13:8000/user/subscribeSinger',
+        cancelFocus: 'http://175.24.83.13:8000/user/unsubscribeSinger',
+        isNotFocus: 'http://175.24.83.13:8000/user/ifSub'
       },
       songTableData: [
         {
@@ -104,31 +108,85 @@ export default {
     }
   },
   methods: {
-    focus () {
-      this.$axios.post(this.urls.focus, JSON.stringify({
-        singerId: this.singerId
-      }))
+    isNotFocus () {
+      let singerId = this.$route.params.singerid
+      this.$axios({
+        url: this.urls.isNotFocus,
+        method: 'get',
+        params: {singerId: singerId}
+      })
         .then(res => {
-          console.log(res)
-          if (res.data.code === '1') {
-            this.$message({
-              message: res.data.msg,
-              type: 'success'
-            })
-          } else if (res.data.code === '401') {
-            localStorage.removeItem('Authorization')
-            this.$router.push('/login')
-          } else {
-            if (res.data.msg) {
-              this.$message.error(res.data.msg)
+          if (res.data.code === 1) {
+            if (res.data.data === '已关注') {
+              this.ifFocus = true
             } else {
-              this.$message.error('请稍后尝试')
+              this.ifFocus = false
             }
+            this.$forceUpdate()
+          } else {
+            this.$message.error(res.data.msg)
           }
         })
         .catch(err => {
           console.log(err)
         })
+    },
+    focus () {
+      let singerId = this.$route.params.singerid
+      if (!this.ifFocus) {
+        this.$axios({
+          url: this.urls.focus,
+          method: 'post',
+          params: {singerId: singerId}
+        })
+          .then(res => {
+            console.log(res)
+            if (res.data.code === 1) {
+              this.$message({
+                message: res.data.msg,
+                type: 'success'
+              })
+              this.ifFocus = true
+            } else {
+              if (res.data.msg) {
+                this.$message.error(res.data.msg)
+              } else {
+                this.$message.error('请稍后尝试')
+              }
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      } else {
+        this.$axios({
+          url: this.urls.cancelFocus,
+          method: 'post',
+          params: {
+            _method: 'delete',
+            singerId: singerId
+          }
+        })
+          .then(res => {
+            console.log(res)
+            if (res.data.code === 1) {
+              this.$message({
+                message: res.data.msg,
+                type: 'success'
+              })
+              this.ifFocus = false
+            } else {
+              if (res.data.msg) {
+                this.$message.error(res.data.msg)
+              } else {
+                this.$message.error('请稍后尝试')
+              }
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
     },
     handleCurrentChange (val) {
       let _this = this
@@ -173,6 +231,7 @@ export default {
   mounted () {
     let _this = this
     let singerId = this.$route.params.singerid
+    _this.isNotFocus()
     console.log(singerId)
     _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000' // 'http://175.24.83.13:8000'
     console.log()
