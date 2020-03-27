@@ -98,7 +98,7 @@ export default {
     },
     getHomeInfo () {
       axios({
-        url: 'http://175.24.83.13:8000/hotMv',
+        url: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/hotMv',
         method: 'get',
         params: {
           'type': 2

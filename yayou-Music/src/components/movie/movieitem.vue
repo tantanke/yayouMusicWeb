@@ -7,7 +7,7 @@
         class="video-js"
         >
         <source
-            src="Https://oss-cache.guoanqi.com/4k.mp4"
+            src=""
             type="video/mp4"
         >
         </video>
@@ -116,8 +116,8 @@ export default {
       remarktextarea: '',
       show: true,
       urls: {
-        collection: 'http://175.24.83.13:8000/user/addVideoToCollection',
-        discollection: 'http://175.24.83.13:8000/user/unCollectVideo'
+        collection: '/user/addVideoToCollection',
+        discollection: '/user/unCollectVideo'
       },
       videoInfo: {
         videoId: '001',
@@ -213,7 +213,6 @@ export default {
         error => {
           return Promise.reject(error)
         }
-        // 通过this.$route.params.isvip获取是否vip
       )
     }
   }

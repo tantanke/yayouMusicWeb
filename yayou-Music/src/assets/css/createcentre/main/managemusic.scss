@@ -1,6 +1,5 @@
 .manage-music{
     margin-top: 60px;
-    width: 1600px;
     .manage-title{
         li{
             list-style: none;
@@ -8,20 +7,6 @@
             height: 75px;
             line-height: 75px;
             font-size: 30px;
-        }
-    }
-    .tableTitle {
-        &::after{
-            display: block;
-            content: '';
-            clear: both;
-            width: 1000px;
-        }
-        li{
-            width: 230px;
-            float: left;
-            list-style: none;
-            color: gray;
         }
     }
     .el-pagination{
