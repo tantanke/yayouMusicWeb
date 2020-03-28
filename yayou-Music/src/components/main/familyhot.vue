@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      axios.get('http://175.24.83.13:8000/familyRank')
+      axios.get('/familyRank')
         .then(this.getHomeInfoSucc)
     },
     getHomeInfoSucc (res) {

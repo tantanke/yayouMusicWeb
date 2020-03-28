@@ -35,7 +35,7 @@
             <li><i class="el-icon-lollipop"></i><span>我的歌单</span></li>
             <li><i class="el-icon-wind-power"></i><span>我的下载</span></li>
             <li><i class="el-icon-time"></i><span>最近播放</span></li>
-            <router-link tag='li' :to="{name:routercreatecentre}" @click.native="clickR"><i class="el-icon-service"></i><span  v-if="!singer">艺人注册</span><span v-else>创作中心</span></router-link>
+            <router-link tag='li' :to="{name:routercreatecentre}" @click.native="clickR"><i class="el-icon-service"></i><span  v-if="!isSinger">艺人注册</span><span>创作中心</span></router-link>
           </ul>
         </div>
         <el-divider direction="vertical"></el-divider>
@@ -76,9 +76,6 @@ export default {
   computed: {
     notLogin () {
       return this.isnotLogin
-    },
-    singer () {
-      return this.isSinger
     }
   },
   methods: {
@@ -140,7 +137,7 @@ export default {
       var val = this.topInfo.inputValue
       Bus.$emit('inputVal', val)
       axios({
-        url: 'http://175.24.83.13:8000/search',
+        url: '/search',
         method: 'post',
         params: {
           'value': this.inputValue,
@@ -169,7 +166,7 @@ export default {
     if (window.localStorage.getItem('Authorization')) {
       this.isnotLogin = false
     }
-    if (window.localStorage.getItem('Role') === 'Singer') {
+    if (window.localStorage.getItem('Role')) {
       this.isSinger = true
     }
   }

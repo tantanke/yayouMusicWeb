@@ -31,6 +31,10 @@ export default new Router({
       name: 'ranklistdetail',
       component: () => import('@/components/main/ranklistDetail/index.vue')
     }, {
+      path: '/find/songSheet/sheet',
+      name: 'songSheet',
+      component: () => import('@/components/main/songSheet/sheet.vue')
+    }, {
       path: '/movie',
       name: 'movie',
       component: Movie,
@@ -46,7 +50,7 @@ export default new Router({
           name: 'movieList',
           component: () => import('@/components/movie/movieList.vue')
         }, {
-          path: '/movie/allMovie/movieItem/:isvip/:movieid',
+          path: '/movie/allMovie/movieItem/:movieid',
           name: 'movieListItem',
           component: () => import('@/components/movie/movieitem.vue')
         }]
@@ -64,7 +68,7 @@ export default new Router({
         if (localStorage.getItem('Authorization')) {
           next()
         } else {
-          alert('请点击右上角登陆后查看！')
+          next('/mymusic/personalcenter')
         }
       },
       children: [{
@@ -154,7 +158,7 @@ export default new Router({
       name: 'search',
       component: search
     }, {
-      path: '/musicplayer/:isvip/:songId', // 动态路由歌曲id
+      path: '/musicplayer/:songId', // 动态路由歌曲id
       // path: '/musicplayer',
       name: 'musicplayer',
       component: musicPlayer

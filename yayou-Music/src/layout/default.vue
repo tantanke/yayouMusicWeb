@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      axios.get('http://175.24.83.13:8000/defaultOther.json').then(this.getHomeInfoSucc)
+      axios.get('/api/defaultOther.json').then(this.getHomeInfoSucc)
     },
     getHomeInfoSucc (res) {
       console.log(res)

@@ -4,7 +4,7 @@
         <div>
            <i class="el-icon-headset color"></i>
             <span class="titleName">精彩推荐</span>
-            <span class="more">更多</span>
+            <router-link class="more" tag='span'  :to="{name:'songSheet'}">更多</router-link>
            <i class="el-icon-zoom-in imore"></i>
         </div>
     </el-row>
@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      axios.get('http://175.24.83.13:8000/highlight')
+      axios.get('/highlight')
         .then(this.getHomeInfoSucc)
     },
     getHomeInfoSucc (res) {

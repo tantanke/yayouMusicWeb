@@ -80,7 +80,7 @@ export default {
       })
         .then(function (res) {
           res = res.data
-          if (res.code === 1) {
+          if (res.code === 5003) {
             return callback(new Error('该电话号码已经注册'))
           }
         })
@@ -509,7 +509,7 @@ export default {
      */
     getEmail () {
       axios({
-        url: 'http://175.24.83.13:8000/sendSmsCode',
+        url: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/sendSmsCode',
         method: 'post',
         params: {
           'userPhone': this.phone
@@ -524,7 +524,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid && this.ajustCode === 0) {
           axios({
-            url: 'http://175.24.83.13:8000/doRegister',
+            url: 'http://47.104.101.193:80/eolinker_os/Mock/simple?projectID=1&uri=/doRegister',
             method: 'post',
             params: {
               'userName': this.name,
