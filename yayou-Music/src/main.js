@@ -24,6 +24,7 @@ Vue.use(ElementUI)
 Vue.prototype.$video = Video
 Vue.config.productionTip = false
 Vue.use(VueCookies)
+Vue.prototype.$EventBus = new Vue()//  这是一个事件总线
 
 /* eslint-disable no-new */
 new Vue({

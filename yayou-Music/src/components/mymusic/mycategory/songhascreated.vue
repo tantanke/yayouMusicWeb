@@ -20,6 +20,7 @@
                 :auto-upload="false"
                 :headers="tokenHeader"
                 :on-success="handleAvatarSuccess"
+                :on-change="handleOnChange"
                 :before-upload="beforeAvatarUpload"
                 title="点击上传图片"
                 v-loading="loadingCover"
@@ -44,7 +45,7 @@
           :visible.sync="dialogFormVisible"
           width="50%"
           :append-to-body="true">
-          <el-form :model="formData">
+          <el-form :model="formData" ref="songForm">
             <el-form-item label="歌单名字" :label-width="formLabelWidth">
               <el-input v-model="formData.name" autocomplete="off" placeholder="小于10字" maxlength="10"></el-input>
             </el-form-item>
@@ -53,7 +54,7 @@
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button @click="cancelForm">取 消</el-button>
             <el-button type="primary" @click="submitSonglist(formData)">上传歌单</el-button>
           </div>
         </el-dialog>
@@ -156,7 +157,16 @@ export default {
     }
   },
   methods: {
+    cancelForm () {
+      this.$refs.songForm.clearFiles()
+      this.dialogFormVisible = false
+    },
     handleAvatarSuccess (res, file) {
+    },
+    handleOnChange (file, fileList) {
+      console.log(file)
+      console.log(fileList)
+      this.coverUrl = URL.createObjectURL(file.raw)
     },
     beforeAvatarUpload (file) {
       let _this = this
@@ -168,7 +178,6 @@ export default {
       if (!isLt2M) {
         _this.$message.error('上传头像图片大小不能超过 2MB!')
       }
-      console.log(file)
       if (isJPG && isLt2M) {
         console.log(file)
         _this.loadingCover = true
@@ -226,7 +235,7 @@ export default {
             url: _this.urls.uploadSonglist,
             method: 'post',
             headers: {
-              'Authorization': this.tokenHeader
+              'Authorization': _this.tokenHeader
             },
             data: formdata
           })
@@ -234,7 +243,13 @@ export default {
               console.log('res')
               console.log(res)
               if (res.data.code === 1) {
-                console.log('上传成功')
+                this.$message({
+                  type: 'success',
+                  message: res.data.data
+                })
+                this.$refs.songForm.clearFiles()
+                this.dialogFormVisible = false
+                console.log('创建成功')
               }
               this.dialogFormVisible = false
             })

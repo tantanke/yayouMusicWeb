@@ -25,7 +25,7 @@
           <span round @click="submitForm()" class='login'>登录</span>
         </div>
         <div class="loginPic" v-else>
-          <img src="../../assets/img/homePage/sliderPic.png" alt="">
+          <img :src="headImgUrl" alt="">
           <ul>
             <router-link tag='li' class="active" :to="{name:'myMusic'}"><i class="el-icon-user"></i><span>个人中心</span></router-link>
             <li><i class="el-icon-chat-dot-round"></i><span>我的消息</span></li>
@@ -61,6 +61,7 @@ export default {
   name: 'MyFind',
   data () {
     return {
+      headImgUrl: require('../../assets/img/homePage/sliderPic.png'), // 头像地址
       routercreatecentre: 'createCentre', // 创作中心进入口
       dialogTableVisible: false,
       isnotShow: false,
@@ -166,6 +167,11 @@ export default {
     }
   },
   mounted () {
+    Bus.$on('headImgUrl', url => {
+      // 设置resetheadimg.vue发来的
+      console.log(url)
+      this.headImgUrl = 'http://' + url
+    })
     if (window.localStorage.getItem('Authorization')) {
       this.isnotLogin = false
     }

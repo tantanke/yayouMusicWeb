@@ -4,13 +4,13 @@
         <div>
            <i class="el-icon-headset color"></i>
             <span class="titleName">热门歌手</span>
-            <span class="more">更多</span>
+            <router-link class="more" tag='span'  :to="{name:'singer'}">更多</router-link>
            <i class="el-icon-zoom-in imore"></i>
         </div>
      </el-row>
       <router-link tag='ul' class="singer-list" v-for="(item, i) in hotSinger[0]" :key="i" :to="{ name: 'singerDetail', params:{singerid:10086}}">
        <li>
-         <img src="../../assets/img/homePage/山鹰组合.png" alt=""><!--等后端给了图片的链接的时候改变-->
+         <img :src="item.cover" alt=""><!--等后端给了图片的链接的时候改变-->
          <span>{{item.artistName}}</span>
        </li>
       </router-link>

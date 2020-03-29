@@ -19,9 +19,11 @@
             height: 60px;   
             img{
                 width:40px;
-                height: 40px;position: relative;
+                height: 40px;
+                position: relative;
                 left: 40px;
-                padding-bottom: 10px;
+                border-radius:20px;
+                margin-bottom: 10px;
             }
             &:hover{
                 ul{

@@ -17,7 +17,9 @@
            <el-card class="hot-card" shadow="never">
              <div class="imgBox">
                <!--这个地方需要动态的从后端获取数据 -->
-                <img src="../../assets/img/homePage/themoonandthewell.png" class="image">
+                <router-link :to="{ name: 'singerDetail', params:{singerid:10086, isVip:role}}">
+                  <img :src="item.cover" class="image">
+                </router-link>
              </div>
             <div class="word-box">
               <p class="word">{{item.songListName}}</p>

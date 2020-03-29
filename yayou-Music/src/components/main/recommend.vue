@@ -9,7 +9,9 @@
         </div>
     </el-row>
     <el-row class="box">
+      <router-link :to="{ name: 'singerDetail', params:{singerid:10086, isVip: role}}">
         <img :src="item.cover" id="img1" alt="" v-for="item in recommend" :key="item.songId">
+      </router-link>
     </el-row>
   </div>
 </template>

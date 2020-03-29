@@ -15,7 +15,7 @@
             <el-col :span="8" v-for="item in Item" :key="item.videoId">
               <el-card :body-style="{ padding: '0px',margin: '0px' }" shadow="never">
                 <div class="imgBox">
-                  <img src="../../assets/img/homePage/themoonandthewell.png" />
+                  <img :src="item.cover" />
                 </div>
                 <div class="line">
                   <p>{{item.videoName}}</p>

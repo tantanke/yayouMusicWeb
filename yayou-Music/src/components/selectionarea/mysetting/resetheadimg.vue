@@ -20,19 +20,18 @@
           :headers="tokenHeader"
           :on-progress="onProgress"
           :on-success="handleAvatarSuccess"
+          :on-change="handleAvatarChange"
           :before-upload="beforeAvatarUpload"
-          v-loading="loadingHeadImg"
-          element-loading-text="拼命加载中"
-          element-loading-spinner="el-icon-loading"
-          element-loading-background="rgba(0, 0, 0, 0.8)">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          >
+          <el-progress v-if="loadingHeadImg" type="circle" :percentage="num" style="margin:72px 72px;"></el-progress>
+          <img v-else-if="imageUrl" :src="imageUrl" class="avatar">
           <div v-else>
             <i class="el-icon-plus avatar-uploader-icon"></i><span class="ti">选择一张本地图片</span>
           </div>
         </el-upload>
         <el-row class="sec">
           <el-button type="primary" @click="saveImg" class="save">保存</el-button>
-          <el-button class="cancel" @click="loadingHeadImg = false">取消</el-button>
+          <el-button class="cancel" @click="cancelUpload">取消</el-button>
         </el-row>
       </el-col>
       <el-col :span="8" :offset="2" tag="div" class="img1-div">
@@ -52,9 +51,12 @@
 <script>
 import axios from 'axios'
 import * as qiniu from 'qiniu-js'
+import Bus from '../../../components/header/bus.js'
 export default {
   data () {
     return {
+      source: null, // 取消上传
+      num: 0,
       tokenHeader: null,
       loadingHeadImg: false,
       domain: '',
@@ -79,6 +81,18 @@ export default {
     }
   },
   methods: {
+    cancelUpload () {
+      let that = this
+      if (that.source) {
+        that.source.cancel()
+        that.imageUrl = ''
+        that.imageUrl1 = ''
+        that.imageUrl2 = ''
+        that.imgFile = ''
+        that.loadingHeadImg = false
+        that.$refs.upload.clearFiles()
+      }
+    },
     uploadProgress () {
       return '请不要刷新或关闭页面，已上传:%' + this.upProgress
     },
@@ -94,6 +108,7 @@ export default {
       console.log(event)
       console.log(file)
       console.log(fileList)
+      this.num = Math.floor(event.percent)
     },
     handleAvatarSuccess (resd, file, fileList) {
       this.loadingHeadImg = false
@@ -113,16 +128,20 @@ export default {
       if (!isLt2M) {
         _this.$message.error('上传头像图片大小不能超过 20MB!')
       }
-      if (isJPG && isLt2M) {
+      if (isJPG && isLt2M && file) {
         _this.imgFile = file
         _this.loadingHeadImg = true
+        const CancelToken = axios.CancelToken
+        const source = CancelToken.source()
+        _this.source = source
         let df = new FormData()
         df.append('file', file)
         df.append('token', _this.upToken)
         axios({
           url: _this.urls.qiNiuYun,
           method: 'post',
-          data: df
+          data: df,
+          cancelToken: _this.source.token// 取消事件
         })
           .then(res => {
             console.log(res)
@@ -131,16 +150,22 @@ export default {
             _this.imageUrl = 'http://' + domain + hash
             this.imgUrl1 = _this.imageUrl
             this.imgUrl2 = _this.imageUrl
+            _this.loadingHeadImg = false
           })
           .catch(err => {
             console.log(err)
+            if (_this.axios.isCancel(err)) {
+              _this.$message({type: 'success', message: '取消上传操作成功'})
+            }
+            _this.loadingHeadImg = false
           })
       }
       return isJPG && isLt2M
     },
     handleAvatarChange (file, fileList) {
       console.log('handleAvatarChange')
-      this.imgFile = file.raw
+      this.imgUrl1 = URL.createObjectURL(file.raw)
+      this.imgUrl2 = this.imgUrl1
       console.log(this.imgFile)
       console.log(fileList)
     },
@@ -148,45 +173,69 @@ export default {
       let _this = this
       let imgName = _this.imgFile.name
       let imgFile = _this.imgFile
-      let observer = {
-        next (res) {
-          _this.upProgress = res.total.percent.toFixed(2)
-        },
-        error (err) {
-          console.log(err)
-        },
-        complete (res) {
-          let hash = res.hash
-          let imgFileUrl = _this.domain + hash
-          console.log(imgFileUrl)
-          axios({
-            url: _this.urls.setHeadImg,
-            method: 'post',
-            headers: {
-              'Authorization': _this.tokenHeader
-            },
-            params: {
-              _method: 'put'
-            },
-            data: {'imgUri': imgFileUrl}})
-            .then(res => {
-              if (res.data.errorCode === 1) {
-                console.log(res.data.msg)
-              } else {
-                if (res.data.msg) {
-                  this.$message.error(res.data.msg)
-                } else {
-                  this.$message.error('请稍后尝试')
+      if (imgFile) {
+        let observer = {
+          next (res) {
+            _this.upProgress = res.total.percent.toFixed(2)
+          },
+          error (err) {
+            console.log(err)
+          },
+          complete (res) {
+            let hash = res.hash
+            let imgFileUrl = _this.domain + '/' + hash
+            const CancelToken = axios.CancelToken
+            const source = CancelToken.source()
+            _this.source = source
+            let f = new FormData()
+            f.append('imgUri', imgFileUrl)
+            console.log(imgFileUrl)
+            console.log(_this.tokenHeader)
+            _this.loadingHeadImg = true
+            axios({
+              url: _this.urls.setHeadImg,
+              method: 'post',
+              params: f,
+              cancelToken: _this.source.token, // 取消事件
+              onUploadProgress (progressEvent) {
+                if (progressEvent.lengthComputable) {
+                  let val = (progressEvent.loaded / progressEvent.total * 100).toFixed(0)
+                  _this.num = parseInt(val)
                 }
               }
             })
-            .catch(err => {
-              console.log(err)
-            })
+              .then(res => {
+                if (res.data.code === 1) {
+                  console.log(res.data.msg)
+                  Bus.$emit('headImgUrl', imgFileUrl)// 发送到topbar.vue
+                  _this.imgFile = ''
+                  _this.$message({type: 'success', message: res.data.msg})
+                  _this.$router.push({name: 'setting'})
+                } else {
+                  if (res.data.msg) {
+                    _this.$message({type: 'success', message: res.data.msg})
+                  } else {
+                    _this.$message.error('请稍后尝试')
+                  }
+                }
+                _this.loadingHeadImg = false
+              })
+              .catch(err => {
+                console.log(err)
+                if (_this.axios.isCancel(err)) {
+                  _this.$message({type: 'success', message: '取消保存操作成功'})
+                }
+                _this.loadingHeadImg = false
+                _this.imgUrl1 = ''
+                _this.imgUrl2 = ''
+              })
+          }
         }
+        let observable = qiniu.upload(imgFile, imgName, _this.upToken, _this.putExtra, _this.config)
+        observable.subscribe(observer)
+      } else {
+        this.$message.error('请先上传图片')
       }
-      let observable = qiniu.upload(imgFile, imgName, _this.upToken, _this.putExtra, _this.config)
-      observable.subscribe(observer)
     }
   },
   mounted () {
@@ -194,9 +243,11 @@ export default {
       withCredentials: false
     })
     this.tokenHeader = {'Authorization': 'Bearer ' + localStorage.getItem('Authorization')}
+    console.log(this.tokenHeader)
     axios.interceptors.request.use(
       config => {
         if (localStorage.getItem('Authorization')) {
+          config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
           return config
         }
       },

@@ -3,7 +3,7 @@
     <div class="slider" >
     <el-carousel >
       <el-carousel-item v-for="(item,index) in imgList" :key="index">
-        <img src="../../assets/img/homePage/sliderPicB.png" alt="" >
+        <img :src="item.cover" alt="" >
       </el-carousel-item>
     </el-carousel>
    </div>

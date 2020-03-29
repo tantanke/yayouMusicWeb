@@ -31,6 +31,10 @@ export default new Router({
       name: 'ranklistdetail',
       component: () => import('@/components/main/ranklistDetail/index.vue')
     }, {
+      path: '/find/songSheet/sheet',
+      name: 'songSheet',
+      component: () => import('@/components/main/songSheet/sheet.vue')
+    }, {
       path: '/movie',
       name: 'movie',
       component: Movie,
