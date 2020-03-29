@@ -8,12 +8,12 @@
            <i class="el-icon-zoom-in imore"></i>
         </div>
      </el-row>
-     <ul class="singer-list" v-for="(item, i) in hotSinger[0]" :key="i">
+      <router-link tag='ul' class="singer-list" v-for="(item, i) in hotSinger[0]" :key="i" :to="{ name: 'singerDetail', params:{singerid:10086}}">
        <li>
          <img src="../../assets/img/homePage/山鹰组合.png" alt=""><!--等后端给了图片的链接的时候改变-->
          <span>{{item.artistName}}</span>
        </li>
-     </ul>
+      </router-link>
      <el-row>
      </el-row>
   </div>
@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      axios.get('http://175.24.83.13:8000/hotSinger')
+      axios.get('/hotSinger')
         .then(this.getHomeInfoSucc)
     },
     getHomeInfoSucc (res) {

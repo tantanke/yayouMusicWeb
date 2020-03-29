@@ -4,7 +4,7 @@
       <div>
         <i class="el-icon-headset color"></i>
         <span class="titleName">热门电影</span>
-        <span class="more">更多</span>
+        <router-link class="more" tag='span'  :to="{name:'movie'}">更多</router-link>
         <i class="el-icon-zoom-in imore"></i>
       </div>
     </el-row>

@@ -7,7 +7,7 @@
           <div>
             <i class="el-icon-headset color"></i>
             <span class="hotPic">热门歌单</span>
-            <span class="more">更多</span><!--这个后面可以转成一个路由-->
+            <router-link class="more" tag='span'  :to="{name:'songSheet'}">更多</router-link><!--这个后面可以转成一个路由-->
             <i class="el-icon-zoom-in imore"></i>
           </div>
         </el-row>
