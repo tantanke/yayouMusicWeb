@@ -147,7 +147,7 @@ export default {
             console.log(res)
             let hash = res.data.hash
             let domain = _this.domain + '/'
-            _this.imageUrl = 'http://' + domain + hash
+            _this.imageUrl = domain + hash
             this.imgUrl1 = _this.imageUrl
             this.imgUrl2 = _this.imageUrl
             _this.loadingHeadImg = false

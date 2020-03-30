@@ -231,7 +231,6 @@ export default {
   mounted () {
     let _this = this
     let singerId = this.$route.params.singerid
-    _this.isNotFocus()
     console.log(singerId)
     _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000' // 'http://175.24.83.13:8000'
     console.log()
@@ -250,6 +249,7 @@ export default {
       }
     )
     // 获取歌手信息
+    _this.isNotFocus()
     _this.$axios({
       method: 'get',
       url: '/getSingerInfo',

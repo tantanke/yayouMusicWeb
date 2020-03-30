@@ -6,7 +6,7 @@
       </el-input>
     </el-form-item>
     <el-form-item prop="checkPass">
-      <el-input placeholder="请输入密码" v-model="ruleForm.checkPass" autocomplete="off" type="">
+      <el-input placeholder="请输入密码" v-model="ruleForm.checkPass" autocomplete="off" type="password">
         <template slot="prepend" ><i class="el-icon-edit-outline"></i></template>
       </el-input>
     </el-form-item>

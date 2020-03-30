@@ -55,3 +55,43 @@ $choicedColor:#fe4857 !global;
     color:#999;
   }
 }
+.avatar-uploader {
+  width: 180px;
+  height: 180px;
+  margin: 20px auto;
+  border: 1px solid #eeeeee;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  background-color: #eee;
+  .ti{
+    display: block;
+    position: absolute;
+    width: 180px;
+    height: 30px;
+    top: 130px;
+    left: 0;
+    font-size: 16px;
+    line-height: 30px;
+    text-align: center;
+    color: #999999;
+  }
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  position: relative;
+  font-size: 28px;
+  color: #8c939d;
+  width: 180px;
+  height: 180px;
+  line-height: 180px;
+  text-align: center;
+}
+.avatar {
+  width: 180px;
+  height: 180px;
+  display: block;
+}

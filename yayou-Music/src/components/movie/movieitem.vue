@@ -7,19 +7,20 @@
         class="video-js"
         >
         <source
-            src="Https://oss-cache.guoanqi.com/4k.mp4"
+            ref="sourceUrl"
+            :src="videoData.videoUrl"
             type="video/mp4"
         >
         </video>
         <el-row class="videoinfo1">
             <el-row class="info">
               <el-col :span="20">
-                <span class="videoname">如今的情歌</span>
-                <span class="numbers">播放量：4761</span>
+                <span class="videoname">{{videoData.videoName}}</span>
+                <span class="numbers">播放量：{{videoData.watch}}</span>
               </el-col>
               <el-col :span="4" class="videobuttons">
-                <span><i class="el-icon-share"></i></span>
-                <span><i class="el-icon-edit-outline"></i></span>
+                <span><i :class="{'el-icon-share':show,'collection-style':videoInfo.shareStyle}"></i></span>
+                <span><i :class="{'el-icon-edit-outline':show,'collection-style':videoInfo.editStyle}"></i></span>
                 <span class="df"><i :class="{'el-icon-star-off':show,'collection-style':videoInfo.collectionStyle}" title="收藏" @click="handleCollection(videoInfo)"></i></span>
               </el-col>
             </el-row>
@@ -40,10 +41,10 @@
         <el-row class="videoinfo2">
          <p>视频简介</p>
          <span>Maroon 5</span>
-         <span>发行时间：2019-12-29</span>
+         <span>发行时间：{{videoData.createTime}}</span>
         </el-row>
         <el-row class="expressvideoremark">
-          <el-row><span class="title">评论</span><span class="numbers">共2015条评论</span></el-row>
+          <el-row><span class="title">评论</span><span class="numbers">共{{videoData.comment}}条评论</span></el-row>
           <el-row class="remarkarea">
           <el-input
           type="textarea"
@@ -115,18 +116,20 @@ export default {
     return {
       remarktextarea: '',
       show: true,
+      videoData: '',
       urls: {
         collection: 'http://175.24.83.13:8000/user/addVideoToCollection',
-        discollection: 'http://175.24.83.13:8000/user/unCollectVideo'
+        discollection: 'http://175.24.83.13:8000/user/unCollectVideo',
+        vipPlayMv: 'http://175.24.83.13:8000/vip/playMv',
+        userPlayMv: 'http://175.24.83.13:8000/user/playMv'
       },
       videoInfo: {
         videoId: '001',
-        collectionStyle: false
+        collectionStyle: false,
+        shareStyle: false,
+        editStyle: false
       }
     }
-  },
-  mounted () {
-    this.initVideo()
   },
   beforeDestroy () {
     this.$parent.$refs.allmovie.style.display = 'block'// 防止渲染出现问题
@@ -135,20 +138,23 @@ export default {
     initVideo () {
       // 初始化视频方法
       // eslint-disable-next-line no-undef
-      let myPlayer = this.$video(myVideo, {
-        // 确定播放器是否具有用户可以与之交互的控件。没有控件，启动视频播放的唯一方法是使用autoplay属性或通过Player API。
-        controls: true,
-        autoplay: false,
-        muted: false,
-        // 自动播放属性,muted:静音播放
-        // 建议浏览器是否应在<video>加载元素后立即开始下载视频数据。
-        preload: 'auto',
-        // 设置视频播放器的显示宽度（以像素为单位）
-        width: '1240px',
-        // 设置视频播放器的显示高度（以像素为单位）
-        height: '500px'
+      // 页面dom元素渲染完毕，执行回调里面的方法
+      this.$nextTick(() => {
+        let myPlayer = this.$video(document.getElementById('myVideo'), {
+          // 确定播放器是否具有用户可以与之交互的控件。没有控件，启动视频播放的唯一方法是使用autoplay属性或通过Player API。
+          controls: true,
+          autoplay: false,
+          muted: false,
+          // 自动播放属性,muted:静音播放
+          // 建议浏览器是否应在<video>加载元素后立即开始下载视频数据。
+          preload: 'auto',
+          // 设置视频播放器的显示宽度（以像素为单位）
+          width: '1240px',
+          // 设置视频播放器的显示高度（以像素为单位）
+          height: '500px'
+        })
+        console.log(myPlayer)
       })
-      console.log(myPlayer)
     },
     // 收藏视频
     handleCollection (e) {
@@ -201,21 +207,56 @@ export default {
             console.log(err)
           })
       }
-    },
-    mounted () {
-      this.$axios.interceptors.request.use(
-        config => {
-          if (localStorage.getItem('Authorization')) {
-            config.headers.Authorization = localStorage.getItem('Authorization')
-          }
-          return config
-        },
-        error => {
-          return Promise.reject(error)
-        }
-        // 通过this.$route.params.isvip获取是否vip
-      )
     }
+  },
+  mounted () {
+    let _this = this
+    _this.$axios.create({
+      withCredentials: true
+    })
+    _this.$axios.interceptors.request.use(
+      config => {
+        if (localStorage.getItem('Authorization')) {
+          config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
+        }
+        return config
+      },
+      error => {
+        return Promise.reject(error)
+      }
+      // 通过this.$route.params.isvip获取是否vip
+    )
+    let mvUrl = ''
+    let id = {
+      videoId: _this.$route.params.movieid
+    }
+    let isvip = _this.$route.params.isvip
+    console.log(id)
+    if (isvip === 0) {
+      mvUrl = _this.urls.userPlayMv
+      alert('1')
+    } else if (isvip === 1) {
+      mvUrl = _this.urls.vipPlayMv
+      alert('2')
+    } else {
+      mvUrl = _this.urls.userPlayMv
+      alert('3')
+    }
+    _this.$axios({
+      url: mvUrl,
+      method: 'get',
+      withCredentials: true,
+      params: id
+    }).then(res => {
+      let data = res.data
+      if (data.code === 1) {
+        _this.videoData = data.data
+        _this.nowVideoUrl = data.data.videoUrl
+        _this.$refs.sourceUrl.url = _this.nowVideoUrl
+        console.log(_this.nowVideoUrl)
+        _this.initVideo()
+      }
+    })
   }
 }
 </script>

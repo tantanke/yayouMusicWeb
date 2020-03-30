@@ -1,16 +1,29 @@
 <template>
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" label-position="left">
-        <el-upload
+        <!-- <el-upload
             class="upload"
             action="https://jsonplaceholder.typicode.com/posts/"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove">
                 <i class="el-icon-plus"></i>
+        </el-upload> -->
+        <el-upload
+          ref="upload"
+          class="avatar-uploader"
+          action="#"
+          :limit="1"
+          :headers="tokenHeader"
+          :on-progress="onProgress"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+          >
+          <el-progress v-if="loadingHeadImg" type="circle" :percentage="num" style="margin:10px 10px;"></el-progress>
+          <img v-else-if="imageUrl" :src="imageUrl" class="avatar">
+          <div v-else>
+            <i class="el-icon-plus avatar-uploader-icon"></i>
+          </div>
         </el-upload>
-        <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
-        </el-dialog>
         <el-form-item prop="name" label-width="0">
             <el-input placeholder="用户名" v-model="ruleForm.name" >
                 <template slot="prepend" ><i class="el-icon-mobile-phone"></i></template>
@@ -22,7 +35,7 @@
           </el-input>
         </el-form-item>
         <el-form-item prop="cipher" label-width="0">
-            <el-input placeholder="密码" v-model="ruleForm.cipher">
+            <el-input type="password" placeholder="密码" v-model="ruleForm.cipher">
                 <template slot="prepend" ><i class="el-icon-mobile-phone"></i></template>
             </el-input>
         </el-form-item>
@@ -67,20 +80,23 @@
 </template>
 <script>
 import axios from 'axios'
+import * as qiniu from 'qiniu-js'
 export default {
   data () {
     var checkPhoneNumber = (rule, value, callback) => {
       console.log('外面')
+      console.log(this.phone)
       axios({
         url: 'http://175.24.83.13:8000/findUserExist',
         method: 'post',
         params: {
-          'userPhone': this.phone
+          'userPhone': this.ruleForm.phone
         }
       })
         .then(function (res) {
           res = res.data
           if (res.code === 1) {
+          } else {
             return callback(new Error('该电话号码已经注册'))
           }
         })
@@ -91,11 +107,31 @@ export default {
       }
     }
     return {
-      dialogImageUrl: '',
-      dialogVisible: false,
       dataCode: String,
+      imageUrl: '',
+      imgFile: '',
+      num: 0,
+      loadingHeadImg: false,
+      upToken: '',
+      domain: '',
+      config: {useCdnDomain: true, region: qiniu.region.z0},
+      putExtra: {
+        fname: '',
+        params: {},
+        mimeType: null
+      },
+      urls: {
+        getUpToken: 'http://175.24.83.13:8000/getUpToken',
+        qiNiuYun: 'http://upload.qiniup.com/'
+      },
       /** options里面是家族的值 */
       options: [{
+        label: '[无]',
+        options: [{
+          value: 'no',
+          label: '无'
+        }]
+      }, {
         label: '[诺合姓氏]',
         options: [{
           value: 'wazha',
@@ -494,16 +530,67 @@ export default {
     }
   },
   methods: {
+    // zhang 上传头像
+    onProgress (event, file, fileList) {
+      // this.num = Math.floor(event.percent)
+    },
+    handleAvatarSuccess (resd, file, fileList) {
+      this.loadingHeadImg = false
+    },
+    beforeAvatarUpload (file) {
+      let _this = this
+      console.log(file)
+      const isJPG = file.type === ('image/jpeg' || 'image/png' || 'image/bmp')
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        _this.$message.error('上传头像图片只能是 JPG/PNG格式!')
+      }
+      if (!isLt2M) {
+        _this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      if (isJPG && isLt2M && file) {
+        _this.imgFile = file
+        _this.loadingHeadImg = true
+        let df = new FormData()
+        df.append('file', file)
+        df.append('token', _this.upToken)
+        console.log(df)
+        console.log(df.get('file'))
+        axios({
+          url: _this.urls.qiNiuYun,
+          method: 'post',
+          data: df,
+          onUploadProgress (progressEvent) {
+            if (progressEvent.lengthComputable) {
+              let val = (progressEvent.loaded / progressEvent.total * 100).toFixed(0)
+              _this.num = parseInt(val)
+            }
+          }
+        })
+          .then(res => {
+            console.log(res)
+            let hash = res.data.hash
+            let domain = _this.domain + '/'
+            _this.imageUrl = domain + hash
+            _this.loadingHeadImg = false
+          })
+          .catch(err => {
+            console.log(err)
+            _this.loadingHeadImg = false
+          })
+      }
+      return isJPG && isLt2M
+    },
     /**
      * hanleRemove和handlePictureCardPreview函数是负责控制头像部分从本地上传照片
      */
-    handleRemove (file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePictureCardPreview (file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
-    },
+    // handleRemove (file, fileList) {
+    //   console.log(file, fileList)
+    // },
+    // handlePictureCardPreview (file) {
+    //   this.dialogImageUrl = file.url
+    //   this.dialogVisible = true
+    // },
     /**
      *获取验证码
      */
@@ -512,7 +599,7 @@ export default {
         url: 'http://175.24.83.13:8000/sendSmsCode',
         method: 'post',
         params: {
-          'userPhone': this.phone
+          'userPhone': this.ruleForm.phone
         }
       })
         .then(this.getEmailCode)
@@ -521,22 +608,41 @@ export default {
       /**
        * 这个是判断输入内容的格式是否符合标准
        */
-      this.$refs[formName].validate((valid) => {
-        if (valid && this.ajustCode === 0) {
-          axios({
-            url: 'http://175.24.83.13:8000/doRegister',
-            method: 'post',
-            params: {
-              'userName': this.name,
-              'familyId': this.value,
-              'password': this.cipher,
-              'userPhone': this.phone,
-              'smsCode': this.email,
-              'userBirth': this.data1,
-              'userSex': this.resource
+      let _this = this
+      let imgName = _this.imgFile.name
+      let imgFile = _this.imgFile
+      _this.$refs[formName].validate((valid) => {
+        if (valid && _this.ajustCode === 0 && imgFile) {
+          let observer = {
+            next (res) {
+            },
+            error (err) {
+              console.log(err)
+            },
+            complete (res) {
+              let hash = res.hash
+              let imgFileUrl = _this.domain + '/' + hash
+              let f = new FormData()
+              f.append('userName', _this.name)
+              f.append('familyId', _this.value)
+              f.append('password', _this.cipher)
+              f.append('userPhone', _this.phone)
+              f.append('smsCode', _this.email)
+              f.append('userBirth', _this.data1)
+              f.append('userSex', _this.resource)
+              f.append('userImg', imgFileUrl)
+              _this.loadingHeadImg = true
+              axios({
+                url: 'http://175.24.83.13:8000/doRegister',
+                method: 'post',
+                params: f
+              })
+                .then(_this.getHomeInfoSucc)
+              _this.loadingHeadImg = false
             }
-          })
-            .then(this.getHomeInfoSucc)
+          }
+          let observable = qiniu.upload(imgFile, imgName, _this.upToken, _this.putExtra, _this.config)
+          observable.subscribe(observer)
         } else {
           console.log('error submit!!')
           return false
@@ -565,10 +671,26 @@ export default {
     resetForm (formName) {
       this.$refs[formName].resetFields()
     }
+  },
+  mounted () {
+    axios.create({
+      withCredentials: false
+    })
+    this.tokenHeader = {'Authorization': 'Bearer ' + localStorage.getItem('Authorization')}
+    axios({
+      method: 'post',
+      url: this.urls.getUpToken,
+      headers: {
+        'Authorization': this.tokenHeader
+      }
+    }).then(res => {
+      this.upToken = res.data.upToken
+      this.domain = res.data.domain
+    })
   }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .el-form-item__content{
     margin-left: 0px!important;
 }
@@ -583,5 +705,45 @@ export default {
 .familyId{
   margin-left: 0;
   font-weight: 400
+}
+.avatar-uploader {
+  width: 148px;
+  height: 148px;
+  margin: 20px auto;
+  border: 1px solid #eeeeee;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  background-color: #eee;
+  .ti{
+    display: block;
+    position: absolute;
+    width: 148px;
+    height: 30px;
+    top: 150px;
+    left: 0;
+    font-size: 16px;
+    line-height: 30px;
+    text-align: center;
+    color: #999999;
+  }
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  position: relative;
+  font-size: 28px;
+  color: #8c939d;
+  width: 148px;
+  height: 148px;
+  line-height: 148px;
+  text-align: center;
+}
+.avatar {
+  width: 148px;
+  height: 148px;
+  display: block;
 }
 </style>

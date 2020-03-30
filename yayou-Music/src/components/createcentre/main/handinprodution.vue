@@ -100,6 +100,20 @@
               <el-button slot="trigger"  type="primary">选取文件</el-button>
               <div slot="tip" class="el-upload__tip">只能上传视频相关文件，且单次最多上传一个</div>
               </el-upload>
+              <el-upload
+              ref="coverupload"
+              class="avatar-uploader"
+              action="#"
+              :limit="1"
+              :on-progress="onProgress"
+              :before-upload="beforeAvatarUpload"
+              >
+              <el-progress v-if="loadingVideoCover" type="circle" :percentage="num" style="margin:30px 30px;"></el-progress>
+              <img v-else-if="videoCoverUrl" :src="videoCoverUrl" class="avatar">
+              <div v-else>
+                <i class="el-icon-plus avatar-uploader-icon"><span class="ti">上传封面</span></i>
+              </div>
+            </el-upload>
             </el-form-item>
             <el-form-item label="视频描述" prop='videoDes'>
               <el-input v-model="videoForm.videoDes" autocomplete="off"></el-input>
@@ -133,6 +147,8 @@ export default {
       coverFile: '', // 记录封面文件
       musicFile: '', // 记录音乐文件
       lycFile: '', // 记录歌词文件
+      videoCoverFile: '', // 记录视频封面文件
+      num: 0, // 上传视频封面文件进度
       hasAblumName: '',
       albumForm: {
         'songName': '',
@@ -185,6 +201,7 @@ export default {
       dialogFormVideo: false,
       loadingVideo: false,
       loadingMusic: false,
+      loadingVideoCover: false,
       dialogFormDraft: false,
       dialogFormAblum: false,
       formLabelWidth: '140px',
@@ -193,6 +210,7 @@ export default {
       // 两个单独上传文件路径
       upProgress: '', // 作为计算属性的载体
       upLoadMusicUrl: '',
+      videoCoverUrl: '', // 视频封面
       getCoverUrl: '',
       getVideoUrl: '/singer/upVideo',
       uploadVideoUrl: '/singer/subMv',
@@ -434,13 +452,13 @@ export default {
           console.log(err)
         },
         complete (res) {
-          let hash = res.hash
           let videoFormData = {}
-          videoFormData.videoUrl = _this.domain + hash
+          videoFormData.videoUrl = _this.domain + '/' + videoName
           videoFormData.videoName = _this.videoForm.videoName
           videoFormData.videoDes = _this.videoForm.videoDes
           videoFormData.artist = _this.videoForm.artist
           videoFormData.isvip = _this.videoForm.isvip
+          videoFormData.cover = _this.videoCoverUrl
           console.log(videoFormData)
           _this.$axios({
             method: 'GET',
@@ -501,6 +519,46 @@ export default {
     },
     resetForm () {
       this.$refs.videoForm.resetFields()
+    },
+    // zhang 上传视频封面
+    onProgress (event, file, fileList) {
+      this.num = Math.floor(event.percent)
+    },
+    beforeAvatarUpload (file) {
+      let _this = this
+      const isJPG = file.type === ('image/jpeg' || 'image/png' || 'image/bmp')
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        _this.$message.error('上传头像图片只能是 JPG/PNG格式!')
+      }
+      if (!isLt2M) {
+        _this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      if (isJPG && isLt2M && file) {
+        _this.videoCoverFile = file
+        _this.loadingVideoCover = true
+        let df = new FormData()
+        df.append('file', file)
+        df.append('token', _this.upToken)
+        console.log(df)
+        _this.$axios({
+          url: 'http://upload.qiniup.com/',
+          method: 'post',
+          data: df
+        })
+          .then(res => {
+            console.log(res)
+            let hash = res.data.hash
+            let domain = _this.domain + '/'
+            _this.videoCoverUrl = domain + hash
+            _this.loadingVideoCover = false
+          })
+          .catch(err => {
+            console.log(err)
+            _this.loadingVideoCover = false
+          })
+      }
+      return isJPG && isLt2M
     }
   },
   computed: {
