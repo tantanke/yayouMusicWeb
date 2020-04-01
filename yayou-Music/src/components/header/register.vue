@@ -49,17 +49,15 @@
                 v-for="item in group.options"
                 :key="item.value"
                 :label="item.label"
-                :value="item.value">
+                :value="item.label">
               </el-option>
             </el-option-group>
           </el-select>
         </el-form-item>
         <el-form-item label="出生日期" required class="birthday">
-            <el-col :span="11">
-                <el-form-item prop="date1">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 160px;"></el-date-picker>
-                </el-form-item>
-            </el-col>
+          <el-form-item prop="date1">
+              <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 160px;"></el-date-picker>
+          </el-form-item>
         </el-form-item>
         <el-form-item label="性别" prop="resource" class="sex">
             <el-radio-group v-model="ruleForm.resource">
@@ -84,21 +82,27 @@ import * as qiniu from 'qiniu-js'
 export default {
   data () {
     var checkPhoneNumber = (rule, value, callback) => {
-      console.log('外面')
-      console.log(this.phone)
+      console.log(this.ruleForm.phone)
       axios({
         url: 'http://175.24.83.13:8000/findUserExist',
-        method: 'post',
+        method: 'get',
         params: {
           'userPhone': this.ruleForm.phone
         }
       })
         .then(function (res) {
+          console.log(res)
           res = res.data
           if (res.code === 1) {
-          } else {
+            return callback()
+          }
+        }, function (error) {
+          if (error.response.status === 409) {
             return callback(new Error('该电话号码已经注册'))
           }
+        })
+        .catch(err => {
+          console.log(err)
         })
       if (!value) {
         return callback(new Error('请输入电话号码'))
@@ -106,12 +110,28 @@ export default {
         return callback(new Error('请输入正确的电话号码'))
       }
     }
+    var dateCheck = (rule, value, callback) => {
+      if (value) {
+        console.log(value)
+        let date = new Date(value)
+        let year = date.getFullYear()
+        let month = date.getMonth()
+        let day = date.getDate()
+        console.log(year)
+        console.log(month)
+        console.log(day)
+        this.date = year + '-' + (parseInt(month) + 1) + '-' + day
+        return callback()
+      }
+    }
     return {
       dataCode: String,
+      date: '',
       imageUrl: '',
       imgFile: '',
       num: 0,
       loadingHeadImg: false,
+      tokenHeader: '',
       upToken: '',
       domain: '',
       config: {useCdnDomain: true, region: qiniu.region.z0},
@@ -504,21 +524,22 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 0, max: 1000000, message: '长度为11位', trigger: 'blur' }
+          { min: 0, max: 20, message: '长度为11位', trigger: 'blur' }
         ],
         cipher: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 0, max: 100000, trigger: 'blur' }
         ],
         phone: [
-          { required: true, validator: checkPhoneNumber, trigger: 'blur' }
+          { required: true, validator: checkPhoneNumber, trigger: 'blur' },
+          { min: 11, max: 11, trigger: 'blur' }
         ],
         email: [
           { required: true, message: '请填写验证码', trigger: 'blur' },
           { min: 0, max: 1000000, trigger: 'blur' }
         ],
         date1: [
-          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+          { type: 'date', required: true, validator: dateCheck, message: '请选择日期', trigger: 'change' }
         ],
         resource: [
           { required: true, message: '请选择性别', trigger: 'change' }
@@ -604,15 +625,19 @@ export default {
       })
         .then(this.getEmailCode)
     },
-    submitForm (formName) {
+    submitForm (ruleForm) {
       /**
        * 这个是判断输入内容的格式是否符合标准
        */
       let _this = this
       let imgName = _this.imgFile.name
       let imgFile = _this.imgFile
-      _this.$refs[formName].validate((valid) => {
-        if (valid && _this.ajustCode === 0 && imgFile) {
+      console.log(_this.$refs.ruleForm.validate)
+      _this.$refs.ruleForm.validate((valid) => {
+        console.log(valid && imgFile)
+        console.log('saddwdq')
+        if (valid && imgFile) {
+          console.log('456')
           let observer = {
             next (res) {
             },
@@ -620,25 +645,33 @@ export default {
               console.log(err)
             },
             complete (res) {
+              console.log('789')
               let hash = res.hash
               let imgFileUrl = _this.domain + '/' + hash
-              let f = new FormData()
-              f.append('userName', _this.name)
-              f.append('familyId', _this.value)
-              f.append('password', _this.cipher)
-              f.append('userPhone', _this.phone)
-              f.append('smsCode', _this.email)
-              f.append('userBirth', _this.data1)
-              f.append('userSex', _this.resource)
-              f.append('userImg', imgFileUrl)
-              _this.loadingHeadImg = true
+              let formData = {}
+              formData.username = _this.ruleForm.name
+              formData.family = _this.ruleForm.value
+              formData.password = _this.ruleForm.cipher
+              formData.userPhone = _this.ruleForm.phone
+              formData.smsCode = _this.ruleForm.email
+              formData.userBirth = _this.date
+              formData.userSex = _this.ruleForm.resource
+              formData.userImg = imgFileUrl
+              // f.append('userName', _this.ruleForm.name)
+              // f.append('family', _this.ruleForm.value)
+              // f.append('password', _this.ruleForm.cipher)
+              // f.append('userPhone', _this.ruleForm.phone)
+              // f.append('smsCode', _this.ruleForm.email)
+              // f.append('userBirth', _this.date)
+              // f.append('userSex', _this.ruleForm.resource)
+              // f.append('userImg', imgFileUrl)
+              console.log(formData)
               axios({
-                url: 'http://175.24.83.13:8000/doRegister',
-                method: 'post',
-                params: f
+                url: 'http://yayoutest.utools.club/doRegister',
+                method: 'get',
+                params: formData
               })
                 .then(_this.getHomeInfoSucc)
-              _this.loadingHeadImg = false
             }
           }
           let observable = qiniu.upload(imgFile, imgName, _this.upToken, _this.putExtra, _this.config)

@@ -439,6 +439,11 @@ export default {
         this.loadingVideo = false
         return false
       }
+      if (!_this.videoCoverUrl) {
+        this.$message.error('请上传视频封面！')
+        this.loadingVideo = false
+        return false
+      }
       // 七牛云上传相关组件
       let videoName = _this.videoFile.name
       let videoFile = _this.videoFile
@@ -453,7 +458,7 @@ export default {
         },
         complete (res) {
           let videoFormData = {}
-          videoFormData.videoUrl = _this.domain + '/' + videoName
+          videoFormData.videoUrl = videoName
           videoFormData.videoName = _this.videoForm.videoName
           videoFormData.videoDes = _this.videoForm.videoDes
           videoFormData.artist = _this.videoForm.artist
@@ -473,11 +478,13 @@ export default {
               console.log(res)
               if (res.data.code === 1) {
                 _this.$message.success('上传成功')
+                _this.videoFile = ''
                 _this.videoForm.videoName = ''
                 _this.videoForm.videoDes = ''
                 _this.videoForm.artist = ''
                 _this.videoForm.isvip = ''
                 _this.videoForm.videoUrl = ''
+                _this.videoCoverUrl = ''
               } else {
                 _this.$message.error('上传失败，请稍后再试！')
               }

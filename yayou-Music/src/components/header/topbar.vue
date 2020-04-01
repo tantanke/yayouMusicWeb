@@ -170,7 +170,7 @@ export default {
     Bus.$on('headImgUrl', url => {
       // 设置resetheadimg.vue发来的
       console.log(url)
-      this.headImgUrl = 'http://' + url
+      this.headImgUrl = url
     })
     if (window.localStorage.getItem('Authorization')) {
       this.isnotLogin = false
