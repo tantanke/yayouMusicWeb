@@ -1,0 +1,448 @@
+.yy-mainContent {
+    
+    .mainList{
+        position: relative;
+        top: -23px;
+        margin-left: 210px;
+        padding-bottom: 25px;
+        list-style: none;
+        li{
+            padding-right:110px ;
+            float: left;
+        }
+        
+        .active span{
+            border-bottom: 3px solid red;
+            font-weight: 800;
+        }
+    }
+    .hot-movie {
+        height: 200px;
+        margin-bottom: 180px;
+
+        .el-carousel {
+            .el-carousel__container {
+                height: 290px !important;
+                margin-bottom: 40px;
+
+            }
+
+            .el-carousel__indicators {
+                .el-carousel__indicator {
+                    border-radius: 50%;
+
+                    button {
+                        border-radius: 50%;
+                        background-color: #AFAFAF !important;
+                    }
+                }
+            }
+
+        }
+
+        .el-card {
+            margin-right: 40px;
+            border: 0;
+
+            .line {
+
+                span,
+                i {
+                    color: #AFAFAF;
+                }
+
+                .number {
+                    font-size: 12px;
+                    padding-left: 5px;
+                }
+            }
+
+            .imgBox {
+                width: 380px;
+                height: 220px;
+                margin-bottom: 5px;
+            }
+
+            .time {
+                font-size: 13px;
+                color: #999;
+            }
+
+            .bottom {
+                margin-top: 13px;
+                line-height: 12px;
+            }
+
+            .button {
+                padding: 0;
+                float: right;
+            }
+
+            .image {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+
+            .clearfix:before,
+            .clearfix:after {
+                display: table;
+                content: "";
+            }
+
+            .clearfix:after {
+                clear: both
+            }
+        }
+
+    }
+
+    .hot-singer {
+        height: 260px;
+        margin-bottom: 30px;
+
+        .singer-list {
+            span {
+                padding-left: 47px;
+            }
+
+            list-style:none;
+
+            li {
+                float: left;
+                width: 160px;
+                height: 160px;
+                border-radius: 50%;
+                margin-right: 50px;
+            }
+        }
+    }
+
+    .rank-list {
+        .el-card__body {
+            width: 200px;
+
+            img {
+                display: block;
+                width: 100px;
+                height: 100px;
+            }
+        }
+    }
+
+    .jc-recommend {
+        
+        img {
+            padding-right: 48px;
+        }
+    }
+
+    .new-song {
+        margin-top: 30px;
+        margin-bottom: 40px;
+
+        .el-carousel {
+            .el-carousel__container {
+                height: 250px !important;
+                margin-bottom: 40px;
+
+            }
+
+            .el-carousel__indicators {
+                .el-carousel__indicator {
+                    border-radius: 50%;
+
+                    button {
+                        border-radius: 50%;
+                        background-color: #AFAFAF !important;
+                    }
+                }
+            }
+
+        }
+
+        .el-card {
+            border: 0;
+
+            .song-info {
+                margin-top: 5px;
+
+                span {
+                    color: #C0C0C0;
+                    font-size: 14px;
+                }
+
+                div {
+                    padding-bottom: 3px;
+                    font-size: 16px;
+
+                }
+            }
+        }
+    }
+
+    .song-rank-list {
+        height: 360px;
+
+        .pic {
+            .allSong {}
+
+            >div {
+                float: left;
+                margin-right: 25px;
+                margin-bottom: 80px;
+                height: 460px;
+                width: 223px;
+                box-shadow: 3px 3px 3px #C0C0C0;
+
+                ul {
+                    list-style: none;
+                    margin-top: 30px;
+                    margin-left: 15px;
+
+                    li {
+                        padding-bottom: 25px;
+
+                        span {
+                            display: block;
+                            font-size: 14px;
+                            color: gray;
+                            padding-left: 18px;
+                            margin-top:10px;
+                        }
+                    }
+                    li:last-child{
+                        text-align: center;
+                        position: relative;
+                        line-height: 53px;
+                        height: 53px;
+                        font-size: 32px;
+                        top:-350px;
+                        color: #ffffff;
+                    }
+                }
+            }
+
+            .rap {
+                margin: 0px;
+            }
+        }
+
+    }
+
+    .common-C {
+        .color {
+            color: red;
+        }
+
+        .more {
+            font-size:16px; 
+            color: #9C9C9C;
+        }
+
+        .imore {
+            font-size: 30px;
+            color: #9C9C9C;
+        }
+
+        .titleName {
+            font-size: 20px;
+            color: #0c0b0b;
+        }
+
+        height: 50px;
+        line-height: 50px;
+
+        .more {
+            padding-left: 1050px;
+        }
+    }
+
+    .hot-song {
+        width: 1980px;
+        position: relative;
+        top: -15px;
+
+        .sContent {
+
+            .card-box {
+                margin: 0px;
+            }
+
+            .hot-card {
+                .el-card__body {
+                    padding: 0;
+                }
+
+                border: 0px;
+                padding: 0 0 10px 0px;
+                margin: 0px;
+                margin-bottom: 20px;
+                margin-top: 12px;
+                height: 225px;
+
+                .imgBox {
+                    width: 185px;
+                    height: 185px;
+                    margin-bottom: 5px;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+
+                .word {
+                    font-size: 15px;
+                    padding-top: 5px;
+                }
+
+                .bofang {
+                    font-size: 7px;
+                    padding-top: 5px;
+                    color: #9C9C9C;
+                }
+            }
+        }
+
+        height: 350px;
+        width:1190px;
+        padding-top:10px;
+
+        .fContent {
+            .color {
+                color: red;
+            }
+
+            .more {
+                color: #9C9C9C;
+            }
+
+            .imore {
+                font-size: 30px;
+                color: #9C9C9C;
+            }
+
+            .hotPic {
+                font-size: 20px;
+                color: #0c0b0b;
+            }
+
+            height: 50px;
+            line-height: 50px;
+
+            .more {
+                padding-left: 687px;
+            }
+        }
+
+        .jz-hot {
+            height: 80px;
+            line-height: 50px;
+
+            .color {
+                color: red;
+            }
+
+            span {
+                font-size: 20px;
+                color: #0c0b0b;
+            }
+
+            .jz-line1 {
+                width: 310px;
+                position: relative;
+                top: -14px;
+                left: 20px;
+            }
+
+            .jz-line2 {
+                position: relative;
+                left: 20px;
+                top: -12px;
+                width: 310px;
+            }
+
+            .rankList {
+                position: relative;
+                left: 20px;
+                height: 450px;
+                top: -15px;
+
+                ul {
+                    list-style: none;
+
+                    li {
+                        padding-bottom: 15px;
+                    }
+                    
+                }
+                .rankPic{
+                    li:nth-child(4),li:nth-child(5){
+                        font-size: 25px;
+                        background-color: #999999;
+                        width: 60px;
+                        height: 50px;
+                        text-align: center;
+                        margin-bottom: 20px;
+                        color: #ffffff;
+
+                    }
+                }
+
+                .ranking {
+                    li {
+                        .y-content {
+                            span {
+                                font-size: 12px;
+                                color: #A2A2A2;
+                            }
+                        }
+
+                        p {
+                            span:nth-child(2) {
+                                font-size: 16px;
+                                color: #A2A2A2;
+                                position: relative;
+                                left: 132px;
+                            }
+
+                            span:nth-child(1) {
+                                font-size: 16px;
+                            }
+                        }
+
+                        height: 78px;
+                    }
+
+                    .y-content {
+                        position: relative;
+                        top: -25px;
+                    }
+
+                    position: relative;
+                    top: -16px;
+
+                }
+            }
+        }
+
+    }
+
+    .yy-slider {
+        z-index: -1;
+        width: 1920px;
+        position: relative;
+        left: -330px;
+
+        .el-carousel {
+            div {
+                height: 420px;
+            }
+        }
+
+        margin-bottom: 50px;
+
+
+    }
+}

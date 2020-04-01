@@ -1,0 +1,137 @@
+.register-area{
+  position: relative;
+  display: block;
+  width: 1200px;
+  height: 800px;
+  margin: 0 auto;
+  padding: 50px 0px;
+  background-color: #f9f9f9;
+  .back{
+    position: relative;
+    display: block;
+    width: 100px;
+    height: 30px;
+    margin: 0px 40px;
+    font-size:18px;
+    font-weight:600;
+    line-height: 30px;
+    text-align: center;
+    border-radius:15px;
+    background-color: #FF4752;
+    color: #ffffff;
+  }
+  .register-from{
+    box-sizing: border-box;
+    position: relative;
+    width: 100%;
+    padding: 50px 100px;
+    label,.sex{
+      display: inline-block;
+      width: 100px;
+      height: 30px;
+      padding:20px 20px 20px 50px;
+      font-size: 18px;
+      line-height: 30px;
+      font-weight: 600;
+      color: #666;
+    }
+    label[for="header-img"]{
+      width: 100px;
+      padding:20px 0px 0px 0px;
+    }
+    .man-l,.woman-l{
+      width: 20px;
+      padding:20px 0px 20px 0px;
+    }
+    input[type="radio"]{
+      width: 20px;
+      margin-left: 5px;
+      margin-right:10px;
+    }
+    input[type="submit"]{
+      display: inline-block;
+      width: 100px;
+      height: 30px;
+      margin:20px 20px 20px 50px;
+      font-size: 18px;
+      line-height: 30px;
+      font-weight: 600;
+      text-align: center;
+      color: #fff;
+      background-color: #FF4752;
+    }
+    #username,#familyId,#password,#phone,#birthday{
+      display: inline-block;
+      width: 300px;
+      height: 30px;
+      font-size: 18px;
+      line-height: 30px;
+      font-weight: 600;
+      color: #666;
+    }
+  }
+}
+/*头像CSS*/
+.headerimg-area{
+  position: absolute;
+  top: 100px;
+  right: 150px;
+  text-align: center;
+  .uploader {
+    position:relative;
+    margin: 20px 20px 0px 20px;
+    .uploader-container {
+      background-color: #fbfdff;
+      border: 1px dashed #c0ccda;
+      border-radius: 6px;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      width: 148px;
+      height: 148px;
+      line-height: 146px;
+      vertical-align: top;
+      text-align: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      i {
+        font-size: 28px;
+        color: #8c939d;
+      }
+    }
+    .uploader-action {
+      position: absolute;
+      top: 0;
+      opacity: 0;
+      display: block;
+      width: 148px;
+      height: 148px!important;
+    }
+    .hide {
+      visibility: hidden;
+    }
+    .show {
+      visibility: visible;
+    }
+  }
+}
+/*二维码*/
+.code{
+  display: inline-block;
+  width: 100px;
+  height: 30px;
+  margin:20px 20px 20px 150px;
+  font-size: 18px;
+  line-height: 30px;
+  font-weight: 600;
+  color: #666;
+}
+.code-btn{
+  display: inline-block;
+  height: 30px;
+  font-size: 16px;
+  line-height: 30px;
+  font-weight: 600;
+  color: #fff;
+  background-color: green;
+}

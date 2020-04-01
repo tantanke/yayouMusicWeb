@@ -1,0 +1,32 @@
+.manage-music{
+    margin-top: 60px;
+    width: 1600px;
+    .manage-title{
+        li{
+            list-style: none;
+            margin-left: 600px;
+            height: 75px;
+            line-height: 75px;
+            font-size: 30px;
+        }
+    }
+    .tableTitle {
+        &::after{
+            display: block;
+            content: '';
+            clear: both;
+            width: 1000px;
+        }
+        li{
+            width: 230px;
+            float: left;
+            list-style: none;
+            color: gray;
+        }
+    }
+    .el-pagination{
+        margin-left: 550px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}

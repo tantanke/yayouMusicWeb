@@ -1,0 +1,59 @@
+.mysonglist{
+  .title{
+    .song-list,.led-songlist{
+      display: inline-block;
+      width: 150px;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      margin-right: 10px;
+      border:1px solid #aaa;
+    }
+  }
+}
+.upload-cover{
+  display: block;
+  width: 250px;
+  height: 250px;
+  margin: 0 auto;
+  .avatar-uploader {
+    width: 250px;
+    height: 250px;
+    border: 1px solid #eeeeee;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    background-color: #eee;
+    .ti{
+      display: block;
+      position: absolute;
+      width: 250px;
+      height: 30px;
+      top: 150px;
+      left: 0;
+      font-size: 16px;
+      line-height: 30px;
+      text-align: center;
+      color: #999999;
+    }
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    position: relative;
+    font-size: 28px;
+    color: #8c939d;
+    width: 250px;
+    height: 250px;
+    line-height: 250px;
+    text-align: center;
+  }
+  .avatar {
+    width: 250px;
+    height: 250px;
+    display: block;
+  }
+}

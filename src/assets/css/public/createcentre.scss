@@ -1,0 +1,9 @@
+.el-header,.el-main,.el-footer{
+    margin: 0 auto;
+    padding: 0;
+    overflow: unset;
+    ::-webkit-scrollbar {display:none}
+}
+body{
+    overflow-x:hidden;
+}

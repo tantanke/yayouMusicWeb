@@ -1,0 +1,110 @@
+
+  
+  .create-firstpage{
+      margin-top: 30px;
+      .step{
+          background-color: #F5F5F5;
+          width: 1450px;
+          height: 135px;
+          .el-steps{
+              padding-top: 50px;
+              .el-step__main{
+                  .is-process{
+                      color:red;
+                  }
+              }
+              .is-process{
+                  
+                  .el-step__icon{
+                      color: red;
+                  }
+              }
+          }
+      }
+      .stepform{
+          margin-top: 50px;
+          width: 1310px;
+          .el-input__inner{
+              width: 720px;
+          }
+          .el-textarea{
+               height: 150px;
+          }
+          .cover{
+              height: 230px;
+              width: 230px;
+              margin-bottom: 10px;
+              img{
+                  width: 231px;
+                  height: 190px;
+              }
+              .el-button--default{
+                  color: black;
+              }
+              .upButtons{
+                  li{
+                      list-style: none;
+                      float: left;
+                      margin-left: 10px;
+                  }
+              }
+              button{
+                  position: relative;
+                  top: -15px;
+               border: 1px solid black;   
+               width: 230px;
+              }
+          }
+      }
+      .upload{
+          .line{
+              width: 1400px;
+          }
+          margin-top: 20px;
+              .title{
+                  position: relative;
+                  font-size: 22px;
+              }
+              .createcate{
+                  position: relative;
+                  left: 350px;
+                  margin-left: 20px;
+              }
+              .el-form{
+                  margin-left: 300px;
+              }
+              .el-input{
+                  width: 280px;
+              }
+              .upbutton{
+                  margin-left: 6px;
+                  .el-button{
+                      width: 625px;
+                      height: 90px;
+                      font-size: 20px;
+                  }
+                  .hasup{
+                      margin-right: 100px;
+                  }
+                  
+              }
+      }
+      .confirmuse{
+          .xieyiBox{
+              margin-left: 130px;
+          }
+      }
+      .successfully{
+          position: relative;
+          top: 100px;
+          left: 600px;
+          p{
+              
+              font-size: 25px;
+          }
+          i{
+              font-size: 180px;
+              color: #67C23A
+          }
+      }
+  }

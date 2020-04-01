@@ -1,0 +1,330 @@
+.page-singer {
+    width: 1270px;
+    position: relative;
+    .aboutsinger{
+        position: relative;
+        left: -300px;
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        .like-singer{
+        height: 350px;
+        width: 1920px;
+        position: relative;
+        background-color: #F4F4F4;
+        margin-bottom: 80px;
+        
+        .singer-info{
+            position: relative;
+            left: 330px;
+            top:60px;
+            height: 162px;
+            width: 1225px;
+            img{
+                width: 200px;
+                height: 200px;
+            }
+            dl{
+                dt{
+                    font-size: 24px;
+                    margin-bottom: 15px;
+                }
+                .singerinfo{
+                    margin-bottom: 16px;
+                    div{
+                        float: left;
+                        overflow: hidden;
+                        text-overflow:ellipsis;
+                        white-space: nowrap;
+                        width: 805px;
+                    }                   
+                    span{
+                        display: inline;
+                        margin-left: 16px;
+                    }
+                    .more,.complain{
+                        margin: 0px;
+                        color:#FF4752 ;
+                        cursor: pointer;
+                    }
+                }
+                .songinfo{
+                    font-size: 18px;
+                    span{
+                        display: inline;
+                        margin-right: 10px;
+                    }
+                }
+                .singerbutton{
+                    
+                    margin-top: 35px;
+                    div{
+                        float: left;
+                        border: 2px solid #CECECE;
+                        line-height: 32px;
+                        height: 32px;
+                        text-align: center;
+                        width: 220px;
+                        margin-right: 20px;
+                        i{
+                            margin-right: 10px;
+                            font-size: 20px;
+                            color: #CECECE;
+                        }
+                        
+                    }
+                    .focus{
+                        width: 180px;
+                    }
+                    .active{
+                        background-color: #FF4752;
+                        color: #F4F4F4;
+                    }
+                }
+            }
+        }
+       
+    }
+    .el-pagination{
+        margin-left: 780px;
+        margin-top: 50px;
+        li.active{
+               background-color: red;
+               border-radius: 50%;
+               color: #ffffff;
+           }
+        }
+    .singersonglist{       
+        width: 1260px;
+        position: relative;
+        left: 310px;
+        .title{
+            ul{
+                li{
+                    list-style: none;
+                    float: left;
+                    font-size: 21px;
+                    margin-right: 20px;
+                }
+            }
+            margin-bottom: 20px;
+        }
+        .active{
+            border-bottom: 3px solid #FF4752 ;
+        }
+        .vip{
+            display: inline;
+            font-size: 12px;
+            color: #FF4752;
+            border: 1px solid #FF4752;
+            font-weight: 400;
+           }
+           .dujia{
+            display: inline;
+            font-size: 12px;
+            color: #FF4752;
+            border: 1px solid #FF4752;
+            font-weight: 400;
+           }
+           .movie{
+               display: inline;
+               font-size: 12px;
+               color: #FF4752;
+               border: 1px solid #FF4752;
+               font-weight: 400;
+           }
+           
+    }
+    }
+    .singer-recommend {
+        margin-top: 30px;
+        
+        .singerCategory {
+            margin-bottom: 30px;
+
+            ul {
+                li {
+                    list-style: none;
+                    float: left;
+                    margin-right: 10px;
+                    width: 50px;
+                    height: 30px;
+                    text-align: center;
+                    line-height: 30px;
+                    span{
+                        cursor: pointer;
+                    }
+                }
+
+                .active {
+                    background-color: #FF4751;
+                    border-radius: 30px;
+                    color: #ffffff;
+                }
+            }
+        }
+
+        .firstName {
+            margin-bottom: 45px;
+            ul {
+                li {
+                    list-style: none;
+                    float: left;
+                    margin-right: 7px;
+                    width: 39px;
+                    height: 30px;
+                    text-align: center;
+                    line-height: 30px;
+                    span{
+                        cursor: pointer;
+                    }
+                }
+                .hot{
+                    width: 50px;
+                }
+
+                .active {
+                    background-color: #FF4751;
+                    border-radius: 30px;
+                    color: #ffffff;
+                }
+            }
+        }
+
+        .singerCard {
+            div{
+                float: left;
+                width: 160px;
+                height: 200px;
+                margin-bottom: 30px;
+                margin-right: 51px;
+
+                img{
+                    display: block;
+                    margin-bottom: 10px;
+                    height: 160px;
+                    width: 160px;
+                }
+                span{
+                    display: block;
+                    width: 160px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    .mainList {
+        margin-left: 235px;
+
+        span {
+            cursor: pointer;
+        }
+    }
+
+    .router-link-exact-active {
+        span {
+            border-bottom: 3px solid red;
+            font-weight: 800;
+        }
+
+    }
+
+    .el-pagination {
+        margin-left: 440px;
+
+        li.active {
+            background-color: red;
+            border-radius: 50%;
+            color: #ffffff;
+        }
+    }
+
+    .music-categroy {
+        .category-cards {
+            .category-card {
+                float: left;
+                width: 222px;
+                height: 280px;
+                margin-bottom: 35px;
+                margin-right: 30px;
+
+                img {
+                    display: block;
+                    width: 222px;
+                    height: 222px;
+                }
+
+                span {
+                    display: block;
+                    margin-top: 9px;
+                    margin-bottom: 4px;
+                    font-weight: 400;
+                }
+
+                p {
+                    color: #9a9a9a;
+                    font-size: 14px;
+                }
+            }
+        }
+
+        .songtitle {
+
+            /* width: 1270px; */
+            div {
+                ul {
+                    position: relative;
+                    top: -25px;
+
+                    li {
+                        list-style: none;
+                        float: right;
+                        margin-right: 30px;
+                    }
+
+                    .active {
+                        font-weight: 600;
+                        border-bottom: 3px solid red;
+                    }
+                }
+
+                .title {
+                    font-weight: 600;
+                    font-size: 25px;
+                }
+
+            }
+        }
+
+        .cate-title {
+            position: relative;
+            margin-top: 35px;
+            margin-bottom: 100px;
+
+            li {
+                line-height: 30px;
+                height: 30px;
+                list-style: none;
+                float: left;
+                width: 64px;
+                text-align: center;
+                margin-right: 18px;
+
+                span {
+                    cursor: pointer;
+                }
+            }
+
+            .active {
+                span {
+                    display: block;
+                    background-color: #FF4751;
+                    border-radius: 25%;
+                    color: #ffffff;
+                }
+            }
+        }
+    }
+}

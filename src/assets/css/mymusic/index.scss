@@ -1,0 +1,273 @@
+.my-music{
+    .mainList{
+        padding-left: 280px;
+    }
+    .personal-center{
+        .personal-back{
+            position: relative;
+            left: -10px;
+            float: left;
+            height: 420px;
+            width: 1920px;
+            background-color: #A88DDA;
+            &::after{
+                display: block;
+                content: ' ';
+                clear: both;
+            }
+            .user{
+                display: block;
+                height: 300px;
+                width: 350px;
+                margin: 0 auto;
+                margin-top: 72px;
+                padding-right: 10px;
+                img{
+                    display: block;
+                    width: 160px;
+                    height: 160px;
+                    margin-left: 95px;
+                    margin-bottom: 8px;
+                }
+                .user-info{
+                    margin-left: 40px;
+                    li{
+                        list-style: none;
+                        float: left;
+                        margin-right: 32px;
+                        font-size: 14px;
+                        font-weight: 600;
+                        line-height: 27px;
+                        color: #fcfcfc;
+                        div{
+                            text-align: center;
+                        }
+                    }
+                    .el-divider{
+                        height: 40px;
+                    }
+                }
+                .wodemusic{
+                   text-align: center;
+                   font-size: 24px;
+                   color: #ffffff;
+                   margin-top: 5px;
+                   margin-bottom: 25px;
+                   font-weight: 600;
+                   i{
+                       font-size: 32px;
+                       color: #FBC901;
+                   }
+                }
+            }
+        }
+        .personal-category{
+            width: 1270px;
+            position: relative;
+            left: 320px;
+            margin-top: 50px;
+            .lefttable{
+                width: 190px;
+                height: 325px;
+                box-shadow: 3px 3px 3px #9a9a9a;
+                span{
+                    display: inline;
+                    margin-left: 16px;
+ 
+                }
+                dd{
+                    height: 45px;
+                    line-height: 45px;
+                    cursor: pointer;
+                }
+                .router-link-active{
+                    color:#ffffff;
+                    background-color: #FF4752;
+                }
+                dt{
+                    margin-bottom: 25px;
+                    span{
+                        font-size: 24px;
+                        i{
+                            display: inline;
+                            margin-right: 8px;
+                            color:#FF4752;
+                        }
+                    }
+                }
+            }
+            .righttable{
+                .ilike{
+                    .iLikeSong{
+                        .el-pagination{
+                            margin-top: 10px;
+                            margin-left: 350px;
+                        }
+                        a{
+                            text-decoration: none;
+                            color: black;
+                        }
+                        .buttons{
+                                li{
+                                    list-style: none;
+                                    float: left;
+                                    height: 32px;
+                                    line-height: 32px;
+                                    width: 105px;
+                                    margin-right: 15px;                              
+                                    text-align: center;
+                                    span{
+                                        display: inline;
+                                        margin-left: 8px;
+                                    }
+                                    i{
+                                        font-size: 18px;
+                                    }
+                                }
+                                .active{
+                                 background-color: #FF4752;
+                                 color: #ffffff;
+                                }
+                            }
+                        .songList{
+                            p{
+                                display: block;
+                                font-size: 22px;
+                                margin-top: 30px;
+                                margin-bottom: 15px;
+                            }
+                            .el-table{
+                                font-size: 17px;
+                                .cell{
+                                    font-weight: 600;
+                                }
+                            }
+                        }
+                       .vip{
+                        display: inline;
+                        font-size: 12px;
+                        color: #FF4752;
+                        border: 1px solid #FF4752;
+                        font-weight: 400;
+                       }
+                       .dujia{
+                        display: inline;
+                        font-size: 12px;
+                        color: #FF4752;
+                        border: 1px solid #FF4752;
+                        font-weight: 400;
+                       }
+                       .movie{
+                           display: inline;
+                           font-size: 12px;
+                           color: #FF4752;
+                           border: 1px solid #FF4752;
+                           font-weight: 400;
+                       }
+                    }
+                    .title{
+                       margin-bottom: 45px;
+                       ul{
+                           li{
+                               list-style: none;
+                               float: left;
+                               font-size: 18px;
+                               margin-right: 46px;
+                               cursor: pointer;
+                               span{
+                                   display: inline;
+                                   margin-left: 8px;
+                               }                               
+                           }
+                           .router-link-active{
+                            color:#FF4752;
+                        }
+                       }
+                    }
+                    .factor{
+                       border: 1px solid black;
+                       margin-bottom: 50px;
+                    }
+                    .list{
+                       border: 1px solid black;
+                    }
+                }
+                .focus{
+                    span{
+                        cursor: pointer;
+                    }
+                    .active{
+                        color:#FF4752 ;
+                    }
+                    .focusmore{
+                        border: 2px solid #CECECE;
+                        line-height: 32px;
+                        height: 32px;
+                        text-align: center;
+                        i{
+                            display: inline;
+                            margin-right: 10px;
+                            font-size: 20px;
+                            color: #CECECE;
+                        }
+                    }
+                    .focuslist{
+                        .have{
+
+                        }
+                        .nothave{
+                            text-align: center;
+                            img{
+                                margin-top: 50px;
+                                display: block;
+                                width: 290px;
+                                height: 190px;
+                                position: relative;
+                                left: 370px;
+                            }
+                            .hotsinger{
+                                color: #FF4752;
+                                cursor: pointer;
+                            }
+                        }
+                    }
+
+                }
+                .video{
+                    .novideo{
+                        div{
+                            img{
+                                width: 250px;
+                                height: 250px;
+                                position: relative;
+                                left: 350px;
+                                top: 75px;
+                            }
+                        }
+                    }
+                }
+                .mysonglist{
+                    .title{
+                        div{
+                        float: left;
+                        border: 2px solid #CECECE;
+                        line-height: 32px;
+                        width: 100px;
+                        height: 32px;
+                        margin-right: 20px;
+                        text-align: center;
+                        cursor: pointer;
+                        i{
+                            display: inline;
+                            font-size: 20px;
+                            color: #CECECE;
+                        }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+}

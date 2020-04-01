@@ -1,0 +1,68 @@
+.create-main{
+    width: 1800px;
+    height: 800px;
+    .leftpart{
+        float: left;
+        width: 16%;
+        height: 870px;
+        margin-right: 1%;
+        box-shadow: 5px 5px 5px#F5F5F5;
+        ul{
+            position: relative;
+            left: -40px;
+        }
+        li{
+            list-style: none;
+            width: 280px;
+            height: 50px;
+            line-height: 50px;
+        }
+        img{
+            width: 22px;
+            height: 22px;
+        }
+        .title{
+            position: relative;
+            top: -5px;
+            left: 2px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        ul{
+            li{
+                span{
+                    position: relative;
+                    left: 68px;
+                    cursor: pointer;
+                }
+            }
+            .router-link-exact-active,.router-link-active{
+                color: red;
+                background-color: #FEF0EF;
+                border-left: 2px solid #FF4751;
+            }
+        }
+        .allfactor{
+            margin-top: 65px;
+            margin-bottom: 40px;          
+            
+        }
+        .music{
+            i{
+                position: relative;
+                left: 70px;
+            }
+        }
+        button{
+            margin-top: 25px;
+            width: 200px;
+            background-color: #FF4751;
+            font-size: 18px;
+        }
+    }
+    .rightpart{
+        float: left;
+        width: 83%;
+        height: 800px;
+    }
+}

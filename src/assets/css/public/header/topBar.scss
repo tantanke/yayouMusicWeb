@@ -1,0 +1,147 @@
+.yy-topbar {
+    position: relative;
+
+    .yy-login {
+        position: relative;
+        left: -55px;
+        line-height: 40px;
+        padding-top: 10px;
+        span.login{
+            display: block;
+            float: left;
+            padding-left: 50px;
+        }
+        .loginPic{
+            background-color: #ffffff;
+            float: left;
+            margin-right: 8px;
+            width: 80px;   
+            height: 60px;   
+            img{
+                width:40px;
+                height: 40px;
+                position: relative;
+                left: 40px;
+                border-radius:20px;
+                margin-bottom: 10px;
+            }
+            &:hover{
+                ul{
+                    display: block;
+                }
+            } 
+            ul{
+                display: none;              
+                z-index: 999;
+                position: relative;
+                left: 35px;
+                top: 4px;
+                li{
+                    list-style: none;
+                    width: 180px;
+                    position: relative;
+                    left: -80px;
+                    background-color: #ffffff;
+                    line-height: 36px;
+                    height: 36px;
+                    font-size: 14px;
+                    cursor: pointer;
+                    i{
+                        display: inline;
+                        margin-left: 10px;
+                        margin-right: 10px;
+                    }
+                    
+                }
+                
+                .router-link-active{
+                    color: #ffffff;
+                    background-color:#FF4752 ;
+                }
+            }
+            img{
+                display: block;
+            }
+        }
+    }
+
+    .yy-topsearch {
+        position: relative;
+        left: 30px;
+        top: 5px;
+        padding-top: 10px;
+
+        i {
+            position: relative;
+            top: -30px;
+            left: 200px;
+            cursor: pointer;
+        }
+
+        input {
+            width: 235px;
+            height: 40px;
+            border-top-right-radius: 30px;
+            border-top-left-radius: 30px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+    }
+
+    .yy-title {
+        padding-top: 10px;
+        padding-left: 5px;
+        line-height: 40px;
+        font-size: 25px;
+        cursor: pointer;
+    }
+
+    .yy-logo {
+        position: relative;
+        top: 10px;
+        left: -20px;
+        width: 40px;
+        height: 40px;
+        background-image: url(../../assets/img/homePage/logo.png);
+    }
+
+    .yy-toplist {
+        .nav {
+            width: 640px;
+            list-style: none;
+            float: left;
+            height: 65px;
+            position: relative;
+            left: -40px;
+
+            li {
+                display: block;
+                width: 40px;
+                height: 65px;
+                float: left;
+                width: 86px;
+                margin-left: 18px;
+                text-align: center;
+                cursor: pointer;
+
+
+                div {
+                    line-height: 65px;
+                    font-size: 17px;
+                    height: 75px;
+
+                }
+
+
+            }
+
+            .router-link-active {
+                div {
+                    background-color: #FF4752;
+                    color: #ffffff;
+                }
+            }
+        }
+    }
+
+}
