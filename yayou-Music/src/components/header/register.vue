@@ -667,7 +667,7 @@ export default {
               // f.append('userImg', imgFileUrl)
               console.log(formData)
               axios({
-                url: 'http://yayoutest.utools.club/doRegister',
+                url: 'http://175.24.83.13:8000/doRegister',
                 method: 'get',
                 params: formData
               })

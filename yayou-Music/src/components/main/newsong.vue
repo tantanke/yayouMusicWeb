@@ -14,6 +14,7 @@
           <el-carousel-item v-for="(Item,index) in newSong" :key="index" style="height:200px;width:1260px;">
             <el-col :span="4" v-for="item in Item" :key="item.songId" >
               <el-card :body-style="{ padding: '5px'}" shadow="never" >
+                <router-link :to="{ name: 'musicplayer', params:{songId: item.songId, isvip:item.isvip}}">
                 <img :src="item.cover" /><!--这个地方后面也需要请求后端的图片链接的接口 名字是cover-->
                 <div class="song-info">
                   <div>
@@ -21,6 +22,7 @@
                   </div>
                   <span>{{item.artist}}</span>
                 </div>
+                </router-link>
               </el-card>
             </el-col>
           </el-carousel-item>

@@ -17,7 +17,7 @@
            <el-card class="hot-card" shadow="never">
              <div class="imgBox">
                <!--这个地方需要动态的从后端获取数据 -->
-                <router-link :to="{ name: 'singerDetail', params:{singerid:10086, isVip:role}}">
+                <router-link :to="{ name: 'singerDetail', params:{songId: item.songId, isvip:item.isvip}}">
                   <img :src="item.cover" class="image">
                 </router-link>
              </div>
