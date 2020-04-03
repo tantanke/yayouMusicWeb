@@ -1,0 +1,168 @@
+.mysetting{
+  position: relative;
+  display: block;
+  width: 1880px;
+  height: 600px;
+  ul{
+    height: 30px;
+    li{
+      position: relative;
+      display: inline-block;
+      width: 100px;
+      height: 30px;
+      font-size: 18px;
+      line-height: 30px;
+      font-weight: 600;
+      list-style: none;
+      text-align: center;
+      cursor: default;
+      &~li::before{
+        content: "\e62c";
+        position: absolute;
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        left: -15px;
+        text-align: center;
+        font-size: 16px;
+        line-height: 30px;
+        color: #000;
+      }
+    }
+    .iconfont{
+      font-size: 16px;
+      font-weight: 600;
+      color:#999;
+    }  
+  }
+  .top-area{
+    height: 40px;
+    margin: 30px 0;
+    margin-top: 60px;
+    line-height: 40px;
+    .submit{
+      width: 120px;
+      border: 1px solid #ccc;
+      border-radius: 25px;
+      text-align: center;
+      color: #999;
+      cursor: pointer;
+    }
+    .title{
+      width: 400px;
+      color: #999999;
+      cursor: default;
+    }
+  }
+  .img1-div{
+    width: 180px;
+    text-align: left;
+    img{
+      display: block;
+      width: 180px;
+      height: 180px;
+      //margin-top: 10px;
+      margin-left: 50px;
+      border: 1px solid #eeeeee;
+      background-color: #eee
+    }
+    .title{
+      display:inline-block;
+      width: 180px;
+      height: 40px;
+      font-size: 14px;
+      line-height: 40px;
+      color: #999;
+    }
+    .m{
+      display:block;
+      width: 180px;
+      height: 30px;
+      font-size: 16px;
+      line-height: 30px;
+      color: #666;
+    }
+  }
+  .img2-div{
+    width: 40px;
+    text-align: left;
+    img{
+      display: block;
+      width: 40px;
+      height: 40px;
+      //margin-top: 150px;
+      border: 1px solid #eeeeee;
+      background-color: #eee
+    }
+    .title{
+      display:inline-block;
+      width: 180px;
+      height: 40px;
+      font-size: 14px;
+      line-height: 40px;
+      color: #999;
+    }
+    .n{
+      display:block;
+      width: 180px;
+      height: 20px;
+      font-size: 16px;
+      line-height: 20px;
+      color: #666;
+    }
+  }
+}
+.sec{
+  width: 250px;
+  .save{
+    width: 100px;
+    background-color: rgb(255, 79, 79);
+    &:hover{
+      background-color: rgb(255, 135, 135);
+    }
+  }
+  .cancel{
+    width: 100px;
+  }
+}
+/*头像上传*/
+.avatar-uploader {
+  width: 250px;
+  height: 250px;
+  border: 1px solid #eeeeee;
+  border-radius: 5px;
+  margin-bottom: 30px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  background-color: #eee;
+  .ti{
+    display: block;
+    position: absolute;
+    width: 250px;
+    height: 30px;
+    top: 150px;
+    left: 0;
+    font-size: 16px;
+    line-height: 30px;
+    text-align: center;
+    color: #999999;
+  }
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  position: relative;
+  font-size: 28px;
+  color: #8c939d;
+  width: 250px;
+  height: 250px;
+  line-height: 250px;
+  text-align: center;
+}
+.avatar {
+  width: 250px;
+  height: 250px;
+  display: block;
+}

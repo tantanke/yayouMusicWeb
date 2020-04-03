@@ -1,0 +1,134 @@
+.songlist{
+  width: 1880px;
+  cursor: default;
+  .img{
+    width: 240px;
+    height: 240px;
+    margin-bottom:50px; 
+    border: 1px solid #eeeeee;
+    background-color: #f1f1f1;
+  }
+  .head-info{
+    height: 270px;
+    margin-bottom:20px; 
+    overflow:hidden;
+    text-overflow:ellipsis;
+    .createdtime{
+      font-size: 16px;
+      color: #666;
+    }
+    .songlistname{
+      height: 50px;
+      font-size: 24px;
+      line-height: 50px;
+      font-weight: 600;
+    }
+    .icon{
+      height: 30px;
+      margin-top:15px;
+      font-size: 24px;
+      line-height: 30px;
+      .el-icon-collection-tag{
+        margin-right: 5px;
+        margin-left: 30px;
+        color: #409EFF;
+      }
+      .el-icon-share{
+        color: #FF4752;
+      }
+    }
+    .tags{
+      height: 40px;
+      margin-top: 10px;;
+      font-size: 16px;
+      line-height: 40px;
+      color: #666;
+      .tagi{
+        display:inline-block;
+        height: 24px;
+        margin:10px 10px 5px 0;
+        padding: 2px 5px;
+        font-size: 15px;
+        line-height: 20px;
+        text-align: center;
+        border: 1px solid #999;
+        border-radius: 5px;
+        color: #999;
+      }
+    }
+  }
+  .intro{
+    width: 320px;
+    height: 110px;
+    margin-bottom: 20px;
+    color: #666;
+    .spani{
+      display: inline-block;
+      width: 260px;
+      height: 110px;
+      font-size: 14px;
+      color:#999;
+      line-height: 20px;
+      word-break:break-all;
+      word-wrap: break-word;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+  }
+  .function{
+    height:32px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #999;
+    color: #999;
+    .playall{
+      height:20px;
+      font-size:20px;
+      line-height: 20px;
+      color: #000;
+      font-weight: 600;
+      span{
+        padding-right: 10px;
+        padding-left: 3px;
+        font-size:16px;
+        line-height: 20px;
+        color: #666;
+      }
+    }
+  }
+  .pagination{
+    margin-top: 20px;
+  }
+}
+// 音乐功能图标的显示，隐藏
+.el-table__row{
+  i{
+    display: none;
+    font-size: 14px;
+  }
+  &:hover i{
+    display: inline;
+    cursor: pointer;
+  }
+  .el-icon-video-play:hover,
+  .el-icon-video-pause:hover,
+  .el-icon-collection-tag:hover,
+  .el-icon-share:hover,
+  .el-icon-download:hover{font-size: 16px;}
+  .iconfont:hover{font-size: 20px;line-height: 20px;}
+}
+//赞的样式
+.agree-style{
+  font-size: 20px;
+  line-height: 20px;
+  color: #FF4752;
+  text-align: center;
+}
+.iconfont{
+  cursor: pointer;
+}
+//收藏的样式
+.collection-style{
+  font-size: 20px;
+  line-height: 20px;
+  color: #FF4752;
+}
