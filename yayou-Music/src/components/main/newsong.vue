@@ -4,7 +4,7 @@
       <div>
         <i class="el-icon-headset color"></i>
         <span class="titleName">新歌首发</span>
-        <span class="more">更多</span>
+        <router-link class="more" tag='span'  :to="{name:'allsong'}">更多</router-link>
         <i class="el-icon-zoom-in imore"></i>
       </div>
     </el-row>
@@ -13,17 +13,17 @@
         <el-carousel trigger="click" arrow="never">
           <el-carousel-item v-for="(Item,index) in newSong" :key="index" style="height:200px;width:1260px;">
             <el-col :span="4" v-for="item in Item" :key="item.songId" >
-              <el-card :body-style="{ padding: '5px'}" shadow="never" >
-                <router-link :to="{ name: 'musicplayer', params:{songId: item.songId, isvip:item.isvip}}">
-                <img :src="item.cover" /><!--这个地方后面也需要请求后端的图片链接的接口 名字是cover-->
-                <div class="song-info">
-                  <div>
-                    <p>{{item.songName}}</p>
-                  </div>
-                  <span>{{item.artist}}</span>
-                </div>
-                </router-link>
-              </el-card>
+              <router-link :to="{ name: 'musicplayer', params:{songId: item.songId, isvip:item.isvip}}">
+                <el-card :body-style="{ padding: '5px'}" shadow="never" >
+                    <img :src="item.cover" /><!--这个地方后面也需要请求后端的图片链接的接口 名字是cover-->
+                    <div class="song-info">
+                      <div>
+                        <p>{{item.songName}}</p>
+                      </div>
+                      <span>{{item.artist}}</span>
+                    </div>
+                  </el-card>
+              </router-link>
             </el-col>
           </el-carousel-item>
         </el-carousel>

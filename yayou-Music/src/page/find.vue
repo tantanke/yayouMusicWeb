@@ -4,7 +4,7 @@
         <ul class="mainList">
           <li class="active"><span>推荐</span></li>
           <li><span>排行榜</span></li>
-          <li><span>歌单</span></li>
+          <router-link tag='li' :to="{name:'songSheet'}"><span>歌单</span></router-link>
           <li><span>音乐分类</span></li>
           <li><span>歌手</span></li>
         </ul>
@@ -38,6 +38,8 @@ import hotMovie from '@/components/main/hotmovie.vue'
 import newSong from '@/components/main/newsong.vue'
 import rankList from '@/components/main/ranklist.vue'
 import recommend from '@/components/main/recommend.vue'
+import sheet from '@/components/main/songSheet/sheet.vue'
+import song from '@/components/main/songSheet/song.vue'
 export default {
   components: {
     hotSong,
@@ -46,7 +48,9 @@ export default {
     rankList,
     recommend,
     newSong,
-    picContent
+    picContent,
+    sheet,
+    song
   }
 }
 </script>

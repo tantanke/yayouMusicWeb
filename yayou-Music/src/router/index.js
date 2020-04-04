@@ -35,6 +35,10 @@ export default new Router({
       name: 'songSheet',
       component: () => import('@/components/main/songSheet/sheet.vue')
     }, {
+      path: '/find/songSheet/allsong',
+      name: 'allsong',
+      component: () => import('@/components/main/songSheet/song.vue')
+    }, {
       path: '/movie',
       name: 'movie',
       component: Movie,
@@ -167,7 +171,7 @@ export default new Router({
       name: 'songlistdetail',
       component: () => import('@/components/detailpage/songlistdetail.vue')
     }, {
-      path: '/songdetail/:songid',
+      path: '/songdetail/:isvip/:songid',
       name: 'songdetail', // 测试用的之后要重新更改路由
       component: () => import('@/components/mymusic/songdetail.vue')
     }, {

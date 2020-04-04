@@ -8,10 +8,10 @@
            <i class="el-icon-zoom-in imore"></i>
         </div>
      </el-row>
-      <router-link tag='ul' class="singer-list" v-for="(item, i) in hotSinger[0]" :key="i" :to="{ name: 'singerDetail', params:{singerid:10086}}">
+      <router-link tag='ul' class="singer-list" v-for="(item, i) in hotSinger" :key="i" :to="{ name: 'singerDetail', params:{singerid:item.singerId}}">
        <li>
-         <img :src="item.cover" alt=""><!--等后端给了图片的链接的时候改变-->
-         <span>{{item.artistName}}</span>
+         <img :src="item.photo" alt=""><!--等后端给了图片的链接的时候改变-->
+         <span>{{item.singerName}}</span>
        </li>
       </router-link>
      <el-row>

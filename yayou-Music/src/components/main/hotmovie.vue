@@ -13,23 +13,25 @@
         <el-carousel trigger="click" arrow="never">
           <el-carousel-item v-for="(Item,index) in hotMovie" :key="index" style="width:1260px;">
             <el-col :span="8" v-for="item in Item" :key="item.videoId">
-              <el-card :body-style="{ padding: '0px',margin: '0px' }" shadow="never">
-                <div class="imgBox">
-                  <img :src="item.cover" />
-                </div>
-                <div class="line">
-                  <p>{{item.videoName}}</p>
-                  <p>
-                    <span>{{item.artist}}</span>
-                  </p>
-                  <p>
-                    <i class="el-icon-video-camera">
-                      <span class="number">{{item.watch}}</span>
-                    </i>
-                  </p>
-                  <div class="bottom clearfix"></div>
-                </div>
-              </el-card>
+              <router-link :to="{ name: 'movieListItem', params: {moveid: item.videoId, isvip:item.isvip}}">
+                <el-card :body-style="{ padding: '0px',margin: '0px' }" shadow="never">
+                  <div class="imgBox">
+                    <img :src="item.cover" />
+                  </div>
+                  <div class="line">
+                    <p>{{item.videoName}}</p>
+                    <p>
+                      <span>{{item.artist}}</span>
+                    </p>
+                    <p>
+                      <i class="el-icon-video-camera">
+                        <span class="number">{{item.watch}}</span>
+                      </i>
+                    </p>
+                    <div class="bottom clearfix"></div>
+                  </div>
+                </el-card>
+              </router-link>
             </el-col>
           </el-carousel-item>
         </el-carousel>

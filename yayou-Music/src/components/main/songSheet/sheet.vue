@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header-top">
-      <ul class="mainList">
+      <ul class="mainListspecial">
         <li><span>推荐</span></li>
         <li><span>排行榜</span></li>
         <li class="active"><span>歌单</span></li>
@@ -13,136 +13,132 @@
       <div class="u-title f-cb">
         <h3>
           <span class="f-ff2 d-flag">全部</span>
-          <a href="javascript:;" class="u-btn2 u-btn2-1 menu d-flag" id="cateToggleLink">
-            <i>选择分类<em class="u-icn u-icn-38"></em></i>
-          </a>
         </h3>
-        <div class="u-btn f-fr u-btn-hot d-flag">
-          <a href="" class="a1" data-order="hot">热门</a>
-        </div>
       </div>
-      <ul class="m-cvrlst f-cb">
-        <li>
-          <div class="u-cover u-cover-1">
-            <img class="j-flag" src="http://p2.music.126.net/UaEpjz7ovoR1SIBW203NvQ==/109951164424155147.jpg?param=140y140">
-            <a title="我们记忆中的街角，后来也都独自经过" href="" class="msk"></a>
-            <div class="bottom">
-              <a class="icon-play f-fr" title="播放" href="javascript:;" data-res-type="13" data-res-id="3026816798" data-res-action="play"></a>
-              <span class="icon-headset"></span>
-              <span class="nb">58513</span>
+      <el-row :gutter="0" class="fatherSpecial">
+        <router-link :to="{name: 'songlistdetail'}">
+          <div class="special el-col" :span="5" v-for="(item,i) in aaa" :key=i>
+            <div class="grid-content bg-purple">
+              <li>
+                <div class="u-cover u-cover-1">
+                  <img class="j-flag" src="item.cover">
+                </div>
+                <p class="dec">
+                  <router-link :to="{name: 'songlistdetail'}" tag="a" title="item.introduce" href=" " class="tit f-thide s-fc0" style="text-decoration:none">item.introduce</router-link>
+                </p>
+                <p>
+                  <span class="s-fc4">by</span>
+                  <router-link :to="{name: 'songlistdetail'}" title="item.author" class="nm nm-icn f-thide s-fc3" style="text-decoration:none">GNC顾念晨</router-link>
+                  <sup class="u-icn u-icn-84 "></sup>
+                </p>
+              </li>
             </div>
           </div>
-          <p class="dec">
-            <a title="我们记忆中的街角，后来也都独自经过" href=" " class="tit f-thide s-fc0">我们记忆中的街角，后来也都独自经过</a>
-          </p>
-          <p>
-            <span class="s-fc4">by</span>
-            <a title="GNC顾念晨" href="/user/home?id=368175037" class="nm nm-icn f-thide s-fc3">GNC顾念晨</a>
-            <sup class="u-icn u-icn-84 "></sup>
-          </p>
-        </li>
-        <li>
-          <div class="u-cover u-cover-1">
-            <img class="j-flag" src="http://p2.music.126.net/UaEpjz7ovoR1SIBW203NvQ==/109951164424155147.jpg?param=140y140">
-            <a title="我们记忆中的街角，后来也都独自经过" href="" class="msk"></a>
-            <div class="bottom">
-              <a class="icon-play f-fr" title="播放" href="javascript:;" data-res-type="13" data-res-id="3026816798" data-res-action="play"></a>
-              <span class="icon-headset"></span>
-              <span class="nb">58513</span>
-            </div>
-          </div>
-          <p class="dec">
-            <a title="我们记忆中的街角，后来也都独自经过" href=" " class="tit f-thide s-fc0">我们记忆中的街角，后来也都独自经过</a>
-          </p>
-          <p>
-            <span class="s-fc4">by</span>
-            <a title="GNC顾念晨" href="/user/home?id=368175037" class="nm nm-icn f-thide s-fc3">GNC顾念晨</a>
-            <sup class="u-icn u-icn-84 "></sup>
-          </p>
-        </li>
-        <li>
-          <div class="u-cover u-cover-1">
-            <img class="j-flag" src="http://p2.music.126.net/UaEpjz7ovoR1SIBW203NvQ==/109951164424155147.jpg?param=140y140">
-            <a title="我们记忆中的街角，后来也都独自经过" href="" class="msk"></a>
-            <div class="bottom">
-              <a class="icon-play f-fr" title="播放" href="javascript:;" data-res-type="13" data-res-id="3026816798" data-res-action="play"></a>
-              <span class="icon-headset"></span>
-              <span class="nb">58513</span>
-            </div>
-          </div>
-          <p class="dec">
-            <a title="我们记忆中的街角，后来也都独自经过" href=" " class="tit f-thide s-fc0">我们记忆中的街角，后来也都独自经过</a>
-          </p>
-          <p>
-            <span class="s-fc4">by</span>
-            <a title="GNC顾念晨" href="/user/home?id=368175037" class="nm nm-icn f-thide s-fc3">GNC顾念晨</a>
-            <sup class="u-icn u-icn-84 "></sup>
-          </p>
-        </li>
-        <li>
-          <div class="u-cover u-cover-1">
-            <img class="j-flag" src="http://p2.music.126.net/UaEpjz7ovoR1SIBW203NvQ==/109951164424155147.jpg?param=140y140">
-            <a title="我们记忆中的街角，后来也都独自经过" href="" class="msk"></a>
-            <div class="bottom">
-              <a class="icon-play f-fr" title="播放" href="javascript:;" data-res-type="13" data-res-id="3026816798" data-res-action="play"></a>
-              <span class="icon-headset"></span>
-              <span class="nb">58513</span>
-            </div>
-          </div>
-          <p class="dec">
-            <a title="我们记忆中的街角，后来也都独自经过" href=" " class="tit f-thide s-fc0">我们记忆中的街角，后来也都独自经过</a>
-          </p>
-          <p>
-            <span class="s-fc4">by</span>
-            <a title="GNC顾念晨" href="/user/home?id=368175037" class="nm nm-icn f-thide s-fc3">GNC顾念晨</a>
-            <sup class="u-icn u-icn-84 "></sup>
-          </p>
-        </li>
-        <li>
-          <div class="u-cover u-cover-1">
-            <img class="j-flag" src="http://p2.music.126.net/UaEpjz7ovoR1SIBW203NvQ==/109951164424155147.jpg?param=140y140">
-            <a title="我们记忆中的街角，后来也都独自经过" href="" class="msk"></a>
-            <div class="bottom">
-              <a class="icon-play f-fr" title="播放" href="javascript:;" data-res-type="13" data-res-id="3026816798" data-res-action="play"></a>
-              <span class="icon-headset"></span>
-              <span class="nb">58513</span>
-            </div>
-          </div>
-          <p class="dec">
-            <a title="我们记忆中的街角，后来也都独自经过" href=" " class="tit f-thide s-fc0">我们记忆中的街角，后来也都独自经过</a>
-          </p>
-          <p>
-            <span class="s-fc4">by</span>
-            <a title="GNC顾念晨" href="/user/home?id=368175037" class="nm nm-icn f-thide s-fc3">GNC顾念晨</a>
-            <sup class="u-icn u-icn-84 "></sup>
-          </p>
-        </li>
-        <li>
-          <div class="u-cover u-cover-1">
-            <img class="j-flag" src="http://p2.music.126.net/UaEpjz7ovoR1SIBW203NvQ==/109951164424155147.jpg?param=140y140">
-            <a title="我们记忆中的街角，后来也都独自经过" href="" class="msk"></a>
-            <div class="bottom">
-              <a class="icon-play f-fr" title="播放" href="javascript:;" data-res-type="13" data-res-id="3026816798" data-res-action="play"></a>
-              <span class="icon-headset"></span>
-              <span class="nb">58513</span>
-            </div>
-          </div>
-          <p class="dec">
-            <a title="我们记忆中的街角，后来也都独自经过" href=" " class="tit f-thide s-fc0">我们记忆中的街角，后来也都独自经过</a>
-          </p>
-          <p>
-            <span class="s-fc4">by</span>
-            <a title="GNC顾念晨" href="/user/home?id=368175037" class="nm nm-icn f-thide s-fc3">GNC顾念晨</a>
-            <sup class="u-icn u-icn-84 "></sup>
-          </p>
-        </li>
-      </ul>
+        </router-link>
+      </el-row>
+      <div class="bottom-father">
+        <el-pagination
+          background
+          @current-change="handleCurrentChange"
+          layout="prev, pager, next"
+          :total="totalTable"
+          class="page-bottom">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 <script>
+export default {
+  data () {
+    return {
+      totalTable: 0,
+      nowPage: 1,
+      aaa: []
+    }
+  },
+  computed: {
+    totaLen () {
+      return this.totalTable
+    }
+  },
+  methods: {
+    // 拿到页码 发送 ajax
+    handleCurrentChange (val) {
+      let _this = this
+      let curPage = val
+      _this.$axios({
+        method: 'get',
+        url: 'http://175.24.83.13:8000/hotSongList',
+        // 这里的页码默认为一 singerId在路由中拿到
+        params: {pageNum: curPage}
+      }).then(res => {
+        if (res.data.code === 1) {
+          _this.totalTable = res.data.data.total
+          // 这里缺了一些获取图片和个人信息的
+        } else {
+          _this.$message.error('当前网络繁忙，请刷新后重试！')
+        }
+      })
+      // 由页码数发送ajax请求 渲染数据
+    }
+  },
+  mounted () {
+    let _this = this
+    _this.$axios.defaults.baseURL = 'http://175.24.83.13:8000'
+    _this.$axios({
+      method: 'get',
+      url: '/hotSongList',
+      // 这里的页码默认为一 singerId在路由中拿到
+      params: {'pageNum': 1}
+    }).then(res => {
+      if (res.data.code === 1) {
+        res = res.data
+        console.log(res.data)
+        _this.totalTable = res.data
+        _this.aaa = res.data.total
+      } else {
+        alert('当前网络繁忙，请刷新后重试！')
+      }
+    })
+  }
+}
 </script>
 <style>
+.mainListspecial {
+  position: relative;
+  top: -23px;
+  list-style: none;
+  margin-left:120px;
+  float:left
+}
+.mainListspecial li {
+    padding-right: 110px;
+    float: left;
+}
+.mainListspecial .active span {
+    border-bottom: 3px solid red;
+    font-weight: 800;
+}
+.bottom-father{
+  margin-left:400px;
+  margin-top:10px;
+}
+.el-row {
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+  .row-bg {
+    padding: 10px 0;
+  }
 .g-bd{
   width: 980px;
   min-height: 700px;
@@ -164,6 +160,10 @@
   font-size: 24px;
   font-weight: normal;
 }
+.special{
+  width:20% !important;
+  float:left
+}
 .menu {
   font-size: 12px;
   font-weight: normal;
@@ -184,16 +184,13 @@
   background-color:red;
   border-radius:2px;
 }
-.m-cvrlst{
-    margin: 30px 0 0 -50px;
-}
-.m-cvrlst li {
+.grid-content li {
     float: left;
     display: inline-block;
     width: 155px;
     height: 188px;
     overflow: hidden;
-    padding: 0 0 28px 50px;
+    padding: 0 0 28px 0;
     line-height: 1.4;
     list-style: none;
     margin-top:20px;
@@ -220,6 +217,9 @@
     width: 100%;
     height: 100%;
     background-position: 0 0;
+}
+.fatherSpecial{
+  padding-left:44px !important;
 }
 .bottom {
     position: absolute;
