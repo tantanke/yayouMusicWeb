@@ -18,8 +18,7 @@
 <script>
 import Vue from 'vue'
 import APlayer from '@moefe/vue-aplayer'
-Vue.use(APlayer, {
-})
+Vue.use(APlayer, {})
 export default {
   components: {
     APlayer
@@ -29,7 +28,8 @@ export default {
       isHasZan: true,
       ismusicvip: '播放音乐中......(若无歌词请刷新页面)',
       songId: 1,
-      tesobj: [],
+      tesobj: [
+      ],
       songobj: {},
       musicobj: [
         {
