@@ -1,121 +1,20 @@
 <template>
   <div class="singer"><!--改一下图片就可以了-->
     <ul class="singer-ul">
-      <li>
+      <li v-for="(item,i) in editionData" :key="i">
         <div class="u-cover u-cover-5">
-          <a href="">
-            <img src="../../assets/img/homePage/吉克杰拉.png">
-            <span title="王俊凯" class="msk">
+          <router-link class="nm f-thide s-fc0" tag='a' :to="{ name: 'movieListItem', params: {moveid: item.videoId, isvip:item.isvip}}">
+            <img src="item.videoUrl">
+            <span title="item.artist" class="msk">
             </span>
-          </a>
+          </router-link>
         </div>
         <p>
-          <a class="nm f-thide s-fc0" href="/artist?id=999220" title="王俊凯">
-            <span class="s-fc7">王俊凯</span>
-          </a>
+          <router-link class="nm f-thide s-fc0" tag='a' :to="{ name: 'movieListItem', params: {moveid: item.videoId, isvip:item.isvip}}">
+            <span class="s-fc7">{{item.artist}}</span>
+          </router-link>
         </p>
       </li>
-      <li>
-        <div class="u-cover u-cover-5">
-          <a href="">
-            <img src="../../assets/img/homePage/吉克杰拉.png">
-            <span title="王俊凯" class="msk">
-            </span>
-          </a>
-        </div>
-        <p>
-          <a class="nm f-thide s-fc0" href="/artist?id=999220" title="王俊凯">
-            <span class="s-fc7">王俊凯</span>
-          </a>
-        </p>
-      </li>
-      <li>
-        <div class="u-cover u-cover-5">
-          <a href="">
-            <img src="../../assets/img/homePage/吉克杰拉.png">
-            <span title="王俊凯" class="msk">
-            </span>
-          </a>
-        </div>
-        <p>
-          <a class="nm f-thide s-fc0" href="/artist?id=999220" title="王俊凯">
-            <span class="s-fc7">王俊凯</span>
-          </a>
-        </p>
-      </li>
-      <li>
-        <div class="u-cover u-cover-5">
-          <a href="">
-            <img src="../../assets/img/homePage/吉克杰拉.png">
-            <span title="王俊凯" class="msk">
-            </span>
-          </a>
-        </div>
-        <p>
-          <a class="nm f-thide s-fc0" href="/artist?id=999220" title="王俊凯">
-            <span class="s-fc7">王俊凯</span>
-          </a>
-        </p>
-      </li>
-      <li>
-        <div class="u-cover u-cover-5">
-          <a href="">
-            <img src="../../assets/img/homePage/吉克杰拉.png">
-            <span title="王俊凯" class="msk">
-            </span>
-          </a>
-        </div>
-        <p>
-          <a class="nm f-thide s-fc0" href="/artist?id=999220" title="王俊凯">
-            <span class="s-fc7">王俊凯</span>
-          </a>
-        </p>
-      </li>
-      <li>
-        <div class="u-cover u-cover-5">
-          <a href="">
-            <img src="../../assets/img/homePage/吉克杰拉.png">
-            <span title="王俊凯" class="msk">
-            </span>
-          </a>
-        </div>
-        <p>
-          <a class="nm f-thide s-fc0" href="/artist?id=999220" title="王俊凯">
-            <span class="s-fc7">王俊凯</span>
-          </a>
-        </p>
-      </li>
-      <li>
-        <div class="u-cover u-cover-5">
-          <a href="">
-            <img src="../../assets/img/homePage/吉克杰拉.png">
-            <span title="王俊凯" class="msk">
-            </span>
-          </a>
-        </div>
-        <p>
-          <a class="nm f-thide s-fc0" href="/artist?id=999220" title="王俊凯">
-            <span class="s-fc7">王俊凯</span>
-          </a>
-        </p>
-      </li>
-      <li>
-        <div class="u-cover u-cover-5">
-          <a href="">
-            <img src="../../assets/img/homePage/吉克杰拉.png">
-            <span title="王俊凯" class="msk">
-            </span>
-          </a>
-        </div>
-        <p>
-          <a class="nm f-thide s-fc0" href="/artist?id=999220" title="王俊凯">
-            <span class="s-fc7">王俊凯</span>
-          </a>
-        </p>
-      </li>
-      <li></li>
-      <li></li>
-      <li></li>
     </ul>
   </div>
 </template>
@@ -123,6 +22,11 @@
 <script>
 import axios from 'axios'
 export default {
+  data () {
+    return {
+      editionData: []
+    }
+  },
   methods: {
     getHomeInfo () {
       axios({
@@ -137,6 +41,7 @@ export default {
     getHomeInfoSucc (res) {
       res = res.data
       console.log(res)
+      this.editionData = res.data
     }
   },
   mounted () {

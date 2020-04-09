@@ -33,127 +33,7 @@ import axios from 'axios'
 export default {
   data () {
     return {
-      tableData: [{
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }, {
-        date: '树读',
-        name: '王俊凯/林可欣',
-        address: '《我想和你唱 第二季》',
-        time: '03:10'
-      }]
+      tableData: []
     }
   },
   methods: {
@@ -170,6 +50,7 @@ export default {
     getHomeInfoSucc (res) {
       res = res.data
       console.log(res)
+      this.tableData = res.data
     }
   },
   mounted () {

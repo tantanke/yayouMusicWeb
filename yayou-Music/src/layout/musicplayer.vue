@@ -99,66 +99,94 @@ export default {
     _this.$axios.create({
       withCredentials: true
     })
-    _this.$axios.interceptors.request.use(
-      config => {
-        if (localStorage.getItem('Authorization')) {
-          config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
+    if (localStorage.getItem('Authorization')) {
+      _this.$axios.interceptors.request.use(
+        config => {
+          if (localStorage.getItem('Authorization')) {
+            config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
+          }
+          return config
+        },
+        error => {
+          return Promise.reject(error)
         }
-        return config
-      },
-      error => {
-        return Promise.reject(error)
+      )
+      if (isvip === 1) {
+        this.$axios({
+          method: 'get',
+          url: '/vip/playMusic',
+          params: {'songId': songId}
+        })
+          .then(function (res) {
+            console.log(res)
+            if (res.data.code === 1) {
+              _this.songobj.url = res.data.data.audio
+              _this.songobj.name = res.data.data.songName
+              _this.songobj.cover = res.data.data.cover
+              _this.songobj.lrc = res.data.data.lyrText
+              _this.songobj.artist = res.data.data.artist
+              _this.tesobj.push(_this.songobj)
+              console.log(_this.tesobj)
+            } else {
+              _this.$message.error('系统繁忙，请刷新后重试')
+            }
+          })
+          .catch(() => {
+            _this.$message.error('系统繁忙，请刷新后重试')
+          })
+      } else {
+        this.$axios({
+          method: 'get',
+          url: '/user/playMusic',
+          params: {'songId': songId}
+        })
+          .then(function (res) {
+            console.log(res)
+            if (res.data.code === 1) {
+              _this.songobj.url = res.data.data.audio
+              _this.songobj.name = res.data.data.songName
+              _this.songobj.cover = res.data.data.cover
+              _this.songobj.lrc = res.data.data.lyrText
+              _this.songobj.artist = res.data.data.artist
+              _this.tesobj.push(_this.songobj)
+              console.log(_this.tesobj)
+            } else {
+              _this.$message.error('系统繁忙，请刷新后重试')
+            }
+          })
+          .catch(() => {
+            _this.$message.error('系统繁忙，请刷新后重试')
+          })
       }
-    )
-    if (isvip === 1) {
-      this.$axios({
-        method: 'get',
-        url: '/vip/playMusic',
-        params: {'songId': songId}
-      })
-        .then(function (res) {
-          console.log(res)
-          if (res.data.code === 1) {
-            _this.songobj.url = res.data.data.audio
-            _this.songobj.name = res.data.data.songName
-            _this.songobj.cover = res.data.data.cover
-            _this.songobj.lrc = res.data.data.lyrText
-            _this.songobj.artist = res.data.data.artist
-            _this.tesobj.push(_this.songobj)
-            console.log(_this.tesobj)
-          } else {
-            _this.$message.error('系统繁忙，请刷新后重试')
-          }
-        })
-        .catch(() => {
-          _this.$message.error('系统繁忙，请刷新后重试')
-        })
     } else {
-      this.$axios({
-        method: 'get',
-        url: '/user/playMusic',
-        params: {'songId': songId}
-      })
-        .then(function (res) {
-          console.log(res)
-          if (res.data.code === 1) {
-            _this.songobj.url = res.data.data.audio
-            _this.songobj.name = res.data.data.songName
-            _this.songobj.cover = res.data.data.cover
-            _this.songobj.lrc = res.data.data.lyrText
-            _this.songobj.artist = res.data.data.artist
-            _this.tesobj.push(_this.songobj)
-            console.log(_this.tesobj)
-          } else {
+      if (isvip === 1) {
+        alert('请登录')
+      } else {
+        this.$axios({
+          method: 'get',
+          url: '/visitorPlaySong',
+          params: {'songId': songId}
+        })
+          .then(function (res) {
+            console.log(res)
+            if (res.data.code === 1) {
+              _this.songobj.url = res.data.data.audio
+              _this.songobj.name = res.data.data.songName
+              _this.songobj.cover = res.data.data.cover
+              _this.songobj.lrc = res.data.data.lyrText
+              _this.songobj.artist = res.data.data.artist
+              _this.tesobj.push(_this.songobj)
+              console.log(_this.tesobj)
+            } else {
+              _this.$message.error('系统繁忙，请刷新后重试')
+            }
+          })
+          .catch(() => {
             _this.$message.error('系统繁忙，请刷新后重试')
-          }
-        })
-        .catch(() => {
-          _this.$message.error('系统繁忙，请刷新后重试')
-        })
+          })
+      }
     }
   }
-
 }
 </script>
 

@@ -214,49 +214,77 @@ export default {
     _this.$axios.create({
       withCredentials: true
     })
-    _this.$axios.interceptors.request.use(
-      config => {
-        if (localStorage.getItem('Authorization')) {
-          config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
+    if (localStorage.getItem('Authorization')) {
+      _this.$axios.interceptors.request.use(
+        config => {
+          if (localStorage.getItem('Authorization')) {
+            config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
+          }
+          return config
+        },
+        error => {
+          return Promise.reject(error)
         }
-        return config
-      },
-      error => {
-        return Promise.reject(error)
+        // 通过this.$route.params.isvip获取是否vip
+      )
+      let mvUrl = ''
+      let id = {
+        videoId: _this.$route.params.movieid
       }
-      // 通过this.$route.params.isvip获取是否vip
-    )
-    let mvUrl = ''
-    let id = {
-      videoId: _this.$route.params.movieid
-    }
-    let isvip = _this.$route.params.isvip
-    console.log(id)
-    if (isvip === 0) {
-      mvUrl = _this.urls.userPlayMv
-      alert('1')
-    } else if (isvip === 1) {
-      mvUrl = _this.urls.vipPlayMv
-      alert('2')
+      let isvip = _this.$route.params.isvip
+      console.log(id)
+      if (isvip === 0) {
+        mvUrl = _this.urls.userPlayMv
+      } else if (isvip === 1) {
+        mvUrl = _this.urls.vipPlayMv
+      } else {
+        mvUrl = _this.urls.userPlayMv
+      }
+      _this.$axios({
+        url: mvUrl,
+        method: 'get',
+        withCredentials: true,
+        params: id
+      }).then(res => {
+        let data = res.data
+        if (data.code === 1) {
+          _this.videoData = data.data
+          _this.nowVideoUrl = data.data.videoUrl
+          _this.$refs.sourceUrl.url = _this.nowVideoUrl
+          console.log(_this.nowVideoUrl)
+          _this.initVideo()
+        }
+      })
     } else {
-      mvUrl = _this.urls.userPlayMv
-      alert('3')
-    }
-    _this.$axios({
-      url: mvUrl,
-      method: 'get',
-      withCredentials: true,
-      params: id
-    }).then(res => {
-      let data = res.data
-      if (data.code === 1) {
-        _this.videoData = data.data
-        _this.nowVideoUrl = data.data.videoUrl
-        _this.$refs.sourceUrl.url = _this.nowVideoUrl
-        console.log(_this.nowVideoUrl)
-        _this.initVideo()
+      let mvUrl = ''
+      let id = {
+        videoId: _this.$route.params.movieid
       }
-    })
+      let isvip = _this.$route.params.isvip
+      console.log(id)
+      if (isvip === 0) {
+        mvUrl = _this.urls.userPlayMv
+      } else if (isvip === 1) {
+        alert('请登录')
+      } else {
+        mvUrl = _this.urls.userPlayMv
+      }
+      _this.$axios({
+        url: mvUrl,
+        method: 'get',
+        withCredentials: true,
+        params: id
+      }).then(res => {
+        let data = res.data
+        if (data.code === 1) {
+          _this.videoData = data.data
+          _this.nowVideoUrl = data.data.videoUrl
+          _this.$refs.sourceUrl.url = _this.nowVideoUrl
+          console.log(_this.nowVideoUrl)
+          _this.initVideo()
+        }
+      })
+    }
   }
 }
 </script>

@@ -2,7 +2,7 @@
   <div class="yy-topbar">
     <el-row>
       <el-col :span="1" class="yy-logo"></el-col>
-      <el-col :span="3" class="yy-title"><router-link tag='span' :to="{name:'find'}">涯悠数据</router-link></el-col>
+      <el-col :span="3" class="yy-title"><router-link tag='span' :to="{name:'find'}">涯悠音乐</router-link></el-col>
       <el-col :span="11" class="yy-toplist">
         <ul class="nav" >
           <router-link tag='li'  :to="{name:'find'}"><div>我的发现</div></router-link>

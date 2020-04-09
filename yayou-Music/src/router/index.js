@@ -56,7 +56,23 @@ export default new Router({
         }, {
           path: '/movie/allMovie/movieItem/:isvip/:movieid',
           name: 'movieListItem',
-          component: () => import('@/components/movie/movieitem.vue')
+          component: () => import('@/components/movie/movieitem.vue'),
+          beforeEnter: (to, from, next) => {
+            // just use `this`
+            if (localStorage.getItem('Authorization')) {
+              if (to.params.isvip === 1 && localStorage.getItem('Role') === 'User') {
+                alert('此为会员专区')
+              } else {
+                next()
+              }
+            } else {
+              if (to.params.isvip === 1) {
+                alert('请登录')
+              } else {
+                next()
+              }
+            }
+          }
         }]
       }]
     }, {
@@ -165,7 +181,23 @@ export default new Router({
       path: '/musicplayer/:isvip/:songId', // 动态路由歌曲id
       // path: '/musicplayer',
       name: 'musicplayer',
-      component: musicPlayer
+      component: musicPlayer,
+      beforeEnter: (to, from, next) => {
+        // just use `this`
+        if (localStorage.getItem('Authorization')) {
+          if (to.params.isvip === 1 && localStorage.getItem('Role') === 'User') {
+            alert('此为会员专区')
+          } else {
+            next()
+          }
+        } else {
+          if (to.params.isvip === 1) {
+            alert('此为会员专区，请登录后再尝试')
+          } else {
+            next()
+          }
+        }
+      }
     }, {
       path: '/songlistdetail/:songlistid',
       name: 'songlistdetail',

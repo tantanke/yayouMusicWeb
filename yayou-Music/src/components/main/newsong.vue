@@ -64,7 +64,6 @@ export default {
 <style lang="scss" scoped>
   .song-img{
     width:200px;
-    height:200px;
-    border: 1px solid red
+    height:200px
   }
 </style>

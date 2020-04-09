@@ -70,7 +70,7 @@
           background
           @current-change="handleCurrentChange"
           layout="prev, pager, next"
-          :total="200"
+          :total="this.total"
           class="number">
         </el-pagination>
     </div>
@@ -82,6 +82,7 @@ export default {
   data () {
     return {
       pageNum: '',
+      total: '',
       tableData: [{
         date: '树读',
         name: '王俊凯/林可欣',
@@ -93,8 +94,6 @@ export default {
   methods: {
     handleCurrentChange (val) {
       this.pageNum = val
-      console.log(this.pageNum)
-      console.log(`当前页: ${val}`)
     },
     getHomeInfo () {
       axios({
@@ -109,6 +108,8 @@ export default {
     getHomeInfoSucc (res) {
       res = res.data
       console.log(res)
+      this.tableData = res.data
+      this.total = this.tableData.length
     }
   },
   mounted () {
