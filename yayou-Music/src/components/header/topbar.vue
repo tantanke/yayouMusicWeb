@@ -85,6 +85,9 @@ export default {
   methods: {
     success (res) {
       this.isnotLogin = res
+      if (window.localStorage.getItem('Role') === 'Singer') {
+        this.isSinger = true
+      }
     },
     changeLangEvent () {
     },

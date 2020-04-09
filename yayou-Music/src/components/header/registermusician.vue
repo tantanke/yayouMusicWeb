@@ -19,9 +19,8 @@
             :limit="1"
             :show-file-list="false"
             :on-success="handleAvatarSuccessPhotoFont"
-            :before-upload="beforeAvatarUploadFont"
-            list-type="picture">
-            <el-progress v-if="loadingFont" type="circle" :percentage="num" style="margin:72px 72px;"></el-progress>
+            :before-upload="beforeAvatarUploadFont">
+            <el-progress v-if="loadingFont" type="circle" :percentage="num" style="margin:30px 140px;"></el-progress>
             <img v-else-if="ruleForm.idCardPhotoFont" :src="ruleForm.idCardPhotoFont" class="avatar">
             <div v-else>
               <i class="el-icon-plus avatar-uploader-icon"></i><span class="ti">选择一张本地图片</span>
@@ -33,16 +32,15 @@
             class="avatar-uploader"
             action="#"
             :limit="1"
-            list-type="picture"
             :show-file-list="false"
             :on-success="handleAvatarSuccessPhotoBack"
             :before-upload="beforeAvatarUploadBack"
-            v-loading="loadingBack"
-            element-loading-text="拼命加载中"
-            element-loading-spinner="el-icon-loading"
-            element-loading-background="rgba(0, 0, 0, 0.8)">
-            <img v-if="ruleForm.idCardPhotoBack" :src="ruleForm.idCardPhotoBack" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon" title="点击上传照片"></i>
+            list-type="picture">
+            <el-progress v-if="loadingBack" type="circle" :percentage="num2" style="margin:30px 140px;"></el-progress>
+            <img v-else-if="ruleForm.idCardPhotoBack" :src="ruleForm.idCardPhotoBack" class="avatar">
+            <div v-else>
+              <i class="el-icon-plus avatar-uploader-icon"></i><span class="ti">点击上传照片</span>
+            </div>
           </el-upload>
         </el-form-item>
         <el-form-item>
@@ -66,13 +64,14 @@ export default {
       source: null, // 取消上传
       tokenHeader: '',
       num: 0,
+      num2: 0,
       active: 0,
       domain: '',
       upToken: '',
       urls: {
         uploadeForm: 'http://175.24.83.13:8000/registerAsSinger',
-        uploadephoto: 'http://175.24.83.13:8000/upImg',
-        qiNiuYun: 'http://upload.qiniup.com/'
+        qiNiuYun: 'http://upload.qiniup.com/',
+        getUpToken: 'http://175.24.83.13:8000/getUpToken'
       },
       config: {useCdnDomain: true, region: qiniu.region.z0},
       putExtra: {
@@ -119,7 +118,6 @@ export default {
     beforeAvatarUploadFont (file) {
       let _this = this
       console.log(file)
-      _this.loadingFont = true
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
       if (!isJPG) {
@@ -129,8 +127,8 @@ export default {
         _this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       if (isJPG && isLt2M) {
-        _this.imgFile = file
         _this.loadingFont = true
+        _this.imgFile = file
         const CancelToken = axios.CancelToken
         const source = CancelToken.source()
         _this.source = source
@@ -164,63 +162,83 @@ export default {
             _this.loadingFont = false
           })
       }
-      _this.loadingFont = false
       return isJPG && isLt2M
     },
     beforeAvatarUploadBack (file) {
       console.log(file)
-      this.loadingBack = true
+      let _this = this
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
+        _this.$message.error('上传头像图片只能是 JPG 格式!')
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
+        _this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       if (isJPG && isLt2M) {
+        _this.loadingBack = true
+        _this.imgFile = file
+        const CancelToken = axios.CancelToken
+        const source = CancelToken.source()
+        _this.source = source
         let df = new FormData()
-        df.append('img', file)
-        console.log(df.get('img'))
+        df.append('file', file)
+        df.append('token', _this.upToken)
         axios({
-          url: this.urls.uploadephoto,
+          url: _this.urls.qiNiuYun,
           method: 'post',
-          headers: {'Content-Type': 'multipart/form-data'},
           data: df,
-          processData: false
+          cancelToken: _this.source.token, // 取消事件
+          onUploadProgress (progressEvent) {
+            if (progressEvent.lengthComputable) {
+              let val = (progressEvent.loaded / progressEvent.total * 100).toFixed(0)
+              _this.num2 = parseInt(val)
+            }
+          }
         })
           .then(res => {
-            console.log(res.data)
-            let data = res.data
-            if (data.code === 1) {
-              this.$message({
-                message: '身份证反面上传成功',
-                type: 'success'
-              })
-              this.ruleForm.idCardPhotoBack = data.url
-            } else {
-              this.$message.error(data.msg)
-            }
+            console.log(res)
+            let hash = res.data.hash
+            let domain = _this.domain + '/'
+            _this.ruleForm.idCardPhotoBack = domain + hash
+            _this.loadingBack = false
           })
-          .catch(error => {
-            console.log(error)
+          .catch(err => {
+            console.log(err)
+            if (_this.axios.isCancel(err)) {
+              _this.$message({type: 'success', message: '取消上传操作成功'})
+            }
+            _this.loadingBack = false
           })
       }
-      this.loadingFont = false
       return isJPG && isLt2M
     },
     submitForm (formName) {
-      console.log(formName)
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          axios.post(this.urls.uploadeForm, formName)
+          let dataForm = new FormData()
+          // dataForm.singerName = this.ruleForm.singerName
+          // dataForm.idCardNum = this.ruleForm.idCardNum
+          // dataForm.idCardPhotoFont = this.ruleForm.idCardPhotoFont
+          // dataForm.idCardPhotoBack = this.ruleForm.idCardPhotoBack
+          dataForm.append('singerName', this.ruleForm.singerName)
+          dataForm.append('idCardNum', this.ruleForm.idCardNum)
+          dataForm.append('idCardPhotoFont', this.ruleForm.idCardPhotoFont)
+          dataForm.append('idCardPhotoBack', this.ruleForm.idCardPhotoBack)
+          console.log(dataForm)
+          axios({
+            url: this.urls.uploadeForm,
+            method: 'post',
+            data: dataForm
+          })
             .then(res => {
               if (res.data.code === 1) {
-                this.$router.push({name: 'resetmusician'})
                 this.$message({
                   message: '音乐人注册成功，请完善信息',
                   type: 'success'
                 })
+                this.$router.push({name: 'resetmusician'})
+                window.localStorage.setItem('Role', 'Singer')
                 console.log(res)
               } else {
                 this.$message.err(res.data.msg)
@@ -236,35 +254,27 @@ export default {
       })
     },
     resetForm (formName) {
-      this.$refs[formName].resetFields()
+      if (this.source) {
+        this.source.cancel()
+        this.$refs[formName].resetFields()
+      }
     }
   },
   mounted () {
     let _this = this
-    _this.$axios.create({
+    axios.create({
       withCredentials: false
     })
-    this.click = true
-    this.tokenHeader = 'Bearer ' + localStorage.getItem('Authorization')
-    this.$axios.interceptors.request.use(
-      config => {
-        if (localStorage.getItem('Authorization')) {
-          return config
-        }
-      },
-      error => {
-        return Promise.reject(error)
-      }
-    )
-    _this.$axios({
+    _this.tokenHeader = {'Authorization': 'Bearer ' + localStorage.getItem('Authorization')}
+    axios({
       method: 'post',
-      url: 'http://175.24.83.13:8000/getUpToken',
+      url: _this.urls.getUpToken,
       headers: {
-        'Authorization': this.tokenHeader
+        'Authorization': _this.tokenHeader
       }
     }).then(res => {
-      this.upToken = res.data.upToken
-      this.domain = res.data.domain
+      _this.upToken = res.data.upToken
+      _this.domain = res.data.domain
     })
   }
 }
@@ -272,4 +282,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/css/createcentre/header/personalinfor.scss";
+.ti{
+  color: #ccc;
+}
 </style>

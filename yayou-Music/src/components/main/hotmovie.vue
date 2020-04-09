@@ -12,8 +12,8 @@
       <div class="block">
         <el-carousel trigger="click" arrow="never">
           <el-carousel-item v-for="(Item,index) in hotMovie" :key="index" style="width:1260px;">
-            <el-col :span="8" v-for="item in Item" :key="item.videoId">
-              <router-link :to="{ name: 'movieListItem', params: {moveid: item.videoId, isvip:item.isvip}}">
+            <el-col :span="8" v-for="(item,i) in Item" :key="i+100">
+              <router-link :to="{ name: 'movieListItem', params: {moveid: item.videoId, isvip:item.isvip}}" tag="div">
                 <el-card :body-style="{ padding: '0px',margin: '0px' }" shadow="never">
                   <div class="imgBox">
                     <img :src="item.cover" />
@@ -72,8 +72,8 @@ export default {
       if (res.code === 1) {
         var k = 0
         console.log(res)
-        for (var e = 0; e <= (res.data.length / 3); e++) {
-          let arr = {}
+        for (var e = 0; e < Math.ceil(res.data.length / 3); e++) {
+          let arr = []
           for (var i = 0; i < 3; i++) {
             arr[i] = res.data[k++]
             if (k === res.data.length) {

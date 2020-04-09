@@ -50,7 +50,7 @@ export default {
         var k = 0
         console.log(res)
         for (var e = 0; e <= (res.data.length / 6); e++) {
-          let arr = {}
+          let arr = []
           for (var i = 0; i < 6; i++) {
             arr[i] = res.data[k++]
             if (k === res.data.length) {

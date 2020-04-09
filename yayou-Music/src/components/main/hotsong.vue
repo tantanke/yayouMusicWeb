@@ -84,7 +84,7 @@ export default {
         var k = 0
         console.log(res)
         for (var e = 0; e <= (res.data.length / 4) && e < 2; e++) {
-          let arr = {}
+          let arr = []
           for (var i = 0; i < 4; i++) {
             arr[i] = res.data[k++]
             if (k === res.data.length) {
@@ -93,7 +93,6 @@ export default {
           }
           this.array[e] = arr
         }
-        this.$forceUpdate()
         console.log(this.array)
       }
     }
