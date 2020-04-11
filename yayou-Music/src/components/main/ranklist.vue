@@ -3,8 +3,8 @@
     <el-row class="common-C">
       <div>
         <i class="el-icon-headset color"></i>
-        <span class="titleName">排行榜&emsp;</span>
-        <span class="more">更多</span>
+        <span class="titleName" style="cursor:default;">排行榜&emsp;</span>
+        <span class="more" style="cursor:default;">更多</span>
         <i class="el-icon-zoom-in imore"></i>
       </div>
     </el-row>

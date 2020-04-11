@@ -56,7 +56,23 @@ export default new Router({
         }, {
           path: '/movie/allMovie/movieItem/:isvip/:movieid',
           name: 'movieListItem',
-          component: () => import('@/components/movie/movieitem.vue')
+          component: () => import('@/components/movie/movieitem.vue'),
+          beforeEnter: (to, from, next) => {
+            // just use `this`
+            if (localStorage.getItem('Authorization')) {
+              if (to.params.isvip === 1 && localStorage.getItem('Role') === 'User') {
+                alert('此为会员专区')
+              } else {
+                next()
+              }
+            } else {
+              if (to.params.isvip === 1) {
+                alert('请登录')
+              } else {
+                next()
+              }
+            }
+          }
         }]
       }]
     }, {
@@ -88,7 +104,29 @@ export default new Router({
           children: [{
             path: '/mymusic/personalcenter/ilike/song',
             name: 'iLikeSong',
-            component: () => import('@/components/mymusic/mycategory/ilikes/song.vue')
+            redirect: '/mymusic/personalcenter/ilike/song/myplaylist',
+            component: () => import('@/components/mymusic/mycategory/ilikes/song.vue'),
+            children: [{
+              path: '/mymusic/personalcenter/ilike/song/myplaylist',
+              name: 'myplaylist',
+              component: () => import('@/components/mymusic/mycategory/ilikes/songcontent/playlist.vue')
+            }, {
+              path: '/mymusic/personalcenter/ilike/song/mycollection',
+              name: 'mycollection',
+              component: () => import('@/components/mymusic/mycategory/ilikes/songcontent/collection.vue')
+            }, {
+              path: '/mymusic/personalcenter/ilike/song/myshare',
+              name: 'myshare',
+              component: () => import('@/components/mymusic/mycategory/ilikes/songcontent/share.vue')
+            }, {
+              path: '/mymusic/personalcenter/ilike/song/mycomment',
+              name: 'mycomment',
+              component: () => import('@/components/mymusic/mycategory/ilikes/songcontent/comment.vue')
+            }, {
+              path: '/mymusic/personalcenter/ilike/song/myloading',
+              name: 'myloading',
+              component: () => import('@/components/mymusic/mycategory/ilikes/songcontent/loading.vue')
+            }]
           }, {
             path: '/mymusic/personalcenter/ilike/songlist',
             name: 'iLikeSongList',
@@ -165,7 +203,23 @@ export default new Router({
       path: '/musicplayer/:isvip/:songId', // 动态路由歌曲id
       // path: '/musicplayer',
       name: 'musicplayer',
-      component: musicPlayer
+      component: musicPlayer,
+      beforeEnter: (to, from, next) => {
+        // just use `this`
+        if (localStorage.getItem('Authorization')) {
+          if (to.params.isvip === 1 && localStorage.getItem('Role') === 'User') {
+            alert('此为会员专区')
+          } else {
+            next()
+          }
+        } else {
+          if (to.params.isvip === 1) {
+            alert('此为会员专区，请登录后再尝试')
+          } else {
+            next()
+          }
+        }
+      }
     }, {
       path: '/songlistdetail/:songlistid',
       name: 'songlistdetail',

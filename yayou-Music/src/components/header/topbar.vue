@@ -2,7 +2,7 @@
   <div class="yy-topbar">
     <el-row>
       <el-col :span="1" class="yy-logo"></el-col>
-      <el-col :span="3" class="yy-title"><router-link tag='span' :to="{name:'find'}">涯悠数据</router-link></el-col>
+      <el-col :span="3" class="yy-title"><router-link tag='span' :to="{name:'find'}">涯悠音乐</router-link></el-col>
       <el-col :span="11" class="yy-toplist">
         <ul class="nav" >
           <router-link tag='li'  :to="{name:'find'}"><div>我的发现</div></router-link>
@@ -22,10 +22,10 @@
           <el-dialog title="账号密码登陆" :visible.sync="dialogTableVisible" center :append-to-body='true' :lock-scroll='false' width="380px">
             <dia-log v-bind:isnotLogin = "isnotLogin" v-on:success = "success(res)" class="loginarea"></dia-log>
           </el-dialog>
-          <span round @click="submitForm()" class='login'>登录</span>
+          <span round @click="submitForm()" class='login' style="cursor: pointer;">登录</span>
         </div>
         <div class="loginPic" v-else>
-          <img :src="headImgUrl" alt="">
+          <img :src="headImgUrl" alt="头像">
           <ul>
             <router-link tag='li' class="active" :to="{name:'myMusic'}"><i class="el-icon-user"></i><span>个人中心</span></router-link>
             <li><i class="el-icon-chat-dot-round"></i><span>我的消息</span></li>
@@ -39,8 +39,8 @@
           </ul>
         </div>
         <el-divider direction="vertical"></el-divider>
-        <span @click="register()" v-if="notLogin">注册</span>
-        <span @click="loginOut" v-else>注销</span>
+        <span @click="register()" v-if="notLogin" style="cursor: pointer;">注册</span>
+        <span @click="loginOut" v-else style="cursor: pointer;">注销</span>
         <el-dialog title="注册" :visible.sync="isnotShow" center :append-to-body='true' :lock-scroll='false' width="400px">
           <register></register>
         </el-dialog>
@@ -61,7 +61,7 @@ export default {
   name: 'MyFind',
   data () {
     return {
-      headImgUrl: require('../../assets/img/homePage/sliderPic.png'), // 头像地址
+      headImgUrl: require('../../assets/img/image/组4.png'), // 头像地址
       routercreatecentre: 'createCentre', // 创作中心进入口
       dialogTableVisible: false,
       isnotShow: false,
@@ -85,6 +85,7 @@ export default {
   methods: {
     success (res) {
       this.isnotLogin = res
+      this.userGetInfo()
       if (window.localStorage.getItem('Role') === 'Singer') {
         this.isSinger = true
       }
@@ -167,9 +168,27 @@ export default {
         this.routercreatecentre = 'createCentre'
         this.$router.push({name: 'createCentre'})
       }
+    },
+    userGetInfo () {
+      axios({
+        url: 'http://175.24.83.13:8000/userInfo/getUserInfo',
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('Authorization')
+        }
+      }).then(res => {
+        console.log(res)
+        res = res.data
+        if (res.code === 1) {
+          if (res.data.userImg) {
+            this.headImgUrl = res.data.userImg
+          }
+        }
+      })
     }
   },
   mounted () {
+    this.userGetInfo()
     Bus.$on('headImgUrl', url => {
       // 设置resetheadimg.vue发来的
       console.log(url)

@@ -7,14 +7,14 @@
           <div>
             <i class="el-icon-headset color"></i>
             <span class="hotPic">热门歌单</span>
-            <router-link class="more" tag='span'  :to="{name:'songSheet'}">更多</router-link><!--这个后面可以转成一个路由-->
+            <router-link class="more" tag='span'  :to="{name:'songSheet'}" style="cursor:pointer;">更多</router-link><!--这个后面可以转成一个路由-->
             <i class="el-icon-zoom-in imore"></i>
           </div>
         </el-row>
         <el-row class="sContent" v-for="(Item,index) in array" :key="index">
           <!--这下面的数据都是循环获得的 -->
           <el-col class="card-box" :span="6" v-for="item in Item" :key="item.songListId">
-           <el-card class="hot-card" shadow="never">
+           <el-card class="hot-card" shadow="never" style="cursor:pointer;">
              <div class="imgBox">
                <!--这个地方需要动态的从后端获取数据 -->
                 <router-link :to="{ name: 'songlistdetail', params:{songlistid:item.songListId}}">
@@ -33,7 +33,7 @@
       <el-col :span='6' class="jz-hot">
         <el-row>
           <i class="el-icon-headset color"></i>
-          <router-link :to="{ name:'ranklistdetail' }" tag="span">家族人气值</router-link>
+          <router-link :to="{ name:'ranklistdetail' }" tag="span" style="cursor:pointer;">家族人气值</router-link>
           <el-divider class="jz-line1"></el-divider>
         </el-row>
         <family-hot></family-hot>

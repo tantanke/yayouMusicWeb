@@ -4,12 +4,12 @@
         <div>
            <i class="el-icon-headset color"></i>
             <span class="titleName">精彩推荐</span>
-            <router-link class="more" tag='span'  :to="{name:'allsong'}">更多</router-link><!--这个跳转到所有歌曲页面，还没有做-->
+            <router-link class="more" tag='span'  :to="{name:'allsong'}" style="cursor:pointer;">更多</router-link><!--这个跳转到所有歌曲页面，还没有做-->
            <i class="el-icon-zoom-in imore"></i>
         </div>
     </el-row>
     <el-row class="box">
-      <router-link :to="{ name: 'musicplayer', params:{songId: item.songId, isvip:item.isVip}}" v-for="item in recommend" :key="item.songId">
+      <router-link :to="{ name: 'musicplayer', params:{songId: item.songId, isvip:item.isVip}}" v-for="item in recommend" :key="item.songId" >
         <img :src="item.cover" id="img1" alt="">
       </router-link>
     </el-row>

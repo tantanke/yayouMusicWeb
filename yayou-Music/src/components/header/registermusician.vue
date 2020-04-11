@@ -216,20 +216,24 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let dataForm = new FormData()
-          // dataForm.singerName = this.ruleForm.singerName
-          // dataForm.idCardNum = this.ruleForm.idCardNum
-          // dataForm.idCardPhotoFont = this.ruleForm.idCardPhotoFont
-          // dataForm.idCardPhotoBack = this.ruleForm.idCardPhotoBack
-          dataForm.append('singerName', this.ruleForm.singerName)
-          dataForm.append('idCardNum', this.ruleForm.idCardNum)
-          dataForm.append('idCardPhotoFont', this.ruleForm.idCardPhotoFont)
-          dataForm.append('idCardPhotoBack', this.ruleForm.idCardPhotoBack)
+          let dataForm = {}
+          dataForm.singerName = this.ruleForm.singerName
+          dataForm.idCardNum = this.ruleForm.idCardNum
+          dataForm.idCardPhotoFont = this.ruleForm.idCardPhotoFont
+          dataForm.idCardPhotoBack = this.ruleForm.idCardPhotoBack
+          // let dataForm = new FormData()
+          // dataForm.append('singerName', this.ruleForm.singerName)
+          // dataForm.append('idCardNum', this.ruleForm.idCardNum)
+          // dataForm.append('idCardPhotoFont', this.ruleForm.idCardPhotoFont)
+          // dataForm.append('idCardPhotoBack', this.ruleForm.idCardPhotoBack)
           console.log(dataForm)
           axios({
             url: this.urls.uploadeForm,
             method: 'post',
-            data: dataForm
+            params: dataForm,
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('Authorization')
+            }
           })
             .then(res => {
               if (res.data.code === 1) {

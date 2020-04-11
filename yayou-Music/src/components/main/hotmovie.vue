@@ -4,7 +4,7 @@
       <div>
         <i class="el-icon-headset color"></i>
         <span class="titleName">热门电影</span>
-        <router-link class="more" tag='span'  :to="{name:'movie'}">更多</router-link>
+        <router-link class="more" tag='span'  :to="{name:'movie'}" style="cursor:pointer;">更多</router-link>
         <i class="el-icon-zoom-in imore"></i>
       </div>
     </el-row>
@@ -13,12 +13,12 @@
         <el-carousel trigger="click" arrow="never">
           <el-carousel-item v-for="(Item,index) in hotMovie" :key="index" style="width:1260px;">
             <el-col :span="8" v-for="(item,i) in Item" :key="i+100">
-              <router-link :to="{ name: 'movieListItem', params: {moveid: item.videoId, isvip:item.isvip}}" tag="div">
+              <router-link :to="{ name: 'movieListItem', params: {movieid: item.videoId, isvip:item.isvip}}" tag="div">
                 <el-card :body-style="{ padding: '0px',margin: '0px' }" shadow="never">
-                  <div class="imgBox">
+                  <div class="imgBox" style="cursor:pointer;">
                     <img :src="item.cover" />
                   </div>
-                  <div class="line">
+                  <div class="line" style="cursor:pointer;">
                     <p>{{item.videoName}}</p>
                     <p>
                       <span>{{item.artist}}</span>
@@ -69,6 +69,7 @@ export default {
     },
     getHomeInfoSucc (res) {
       res = res.data
+      console.log(res.code + '热门电影的数据')
       if (res.code === 1) {
         var k = 0
         console.log(res)
@@ -88,7 +89,7 @@ export default {
     }
   },
   mounted () {
-    this.$nextTick(this.getHomeInfo())
+    this.getHomeInfo()
   }
 }
 </script>

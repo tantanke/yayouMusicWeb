@@ -3,7 +3,7 @@
     <div class="allmoviepage" ref="allmovie" >
     <el-row class="moviepic" >
       <div  class="moviecard" v-for='(item,index) in allMovieTable' :key="index"  @click="getData($event,item.videoId,item.isvip)">
-        <img  src="../../assets/img/homePage/狂徒(dts版).png" alt />
+        <img  :src="item.cover" alt="" />
         <p>{{item.videoName}})</p>
         <p>
           <span>{{item.artist}}</span>

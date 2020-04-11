@@ -14,11 +14,15 @@
         </video>
         <el-row class="videoinfo1">
             <el-row class="info">
-              <el-col :span="20">
+              <el-col :span="18">
                 <span class="videoname">{{videoData.videoName}}</span>
                 <span class="numbers">播放量：{{videoData.watch}}</span>
               </el-col>
-              <el-col :span="4" class="videobuttons">
+              <el-col :span="6" class="videobuttons">
+                <span class="videoZan">
+                  <i v-if="videoInfo.isHasZan" @click="clickZan" class='iconfont icon-xinaixin1' title="为视频点赞"></i>
+                  <i v-else @click="cancelZan" class='iconfont icon-xinaixin' title="取消点赞"></i>
+                </span>
                 <span><i :class="{'el-icon-share':show,'collection-style':videoInfo.shareStyle}"></i></span>
                 <span><i :class="{'el-icon-edit-outline':show,'collection-style':videoInfo.editStyle}"></i></span>
                 <span class="df"><i :class="{'el-icon-star-off':show,'collection-style':videoInfo.collectionStyle}" title="收藏" @click="handleCollection(videoInfo)"></i></span>
@@ -111,6 +115,7 @@
 
 <script>
 /* import * as videoplayer from '../../../../static/qiniuvideo' */
+import qs from 'qs'
 export default {
   data () {
     return {
@@ -121,10 +126,11 @@ export default {
         collection: 'http://175.24.83.13:8000/user/addVideoToCollection',
         discollection: 'http://175.24.83.13:8000/user/unCollectVideo',
         vipPlayMv: 'http://175.24.83.13:8000/vip/playMv',
-        userPlayMv: 'http://175.24.83.13:8000/user/playMv'
+        userPlayMv: 'http://175.24.83.13:8000/user/playMv',
+        visitorPlayMv: 'http://175.24.83.13:8000/visitorPlayVideo'
       },
       videoInfo: {
-        videoId: '001',
+        isHasZan: true,
         collectionStyle: false,
         shareStyle: false,
         editStyle: false
@@ -158,22 +164,16 @@ export default {
     },
     // 收藏视频
     handleCollection (e) {
-      e.collectionStyle = !e.collectionStyle
-      if (e.collectionStyle) {
-        this.$axios.post(this.urls.collection, JSON.stringify({videoId: e.videoId}))
+      if (!e.collectionStyle) {
+        this.$axios.post(this.urls.collection, qs.stringify({videoId: this.videoData.videoId}))
           .then(res => {
             console.log(res)
-            if (res.data.code === '1') {
-              this.$message({
-                message: res.data.msg,
-                type: 'success'
-              })
+            if (res.data.code === 1) {
+              e.collectionStyle = !e.collectionStyle
+            } else if (res.data.code === 20001) {
+              alert('请先登录')
             } else {
-              if (res.data.msg) {
-                this.$message.error(res.data.msg)
-              } else {
-                this.$message.error('请稍后尝试')
-              }
+              this.$message.error(res.data.msg)
             }
           })
           .catch(err => {
@@ -186,15 +186,12 @@ export default {
           params: {
             _method: 'delete'
           },
-          videoId: e.videoId
+          data: qs.stringify({videoId: this.videoData.videoId})
         })
           .then(res => {
             console.log(res)
-            if (res.data.code === '1') {
-              this.$message({
-                message: res.data.msg,
-                type: 'success'
-              })
+            if (res.data.code === 1) {
+              e.collectionStyle = !e.collectionStyle
             } else {
               if (res.data.msg) {
                 this.$message.error(res.data.msg)
@@ -207,6 +204,59 @@ export default {
             console.log(err)
           })
       }
+    },
+    judgeZan () {
+      let _this = this
+      _this.$axios({
+        method: 'get',
+        url: '/user/videoIfLike',
+        params: {videoId: _this.$route.params.movieid}
+      }).then(res => {
+        if (res.data.code === 1) {
+          if (res.data.data.message === '已点赞') {
+            _this.videoInfo.isHasZan = false
+          } else {
+            _this.videoInfo.isHasZan = true
+          }
+        }
+      })
+    },
+    clickZan () {
+      let _this = this
+      _this.$axios({
+        method: 'get',
+        url: '/user/likeVideo',
+        params: {videoId: _this.$route.params.movieid}
+      }).then(res => {
+        if (res.data.code === 1) {
+          if (res.data.data === '点赞成功') {
+            _this.videoInfo.isHasZan = false
+          } else {
+            _this.$message.error(res.data.msg)
+            _this.videoInfo.isHasZan = true
+          }
+        } else if (res.data.code === 20001) {
+          alert('请先登录')
+        } else {
+          _this.$message.error(res.data.msg)
+        }
+      })
+    },
+    cancelZan () {
+      let _this = this
+      _this.$axios({
+        method: 'get',
+        url: '/user/unLikeVideo',
+        params: {videoId: _this.$route.params.movieid}
+      }).then(res => {
+        if (res.data.code === 1) {
+          if (res.data.data === '取消点赞成功') {
+            _this.videoInfo.isHasZan = true
+          } else {
+            _this.videoInfo.isHasZan = false
+          }
+        }
+      })
     }
   },
   mounted () {
@@ -214,57 +264,100 @@ export default {
     _this.$axios.create({
       withCredentials: true
     })
-    _this.$axios.interceptors.request.use(
-      config => {
-        if (localStorage.getItem('Authorization')) {
-          config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
+    if (localStorage.getItem('Authorization')) {
+      _this.$axios.interceptors.request.use(
+        config => {
+          if (localStorage.getItem('Authorization')) {
+            config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization')
+          }
+          return config
+        },
+        error => {
+          return Promise.reject(error)
         }
-        return config
-      },
-      error => {
-        return Promise.reject(error)
+        // 通过this.$route.params.isvip获取是否vip
+      )
+      let mvUrl = ''
+      let id = {
+        videoId: _this.$route.params.movieid
       }
-      // 通过this.$route.params.isvip获取是否vip
-    )
-    let mvUrl = ''
-    let id = {
-      videoId: _this.$route.params.movieid
-    }
-    let isvip = _this.$route.params.isvip
-    console.log(id)
-    if (isvip === 0) {
-      mvUrl = _this.urls.userPlayMv
-      alert('1')
-    } else if (isvip === 1) {
-      mvUrl = _this.urls.vipPlayMv
-      alert('2')
+      let isvip = _this.$route.params.isvip
+      console.log(id)
+      if (isvip === 0) {
+        mvUrl = _this.urls.userPlayMv
+      } else if (isvip === 1) {
+        mvUrl = _this.urls.vipPlayMv
+      } else {
+        mvUrl = _this.urls.userPlayMv
+      }
+      _this.$axios({
+        url: mvUrl,
+        method: 'get',
+        withCredentials: true,
+        params: id
+      }).then(res => {
+        let data = res.data
+        if (data.code === 1) {
+          _this.videoData = data.data
+          _this.nowVideoUrl = data.data.videoUrl
+          _this.$refs.sourceUrl.url = _this.nowVideoUrl
+          console.log(_this.nowVideoUrl)
+          _this.initVideo()
+        }
+      })
     } else {
-      mvUrl = _this.urls.userPlayMv
-      alert('3')
-    }
-    _this.$axios({
-      url: mvUrl,
-      method: 'get',
-      withCredentials: true,
-      params: id
-    }).then(res => {
-      let data = res.data
-      if (data.code === 1) {
-        _this.videoData = data.data
-        _this.nowVideoUrl = data.data.videoUrl
-        _this.$refs.sourceUrl.url = _this.nowVideoUrl
-        console.log(_this.nowVideoUrl)
-        _this.initVideo()
+      let mvUrl = ''
+      let id = {
+        videoId: _this.$route.params.movieid
       }
-    })
+      let isvip = _this.$route.params.isvip
+      console.log(id)
+      if (isvip === 0) {
+        mvUrl = _this.urls.visitorPlayMv
+      } else if (isvip === 1) {
+        alert('请登录')
+      } else {
+        mvUrl = _this.urls.visitorPlayMv
+      }
+      _this.$axios({
+        url: mvUrl,
+        method: 'get',
+        withCredentials: true,
+        params: id
+      }).then(res => {
+        let data = res.data
+        if (data.code === 1) {
+          _this.videoData = data.data
+          _this.nowVideoUrl = data.data.videoUrl
+          _this.$refs.sourceUrl.url = _this.nowVideoUrl
+          console.log(_this.nowVideoUrl)
+          _this.initVideo()
+        }
+      })
+    }
+    _this.judgeZan() // 判断视频是否点赞
   }
 }
 </script>
 
 <style lang="scss">
- .collection-style::before{
+@import url('//at.alicdn.com/t/font_1609227_qw7fa8ylq3.css');//爱心icon
+div{
+  cursor: default;
+}
+.videobuttons{
+  .videoZan{
+    i{font-size: 22px; cursor: pointer;}
+    .icon-xinaixin{
+      color: #FF4752;
+    }
+  }
+  .collection-style::before{
     font-size: 28px;
     line-height: 28px;
+    cursor: pointer;
     color: #FF4752;
   }
+}
+
 </style>
